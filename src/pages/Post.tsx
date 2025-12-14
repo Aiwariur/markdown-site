@@ -8,7 +8,7 @@ import { ArrowLeft, Link as LinkIcon, Twitter, Rss } from "lucide-react";
 import { useState, useEffect } from "react";
 
 // Site configuration
-const SITE_URL = "https://your-site.netlify.app";
+const SITE_URL = "https://markdowncms.netlify.app";
 const SITE_NAME = "Markdown Site";
 const DEFAULT_OG_IMAGE = "/images/og-default.svg";
 

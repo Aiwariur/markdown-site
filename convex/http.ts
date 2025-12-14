@@ -6,8 +6,8 @@ import { rssFeed, rssFullFeed } from "./rss";
 const http = httpRouter();
 
 // Site configuration
-const SITE_URL = process.env.SITE_URL || "https://your-blog.netlify.app";
-const SITE_NAME = "Wayne Sutton";
+const SITE_URL = process.env.SITE_URL || "https://markdowncms.netlify.app";
+const SITE_NAME = "Markdown Site";
 
 // RSS feed endpoint (descriptions only)
 http.route({
