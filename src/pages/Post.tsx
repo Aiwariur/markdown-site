@@ -132,6 +132,12 @@ export default function Post() {
             <ArrowLeft size={16} />
             <span>Back</span>
           </button>
+          {/* Copy page dropdown for static pages */}
+          <CopyPageDropdown
+            title={page.title}
+            content={page.content}
+            url={window.location.href}
+          />
         </nav>
 
         <article className="post-article">

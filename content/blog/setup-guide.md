@@ -238,6 +238,7 @@ The `netlify.toml` file includes the correct build settings:
 ```
 
 Key points:
+
 - `npm ci --include=dev` forces devDependencies to install even when `NODE_ENV=production`
 - The build script uses `npx vite build` to resolve vite from node_modules
 - `@types/node` is required for TypeScript to recognize `process.env`

@@ -10,7 +10,7 @@ readTime: "4 min read"
 
 # About This Markdown Site
 
-This is an open source markdown site built with React, TypeScript, and Convex. Write posts and pages in markdown, sync them to a real-time database, and deploy on Netlify.
+This is an open-source markdown site built with React, TypeScript, and Convex. Write posts and pages in markdown, sync them to a real-time database, and deploy on Netlify.
 
 ## How It Works
 
