@@ -1,4 +1,4 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import BlogPost from "../components/BlogPost";
@@ -9,16 +9,34 @@ import { useState, useEffect } from "react";
 
 // Site configuration
 const SITE_URL = "https://markdowncms.netlify.app";
-const SITE_NAME = "Markdown Site";
+const SITE_NAME = "markdown sync site";
 const DEFAULT_OG_IMAGE = "/images/og-default.svg";
 
 export default function Post() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   // Check for page first, then post
   const page = useQuery(api.pages.getPageBySlug, slug ? { slug } : "skip");
   const post = useQuery(api.posts.getPostBySlug, slug ? { slug } : "skip");
   const [copied, setCopied] = useState(false);
+
+  // Scroll to hash anchor after content loads
+  useEffect(() => {
+    if (!location.hash) return;
+    if (page === undefined && post === undefined) return;
+    
+    // Small delay to ensure content is rendered
+    const timer = setTimeout(() => {
+      const id = location.hash.slice(1);
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [location.hash, page, post]);
 
   // Update page title for static pages
   useEffect(() => {
@@ -137,6 +155,8 @@ export default function Post() {
             title={page.title}
             content={page.content}
             url={window.location.href}
+            slug={page.slug}
+            description={page.excerpt}
           />
         </nav>
 
@@ -191,11 +211,16 @@ export default function Post() {
           <ArrowLeft size={16} />
           <span>Back</span>
         </button>
-        {/* Copy page dropdown for sharing */}
+        {/* Copy page dropdown for sharing with full metadata */}
         <CopyPageDropdown
           title={post.title}
           content={post.content}
           url={window.location.href}
+          slug={post.slug}
+          description={post.description}
+          date={post.date}
+          tags={post.tags}
+          readTime={post.readTime}
         />
       </nav>
 

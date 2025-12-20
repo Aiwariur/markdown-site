@@ -1,15 +1,12 @@
+# Setup Guide - Fork and Deploy Your Own Markdown Site
+
+> Step-by-step guide to fork this markdown sync site, set up Convex backend, and deploy to Netlify in under 10 minutes.
+
 ---
-title: "Setup Guide - Fork and Deploy Your Own Markdown Site"
-description: "Step-by-step guide to fork this markdown sync site, set up Convex backend, and deploy to Netlify in under 10 minutes."
-date: "2025-01-14"
-slug: "setup-guide"
-published: true
-tags: ["convex", "netlify", "tutorial", "deployment"]
-readTime: "8 min read"
-featured: true
-featuredOrder: 3
-image: "/public/images/setupguide.png"
-excerpt: "Complete guide to fork, set up, and deploy your own markdown blog in under 10 minutes."
+Type: post
+Date: 2025-01-14
+Reading time: 8 min read
+Tags: convex, netlify, tutorial, deployment
 ---
 
 # Fork and Deploy Your Own Markdown Blog

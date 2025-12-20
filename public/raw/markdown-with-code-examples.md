@@ -1,14 +1,12 @@
+# Writing Markdown with Code Examples
+
+> A sample post showing how to write markdown with syntax-highlighted code blocks, tables, and more.
+
 ---
-title: "Writing Markdown with Code Examples"
-description: "A sample post showing how to write markdown with syntax-highlighted code blocks, tables, and more."
-date: "2025-01-17"
-slug: "markdown-with-code-examples"
-published: true
-tags: ["markdown", "tutorial", "code"]
-readTime: "5 min read"
-featured: true
-featuredOrder: 5
-image: "/images/markdown.png"
+Type: post
+Date: 2025-01-17
+Reading time: 5 min read
+Tags: markdown, tutorial, code
 ---
 
 # Writing Markdown with Code Examples

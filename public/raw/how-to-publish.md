@@ -1,15 +1,12 @@
+# How to Publish a Blog Post
+
+> A quick guide to writing and publishing markdown blog posts using Cursor after your blog is set up.
+
 ---
-title: "How to Publish a Blog Post"
-description: "A quick guide to writing and publishing markdown blog posts using Cursor after your blog is set up."
-date: "2025-01-17"
-slug: "how-to-publish"
-published: true
-tags: ["tutorial", "markdown", "cursor", "publishing"]
-readTime: "3 min read"
-featured: true
-featuredOrder: 3
-image: "/images/matthew-smith-Rfflri94rs8-unsplash.jpg"
-excerpt: "Quick guide to writing and publishing markdown posts with npm run sync."
+Type: post
+Date: 2025-01-17
+Reading time: 3 min read
+Tags: tutorial, markdown, cursor, publishing
 ---
 
 # How to Publish a Blog Post

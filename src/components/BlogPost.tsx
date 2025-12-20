@@ -404,6 +404,29 @@ export default function BlogPost({ content }: BlogPostProps) {
           hr() {
             return <hr className="blog-hr" />;
           },
+          // Table components for GitHub-style tables
+          table({ children }) {
+            return (
+              <div className="blog-table-wrapper">
+                <table className="blog-table">{children}</table>
+              </div>
+            );
+          },
+          thead({ children }) {
+            return <thead className="blog-thead">{children}</thead>;
+          },
+          tbody({ children }) {
+            return <tbody className="blog-tbody">{children}</tbody>;
+          },
+          tr({ children }) {
+            return <tr className="blog-tr">{children}</tr>;
+          },
+          th({ children }) {
+            return <th className="blog-th">{children}</th>;
+          },
+          td({ children }) {
+            return <td className="blog-td">{children}</td>;
+          },
         }}
       >
         {content}

@@ -20,6 +20,7 @@ dotenv.config();
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "blog");
 const PAGES_DIR = path.join(process.cwd(), "content", "pages");
+const RAW_OUTPUT_DIR = path.join(process.cwd(), "public", "raw");
 
 interface PostFrontmatter {
   title: string;
@@ -57,6 +58,7 @@ interface PageFrontmatter {
   published: boolean;
   order?: number; // Display order in navigation
   excerpt?: string; // Short excerpt for card view
+  image?: string; // Thumbnail/OG image URL for featured cards
   featured?: boolean; // Show in featured section
   featuredOrder?: number; // Order in featured section (lower = first)
 }
@@ -68,6 +70,7 @@ interface ParsedPage {
   published: boolean;
   order?: number;
   excerpt?: string; // Short excerpt for card view
+  image?: string; // Thumbnail/OG image URL for featured cards
   featured?: boolean; // Show in featured section
   featuredOrder?: number; // Order in featured section (lower = first)
 }
@@ -151,6 +154,7 @@ function parsePageFile(filePath: string): ParsedPage | null {
       published: frontmatter.published ?? true,
       order: frontmatter.order,
       excerpt: frontmatter.excerpt, // Short excerpt for card view
+      image: frontmatter.image, // Thumbnail/OG image URL for featured cards
       featured: frontmatter.featured, // Show in featured section
       featuredOrder: frontmatter.featuredOrder, // Order in featured section
     };
@@ -227,10 +231,11 @@ async function syncPosts() {
 
   // Sync pages if pages directory exists
   const pageFiles = getAllPageFiles();
+  const pages: ParsedPage[] = [];
+
   if (pageFiles.length > 0) {
     console.log(`\nFound ${pageFiles.length} page files\n`);
 
-    const pages: ParsedPage[] = [];
     for (const filePath of pageFiles) {
       const page = parsePageFile(filePath);
       if (page) {
@@ -256,6 +261,9 @@ async function syncPosts() {
       }
     }
   }
+
+  // Generate static raw markdown files in public/raw/
+  generateRawMarkdownFiles(posts, pages);
 }
 
 // Create a sample post if none exist
@@ -301,6 +309,100 @@ More posts coming soon. Thanks for reading!
   const filePath = path.join(CONTENT_DIR, "hello-world.md");
   fs.writeFileSync(filePath, samplePost);
   console.log(`Created sample post: ${filePath}`);
+}
+
+// Generate static markdown file in public/raw/ directory
+function generateRawMarkdownFile(
+  slug: string,
+  title: string,
+  description: string,
+  content: string,
+  date: string,
+  tags: string[],
+  readTime?: string,
+  type: "post" | "page" = "post"
+): void {
+  // Ensure raw output directory exists
+  if (!fs.existsSync(RAW_OUTPUT_DIR)) {
+    fs.mkdirSync(RAW_OUTPUT_DIR, { recursive: true });
+  }
+
+  // Build metadata section
+  const metadataLines: string[] = [];
+  metadataLines.push(`Type: ${type}`);
+  metadataLines.push(`Date: ${date}`);
+  if (readTime) metadataLines.push(`Reading time: ${readTime}`);
+  if (tags && tags.length > 0) metadataLines.push(`Tags: ${tags.join(", ")}`);
+
+  // Build the full markdown document
+  let markdown = `# ${title}\n\n`;
+
+  // Add description if available
+  if (description) {
+    markdown += `> ${description}\n\n`;
+  }
+
+  // Add metadata block
+  markdown += `---\n${metadataLines.join("\n")}\n---\n\n`;
+
+  // Add main content
+  markdown += content;
+
+  // Write to file
+  const filePath = path.join(RAW_OUTPUT_DIR, `${slug}.md`);
+  fs.writeFileSync(filePath, markdown);
+}
+
+// Generate all raw markdown files during sync
+function generateRawMarkdownFiles(
+  posts: ParsedPost[],
+  pages: ParsedPage[]
+): void {
+  console.log("\nGenerating static markdown files in public/raw/...");
+
+  // Clear existing raw files
+  if (fs.existsSync(RAW_OUTPUT_DIR)) {
+    const existingFiles = fs.readdirSync(RAW_OUTPUT_DIR);
+    for (const file of existingFiles) {
+      if (file.endsWith(".md")) {
+        fs.unlinkSync(path.join(RAW_OUTPUT_DIR, file));
+      }
+    }
+  }
+
+  // Generate files for published posts
+  const publishedPosts = posts.filter((p) => p.published);
+  for (const post of publishedPosts) {
+    generateRawMarkdownFile(
+      post.slug,
+      post.title,
+      post.description,
+      post.content,
+      post.date,
+      post.tags,
+      post.readTime,
+      "post"
+    );
+  }
+
+  // Generate files for published pages
+  const publishedPages = pages.filter((p) => p.published);
+  for (const page of publishedPages) {
+    generateRawMarkdownFile(
+      page.slug,
+      page.title,
+      "", // pages don't have description
+      page.content,
+      new Date().toISOString().split("T")[0], // pages don't have date
+      [], // pages don't have tags
+      undefined,
+      "page"
+    );
+  }
+
+  console.log(
+    `Generated ${publishedPosts.length} post files and ${publishedPages.length} page files`
+  );
 }
 
 // Run the sync

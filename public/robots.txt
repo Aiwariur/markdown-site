@@ -1,11 +1,11 @@
-# robots.txt for Wayne Sutton's Blog
+# robots.txt for markdown sync site
 # https://www.robotstxt.org/
 
 User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://your-blog.netlify.app/sitemap.xml
+Sitemap: https://markdowncms.netlify.app/sitemap.xml
 
 # AI and LLM crawlers
 User-agent: GPTBot

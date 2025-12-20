@@ -12,6 +12,7 @@ interface FeaturedData {
   slug: string;
   title: string;
   excerpt: string;
+  image?: string; // Thumbnail image for card view
   type: "post" | "page";
 }
 
@@ -50,6 +51,7 @@ export default function FeaturedCards({
         slug: p.slug,
         title: p.title,
         excerpt: p.excerpt || p.description,
+        image: p.image,
         type: "post" as const,
         featuredOrder: p.featuredOrder,
       })),
@@ -57,13 +59,21 @@ export default function FeaturedCards({
         slug: p.slug,
         title: p.title,
         excerpt: p.excerpt || "",
+        image: p.image,
         type: "page" as const,
         featuredOrder: p.featuredOrder,
       })),
     ];
 
-    // Sort by featuredOrder (lower first)
+    // Sort: items with images first, then by featuredOrder within each group
     return combined.sort((a, b) => {
+      // Primary sort: items with images come first
+      const hasImageA = a.image ? 0 : 1;
+      const hasImageB = b.image ? 0 : 1;
+      if (hasImageA !== hasImageB) {
+        return hasImageA - hasImageB;
+      }
+      // Secondary sort: by featuredOrder (lower first)
       const orderA = a.featuredOrder ?? 999;
       const orderB = b.featuredOrder ?? 999;
       return orderA - orderB;
@@ -85,6 +95,7 @@ export default function FeaturedCards({
           result.push({
             title: post.title,
             excerpt: post.excerpt || post.description,
+            image: post.image,
             slug: post.slug,
             type: "post",
           });
@@ -96,6 +107,7 @@ export default function FeaturedCards({
           result.push({
             title: page.title,
             excerpt: page.excerpt || "",
+            image: page.image,
             slug: page.slug,
             type: "page",
           });
@@ -131,10 +143,23 @@ export default function FeaturedCards({
     <div className="featured-cards">
       {featuredData.map((item) => (
         <a key={item.slug} href={`/${item.slug}`} className="featured-card">
-          <h3 className="featured-card-title">{item.title}</h3>
-          {item.excerpt && (
-            <p className="featured-card-excerpt">{item.excerpt}</p>
+          {/* Thumbnail image displayed as square using object-fit: cover */}
+          {item.image && (
+            <div className="featured-card-image-wrapper">
+              <img
+                src={item.image}
+                alt={item.title}
+                className="featured-card-image"
+                loading="lazy"
+              />
+            </div>
           )}
+          <div className="featured-card-content">
+            <h3 className="featured-card-title">{item.title}</h3>
+            {item.excerpt && (
+              <p className="featured-card-excerpt">{item.excerpt}</p>
+            )}
+          </div>
         </a>
       ))}
     </div>

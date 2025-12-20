@@ -1,8 +1,20 @@
 # markdown "sync" site
 
-A minimalist markdown site built with React, Convex, and Vite. Optimized for SEO, AI agents, and LLM discovery.
+An open-source markdown "sync" site you publish from the terminal with npm run sync. Write locally, sync instantly, skip the build powered by Convex and Netlify
+
+Write markdown locally, run `npm run sync` (dev) or `npm run sync:prod` (production), and content appears instantly across all connected browsers. Built with React, Convex, and Vite. Optimized for SEO, AI agents, and LLM discovery.
 
 **How publishing works:** Write posts in markdown, run `npm run sync` for development or `npm run sync:prod` for production, and they appear on your live site immediately. No rebuild or redeploy needed. Convex handles real-time data sync, so all connected browsers update automatically.
+
+**How versioning works:** Markdown files live in `content/blog/` and `content/pages/`. These are regular files in your git repo. Commit changes, review diffs, roll back like any codebase. The sync command pushes content to Convex.
+
+```bash
+# Edit, commit, sync
+git add content/blog/my-post.md
+git commit -m "Update post"
+npm run sync        # dev
+npm run sync:prod   # production
+```
 
 ## Features
 
@@ -15,6 +27,7 @@ A minimalist markdown site built with React, Convex, and Vite. Optimized for SEO
 - Full text search with Command+K shortcut
 - Featured section with list/card view toggle
 - Logo gallery with continuous marquee scroll
+- Static raw markdown files at `/raw/{slug}.md`
 
 ### SEO and Discovery
 
@@ -30,16 +43,35 @@ A minimalist markdown site built with React, Convex, and Vite. Optimized for SEO
 - `/api/posts` - JSON list of all posts for agents
 - `/api/post?slug=xxx` - Single post JSON or markdown
 - `/api/export` - Batch export all posts with full content
+- `/raw/{slug}.md` - Static raw markdown files for each post and page
 - `/rss-full.xml` - Full content RSS for LLM ingestion
 - `/.well-known/ai-plugin.json` - AI plugin manifest
 - `/openapi.yaml` - OpenAPI 3.0 specification
-- Copy Page dropdown for sharing to ChatGPT, Claude
+- Copy Page dropdown for sharing to ChatGPT, Claude, Perplexity
 
 ### Content Import
 
 - Import external URLs as markdown posts using Firecrawl
 - Run `npm run import <url>` to scrape and create draft posts locally
 - Then sync to dev or prod with `npm run sync` or `npm run sync:prod`
+
+## Files to Update When Forking
+
+When you fork this project, update these files with your site information:
+
+| File                                | What to update                                              |
+| ----------------------------------- | ----------------------------------------------------------- |
+| `src/pages/Home.tsx`                | Site name, title, intro, bio, featured config, logo gallery |
+| `convex/http.ts`                    | `SITE_URL`, `SITE_NAME` (API responses, sitemap)            |
+| `convex/rss.ts`                     | `SITE_URL`, `SITE_TITLE`, `SITE_DESCRIPTION` (RSS feeds)    |
+| `src/pages/Post.tsx`                | `SITE_URL`, `SITE_NAME`, `DEFAULT_OG_IMAGE` (OG tags)       |
+| `index.html`                        | Title, meta description, OG tags, JSON-LD                   |
+| `public/llms.txt`                   | Site URL and description                                    |
+| `public/robots.txt`                 | Sitemap URL                                                 |
+| `public/.well-known/ai-plugin.json` | Site name and description                                   |
+| `public/openapi.yaml`               | API title and site name                                     |
+
+See the [Setup Guide](/setup-guide) for detailed configuration examples.
 
 ## Getting Started
 
@@ -156,22 +188,24 @@ Add these fields to any post or page frontmatter:
 featured: true
 featuredOrder: 1
 excerpt: "A short description for the card view."
+image: "/images/thumbnail.png"
 ```
 
-Then run `npm run sync`. No redeploy needed.
+Then run `npm run sync` (dev) or `npm run sync:prod` (production). No redeploy needed.
 
-| Field | Description |
-| --- | --- |
-| `featured` | Set `true` to show in featured section |
+| Field           | Description                               |
+| --------------- | ----------------------------------------- |
+| `featured`      | Set `true` to show in featured section    |
 | `featuredOrder` | Order in featured section (lower = first) |
-| `excerpt` | Short description for card view |
+| `excerpt`       | Short description for card view           |
+| `image`         | Thumbnail for card view (displays square) |
 
 ### Display Modes
 
 The featured section supports two display modes:
 
 - **List view** (default): Bullet list of links
-- **Card view**: Grid of cards with title and excerpt
+- **Card view**: Grid of cards with thumbnail, title, and excerpt
 
 Users can toggle between views. To change the default:
 
@@ -181,6 +215,12 @@ const siteConfig = {
   showViewToggle: true, // Allow users to switch views
 };
 ```
+
+### Thumbnail Images
+
+In card view, the `image` field displays as a square thumbnail above the title. Non-square images are automatically cropped to center. The list view shows links only (no images).
+
+Square thumbnails: 400x400px minimum (800x800px for retina). The same image can serve as both the OG image for social sharing and the featured card thumbnail.
 
 ## Logo Gallery
 
@@ -214,6 +254,7 @@ logoGallery: {
 ```
 
 Each logo object supports:
+
 - `src`: Path to the logo image (required)
 - `href`: URL to link to when clicked (optional)
 
@@ -335,16 +376,16 @@ markdown-site/
 
 ## Scripts Reference
 
-| Script                | Description                                        |
-| --------------------- | -------------------------------------------------- |
-| `npm run dev`         | Start Vite dev server                              |
-| `npm run dev:convex`  | Start Convex dev backend                           |
-| `npm run sync`        | Sync posts to dev deployment                       |
-| `npm run sync:prod`   | Sync posts to production deployment                |
-| `npm run import`      | Import URL as local markdown draft (then sync)     |
-| `npm run build`       | Build for production                               |
-| `npm run deploy`      | Sync + build (for manual deploys)                  |
-| `npm run deploy:prod` | Deploy Convex functions + sync to production       |
+| Script                | Description                                    |
+| --------------------- | ---------------------------------------------- |
+| `npm run dev`         | Start Vite dev server                          |
+| `npm run dev:convex`  | Start Convex dev backend                       |
+| `npm run sync`        | Sync posts to dev deployment                   |
+| `npm run sync:prod`   | Sync posts to production deployment            |
+| `npm run import`      | Import URL as local markdown draft (then sync) |
+| `npm run build`       | Build for production                           |
+| `npm run deploy`      | Sync + build (for manual deploys)              |
+| `npm run deploy:prod` | Deploy Convex functions + sync to production   |
 
 ## Tech Stack
 
@@ -393,20 +434,20 @@ How it works:
 
 ## API Endpoints
 
-| Endpoint                       | Description                          |
-| ------------------------------ | ------------------------------------ |
-| `/stats`                       | Real-time site analytics             |
-| `/rss.xml`                     | RSS feed with post descriptions      |
-| `/rss-full.xml`                | RSS feed with full post content      |
-| `/sitemap.xml`                 | Dynamic XML sitemap                  |
-| `/api/posts`                   | JSON list of all posts               |
-| `/api/post?slug=xxx`           | Single post as JSON                  |
-| `/api/post?slug=xxx&format=md` | Single post as markdown              |
-| `/api/export`                  | Batch export all posts with content  |
-| `/meta/post?slug=xxx`          | Open Graph HTML for crawlers         |
-| `/.well-known/ai-plugin.json`  | AI plugin manifest                   |
-| `/openapi.yaml`                | OpenAPI 3.0 specification            |
-| `/llms.txt`                    | AI agent discovery                   |
+| Endpoint                       | Description                         |
+| ------------------------------ | ----------------------------------- |
+| `/stats`                       | Real-time site analytics            |
+| `/rss.xml`                     | RSS feed with post descriptions     |
+| `/rss-full.xml`                | RSS feed with full post content     |
+| `/sitemap.xml`                 | Dynamic XML sitemap                 |
+| `/api/posts`                   | JSON list of all posts              |
+| `/api/post?slug=xxx`           | Single post as JSON                 |
+| `/api/post?slug=xxx&format=md` | Single post as markdown             |
+| `/api/export`                  | Batch export all posts with content |
+| `/meta/post?slug=xxx`          | Open Graph HTML for crawlers        |
+| `/.well-known/ai-plugin.json`  | AI plugin manifest                  |
+| `/openapi.yaml`                | OpenAPI 3.0 specification           |
+| `/llms.txt`                    | AI agent discovery                  |
 
 ## Import External Content
 

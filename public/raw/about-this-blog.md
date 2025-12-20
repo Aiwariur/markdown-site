@@ -1,14 +1,12 @@
+# About This Markdown Site
+
+> How this open source site works with Convex for real-time sync and Netlify for deployment.
+
 ---
-title: "About This Markdown Site"
-description: "How this open source site works with Convex for real-time sync and Netlify for deployment."
-date: "2025-01-16"
-slug: "about-this-blog"
-published: true
-tags: ["convex", "netlify", "open-source", "markdown"]
-readTime: "4 min read"
-featured: false
-featuredOrder: 3
-excerpt: "Learn how this open source site works with real-time sync and instant updates."
+Type: post
+Date: 2025-01-16
+Reading time: 4 min read
+Tags: convex, netlify, open-source, markdown
 ---
 
 # About This Markdown Site

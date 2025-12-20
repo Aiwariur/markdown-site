@@ -4,6 +4,123 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.10.0] - 2025-12-20
+
+### Added
+
+- Fork configuration documentation
+  - "Files to Update When Forking" section in docs.md and setup-guide.md
+  - Lists all 9 files with site-specific configuration
+  - Backend configuration examples for Convex files
+  - Code snippets for `convex/http.ts`, `convex/rss.ts`, `src/pages/Post.tsx`
+- Same documentation added to README.md for discoverability
+
+### Changed
+
+- Updated site branding across all configuration files
+  - `public/robots.txt`: Updated sitemap URL and header
+  - `public/llms.txt`: Updated site name and description
+  - `public/.well-known/ai-plugin.json`: Updated name and description for AI plugins
+  - `public/openapi.yaml`: Updated API title and site name example
+  - `convex/http.ts`: Updated SITE_URL and SITE_NAME constants
+
+### Documentation
+
+- Setup guide table of contents now includes fork configuration sections
+- Docs page configuration section expanded with backend file list
+- All AI discovery files reflect new "markdown sync site" branding
+
+## [1.9.0] - 2025-12-20
+
+### Added
+
+- Scroll-to-top button
+  - Appears after scrolling 300px (configurable)
+  - Uses Phosphor ArrowUp icon for consistency
+  - Smooth scroll animation (configurable)
+  - Works with all four themes (dark, light, tan, cloud)
+  - Enabled by default (can be disabled in Layout.tsx)
+  - Fade-in animation when appearing
+  - Responsive sizing for mobile devices
+
+### Technical
+
+- New component: `src/components/ScrollToTop.tsx`
+  - Configurable via `ScrollToTopConfig` interface
+  - Exports `defaultScrollToTopConfig` for customization
+  - Uses passive scroll listener for performance
+- Configuration options in Layout.tsx `scrollToTopConfig`
+- CSS styles added to global.css with theme-specific shadows
+
+## [1.8.0] - 2025-12-20
+
+### Added
+
+- Mobile menu with hamburger navigation
+  - Slide-out drawer on mobile and tablet views
+  - Accessible with keyboard navigation (Escape to close)
+  - Focus trap for screen reader support
+  - Smooth CSS transform animations
+  - Page links and Home link in drawer
+  - Auto-closes on route change
+- Generate Skill option in CopyPageDropdown
+  - Formats post/page content as an AI agent skill file
+  - Downloads as `{slug}-skill.md` with skill structure
+  - Includes metadata, when to use, and instructions sections
+  - Uses Download icon from lucide-react
+
+### Changed
+
+- Layout.tsx now includes hamburger button and MobileMenu component
+- Desktop navigation hidden on mobile, mobile menu hidden on desktop
+- Improved responsive navigation across all breakpoints
+
+### Technical
+
+- New component: `src/components/MobileMenu.tsx`
+- HamburgerButton exported from MobileMenu for Layout use
+- New `formatAsSkill()` function for skill file generation
+- New `handleDownloadSkill()` handler with blob download logic
+- Uses browser File API for client-side file download
+- CSS styles for mobile menu in global.css
+
+## [1.7.0] - 2025-12-20
+
+### Added
+
+- Static raw markdown files at `/raw/{slug}.md`
+  - Generated during `npm run sync` (development) or `npm run sync:prod` (production) in `public/raw/` directory
+  - Each published post and page gets a corresponding static `.md` file
+  - SEO indexable and accessible to AI agents
+  - Includes metadata header (type, date, reading time, tags)
+- View as Markdown option in CopyPageDropdown
+  - Opens raw `.md` file in new tab
+  - Available on all post and page views
+- Perplexity added to AI service options in CopyPageDropdown
+  - Sends full markdown content via URL parameter
+  - Research articles directly in Perplexity
+- Featured image support for posts and pages
+  - `image` field in frontmatter displays as square thumbnail in card view
+  - Non-square images automatically cropped to center
+  - Recommended size: 400x400px minimum (800x800px for retina)
+
+### Changed
+
+- CopyPageDropdown now accepts `slug` prop for raw file links
+- Updated `_redirects` to serve `/raw/*` files directly
+- Improved markdown table CSS styling
+  - GitHub-style tables with proper borders
+  - Mobile responsive with horizontal scroll
+  - Theme-aware alternating row colors
+  - Hover states for better readability
+
+### Technical
+
+- Updated `scripts/sync-posts.ts` to generate `public/raw/` files
+- Files are regenerated on each sync (old files cleaned up)
+- Only published posts and pages generate raw files
+- CopyPageDropdown uses FileText icon from lucide-react for View as Markdown
+
 ## [1.6.1] - 2025-12-18
 
 ### Added

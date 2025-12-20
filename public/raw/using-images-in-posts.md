@@ -1,14 +1,12 @@
+# Using Images in Blog Posts
+
+> Learn how to add header images, inline images, and Open Graph images to your markdown blog posts.
+
 ---
-title: "Using Images in Blog Posts"
-description: "Learn how to add header images, inline images, and Open Graph images to your markdown blog posts."
-date: "2025-01-18"
-slug: "using-images-in-posts"
-published: true
-featured: true
-featuredOrder: 3
-tags: ["images", "tutorial", "markdown", "open-graph"]
-readTime: "4 min read"
-image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&h=630&fit=crop"
+Type: post
+Date: 2025-01-18
+Reading time: 4 min read
+Tags: images, tutorial, markdown, open-graph
 ---
 
 # Using Images in Blog Posts

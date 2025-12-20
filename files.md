@@ -29,24 +29,26 @@ A brief description of each file in the codebase.
 
 ### Pages (`src/pages/`)
 
-| File        | Description                                             |
-| ----------- | ------------------------------------------------------- |
-| `Home.tsx`  | Landing page with siteConfig, featured section, logo gallery |
-| `Post.tsx`  | Individual blog post view with JSON-LD injection        |
-| `Stats.tsx` | Real-time analytics dashboard with visitor stats        |
+| File        | Description                                                       |
+| ----------- | ----------------------------------------------------------------- |
+| `Home.tsx`  | Landing page with siteConfig (update name/title/bio when forking) |
+| `Post.tsx`  | Individual blog post view (update SITE_URL/SITE_NAME when forking) |
+| `Stats.tsx` | Real-time analytics dashboard with visitor stats                  |
 
 ### Components (`src/components/`)
 
 | File                   | Description                                                |
 | ---------------------- | ---------------------------------------------------------- |
-| `Layout.tsx`           | Page wrapper with search button and theme toggle           |
+| `Layout.tsx`           | Page wrapper with search button, theme toggle, mobile menu, and scroll-to-top |
 | `ThemeToggle.tsx`      | Theme switcher (dark/light/tan/cloud)                      |
 | `PostList.tsx`         | Year-grouped blog post list                                |
 | `BlogPost.tsx`         | Markdown renderer with syntax highlighting                 |
-| `CopyPageDropdown.tsx` | Share dropdown for LLMs (ChatGPT, Claude)                  |
+| `CopyPageDropdown.tsx` | Share dropdown for LLMs (ChatGPT, Claude, Perplexity) with View as Markdown and Generate Skill options |
 | `SearchModal.tsx`      | Full text search modal with keyboard navigation            |
 | `FeaturedCards.tsx`    | Card grid for featured posts/pages with excerpts           |
 | `LogoMarquee.tsx`      | Scrolling logo gallery with clickable links                |
+| `MobileMenu.tsx`       | Slide-out drawer menu for mobile navigation with hamburger button |
+| `ScrollToTop.tsx`      | Configurable scroll-to-top button with Phosphor ArrowUp icon |
 
 ### Context (`src/context/`)
 
@@ -68,18 +70,18 @@ A brief description of each file in the codebase.
 
 ## Convex Backend (`convex/`)
 
-| File               | Description                                                   |
-| ------------------ | ------------------------------------------------------------- |
+| File               | Description                                                          |
+| ------------------ | -------------------------------------------------------------------- |
 | `schema.ts`        | Database schema (posts, pages, viewCounts, pageViews, activeSessions) |
-| `posts.ts`         | Queries and mutations for blog posts, view counts             |
-| `pages.ts`         | Queries and mutations for static pages                        |
-| `search.ts`        | Full text search queries across posts and pages               |
-| `stats.ts`         | Real-time stats queries, page view recording, session heartbeat |
-| `crons.ts`         | Cron job for stale session cleanup                            |
-| `http.ts`          | HTTP endpoints: sitemap, API, Open Graph metadata             |
-| `rss.ts`           | RSS feed generation (standard and full content)               |
-| `convex.config.ts` | Convex app configuration                                      |
-| `tsconfig.json`    | Convex TypeScript configuration                               |
+| `posts.ts`         | Queries and mutations for blog posts, view counts                    |
+| `pages.ts`         | Queries and mutations for static pages                               |
+| `search.ts`        | Full text search queries across posts and pages                      |
+| `stats.ts`         | Real-time stats queries, page view recording, session heartbeat      |
+| `crons.ts`         | Cron job for stale session cleanup                                   |
+| `http.ts`          | HTTP endpoints: sitemap, API (update SITE_URL/SITE_NAME when forking) |
+| `rss.ts`           | RSS feed generation (update SITE_URL/SITE_TITLE when forking)        |
+| `convex.config.ts` | Convex app configuration                                             |
+| `tsconfig.json`    | Convex TypeScript configuration                                      |
 
 ### HTTP Endpoints (defined in `http.ts`)
 
@@ -151,15 +153,27 @@ Markdown files for static pages like About, Projects, Contact, Changelog.
 | -------------- | ---------------------------------------------- |
 | `favicon.svg`  | Site favicon                                   |
 | `_redirects`   | SPA redirect rules for static files            |
-| `robots.txt`   | Crawler rules for search engines and AI bots   |
-| `llms.txt`     | AI agent discovery file (llmstxt.org standard) |
-| `openapi.yaml` | OpenAPI 3.0 specification for API endpoints    |
+| `robots.txt`   | Crawler rules for search engines and AI bots (update sitemap URL when forking) |
+| `llms.txt`     | AI agent discovery file (update site name/URL when forking) |
+| `openapi.yaml` | OpenAPI 3.0 specification (update API title when forking) |
+
+### Raw Markdown Files (`public/raw/`)
+
+Static markdown files generated during `npm run sync`. Each published post and page gets a corresponding `.md` file for direct access by users, search engines, and AI agents.
+
+| File Pattern   | Description                                    |
+| -------------- | ---------------------------------------------- |
+| `{slug}.md`    | Static markdown file for each post/page        |
+
+Access via `/raw/{slug}.md` (e.g., `/raw/setup-guide.md`).
+
+Files include a metadata header with type (post/page), date, reading time, and tags. The CopyPageDropdown includes a "View as Markdown" option that links directly to these files.
 
 ### AI Plugin (`public/.well-known/`)
 
-| File              | Description                          |
-| ----------------- | ------------------------------------ |
-| `ai-plugin.json`  | AI plugin manifest for tool integration |
+| File              | Description                                           |
+| ----------------- | ----------------------------------------------------- |
+| `ai-plugin.json`  | AI plugin manifest (update name/description when forking) |
 
 ### Images (`public/images/`)
 

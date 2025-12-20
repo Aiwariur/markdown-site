@@ -1,12 +1,12 @@
 # llms.txt - Information for AI assistants and LLMs
 # Learn more: https://llmstxt.org/
 
-> Real-time markdown blog powered by Convex. All content available as clean markdown.
+> An open-source markdown sync site you publish from the terminal with npm run sync.
 
 # Site Information
-- Name: Markdown Blog
+- Name: markdown sync site
 - URL: https://markdowncms.netlify.app
-- Description: Open source markdown blog with real-time sync, Convex backend, and Netlify deployment.
+- Description: An open-source markdown sync site you publish from the terminal with npm run sync. Write locally, sync instantly, skip the build, powered by Convex and Netlify.
 - Topics: Markdown, Convex, React, TypeScript, Netlify, Open Source
 
 # API Endpoints

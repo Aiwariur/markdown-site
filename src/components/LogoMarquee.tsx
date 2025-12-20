@@ -56,8 +56,8 @@ export default function LogoMarquee({ config }: LogoMarqueeProps) {
               {logo.href ? (
                 <a
                   href={logo.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={logo.href.startsWith("http") ? "_blank" : undefined}
+                  rel={logo.href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="logo-marquee-link"
                 >
                   <img

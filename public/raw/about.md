@@ -1,9 +1,8 @@
+# About
+
 ---
-title: "About"
-slug: "about"
-published: true
-order: 1
-excerpt: "A dev sync site builder for developers who want version-controlled content with real-time delivery."
+Type: page
+Date: 2025-12-20
 ---
 
 This is a dev sync site builder for developers who want version-controlled content with real-time delivery. Write markdown locally, sync to a real-time database, and content appears instantly across all connected browsers.

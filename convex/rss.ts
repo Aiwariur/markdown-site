@@ -3,9 +3,9 @@ import { api } from "./_generated/api";
 
 // Site configuration for RSS feed
 const SITE_URL = process.env.SITE_URL || "https://markdowncms.netlify.app";
-const SITE_TITLE = "Markdown Site";
+const SITE_TITLE = "markdown sync site";
 const SITE_DESCRIPTION =
-  "An open source markdown site powered by Convex and Netlify.";
+  "An open-source markdown sync site you publish from the terminal with npm run sync. Write locally, sync instantly, skip the build, powered by Convex and Netlify.";
 
 // Escape XML special characters
 function escapeXml(text: string): string {

@@ -1,15 +1,12 @@
+# New features: search, featured section, and logo gallery
+
+> Three updates that make your markdown site more useful: Command+K search, frontmatter-controlled featured items, and a scrolling logo gallery.
+
 ---
-title: "New features: search, featured section, and logo gallery"
-description: "Three updates that make your markdown site more useful: Command+K search, frontmatter-controlled featured items, and a scrolling logo gallery."
-date: "2025-12-17"
-slug: "new-features-search-featured-logos"
-published: true
-tags: ["features", "search", "convex", "updates"]
-readTime: "4 min read"
-featured: true
-featuredOrder: 5
-image: "/images/v16.png"
-excerpt: "Search your site with Command+K. Control featured items from frontmatter. Add a logo gallery."
+Type: post
+Date: 2025-12-17
+Reading time: 4 min read
+Tags: features, search, convex, updates
 ---
 
 ## Search with Command+K

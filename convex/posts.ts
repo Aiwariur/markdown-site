@@ -61,6 +61,7 @@ export const getFeaturedPosts = query({
       title: v.string(),
       excerpt: v.optional(v.string()),
       description: v.string(),
+      image: v.optional(v.string()),
       featuredOrder: v.optional(v.number()),
     }),
   ),
@@ -85,6 +86,7 @@ export const getFeaturedPosts = query({
       title: post.title,
       excerpt: post.excerpt,
       description: post.description,
+      image: post.image,
       featuredOrder: post.featuredOrder,
     }));
   },

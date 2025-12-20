@@ -13,12 +13,13 @@ import LogoMarquee, {
 const siteConfig = {
   // Basic site info
   name: 'markdown "sync" site',
-  title: "Real-time Site with Convex",
+  title: "markdown sync site",
   // Optional logo/header image (place in public/images/, set to null to hide)
   logo: "/images/logo.svg" as string | null,
   intro: (
     <>
-      An open source markdown blog powered by Convex and deployed on Netlify.{" "}
+      An open-source markdown "sync" site you publish from the terminal with npm
+      run sync.{" "}
       <a
         href="https://github.com/waynesutton/markdown-site"
         target="_blank"
@@ -30,11 +31,11 @@ const siteConfig = {
       , customize it, ship it.
     </>
   ),
-  bio: `Write in markdown, sync to a real-time database, and deploy in minutes. Every time you sync new posts, they appear immediately without redeploying. Built with React, TypeScript, and Convex for instant updates.`,
+  bio: `Write locally, sync instantly, skip the build. Powered by Convex and Netlify.`,
 
   // Featured section configuration
   // viewMode: 'list' shows bullet list, 'cards' shows card grid with excerpts
-  featuredViewMode: "list" as "cards" | "list",
+  featuredViewMode: "cards" as "cards" | "list",
   // Allow users to toggle between list and card views
   showViewToggle: true,
 
@@ -50,8 +51,8 @@ const siteConfig = {
         href: "https://markdowncms.netlify.app/",
       },
       {
-        src: "/images/logos/sample-logo-2.svg",
-        href: "https://markdowncms.netlify.app/",
+        src: "/images/logos/convex-wordmark-black.svg",
+        href: "/about#the-real-time-twist",
       },
       {
         src: "/images/logos/sample-logo-3.svg",
@@ -68,7 +69,7 @@ const siteConfig = {
     ] as LogoItem[],
     position: "above-footer", // 'above-footer' or 'below-featured'
     speed: 30, // Seconds for one complete scroll cycle
-    title: "Trusted by", // Optional title above the marquee (set to undefined to hide)
+    title: "Trusted by (sample logos)", // Optional title above the marquee (set to undefined to hide)
   } as LogoGalleryConfig,
 
   // Links for footer section

@@ -1,8 +1,8 @@
+# Docs
+
 ---
-title: "Docs"
-slug: "docs"
-published: true
-order: 0
+Type: page
+Date: 2025-12-20
 ---
 
 Reference documentation for setting up, customizing, and deploying this markdown site.

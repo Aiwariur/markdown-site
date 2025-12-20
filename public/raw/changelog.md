@@ -1,8 +1,8 @@
+# Changelog
+
 ---
-title: "Changelog"
-slug: "changelog"
-published: true
-order: 5
+Type: page
+Date: 2025-12-20
 ---
 
 All notable changes to this project.

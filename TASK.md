@@ -1,11 +1,29 @@
 # Markdown Blog - Tasks
 
+## To Do
+
+- [ ] Add blog page list and config
+- [ ] add github code block
+- [ ] Add markdown write page with copy option
+- [ ] create a ui site config page
+- [ ] Add app background image option
+
 ## Current Status
 
-v1.6.1 ready for deployment. Build passes. TypeScript verified.
+v1.10.0 ready for deployment. Build passes. TypeScript verified. Documentation updated.
 
 ## Completed
 
+- [x] Fork configuration documentation in docs.md and setup-guide.md
+- [x] "Files to Update When Forking" section with all 9 configuration files
+- [x] Backend configuration examples for Convex files
+- [x] Site branding updates across all AI discovery files
+- [x] Fork documentation added to README.md
+- [x] Blog post updated with v1.9.0 and v1.10.0 features
+- [x] Scroll-to-top button with configurable threshold
+- [x] Scroll-to-top documentation in docs.md and setup-guide.md
+- [x] Mobile menu with hamburger navigation for mobile and tablet
+- [x] Generate Skill feature in CopyPageDropdown
 - [x] Project setup with Vite + React + TypeScript
 - [x] Convex schema for posts, viewCounts, siteConfig, pages
 - [x] Build-time markdown sync script
@@ -45,6 +63,11 @@ v1.6.1 ready for deployment. Build passes. TypeScript verified.
 - [x] AI plugin discovery at /.well-known/ai-plugin.json
 - [x] OpenAPI 3.0 spec at /openapi.yaml
 - [x] AGENTS.md for AI coding agents
+- [x] Static raw markdown files at /raw/{slug}.md
+- [x] View as Markdown option in CopyPageDropdown
+- [x] Perplexity added to AI service options
+- [x] Featured image support with square thumbnails in card view
+- [x] Improved markdown table CSS styling
 
 ## Deployment Steps
 
@@ -53,7 +76,7 @@ v1.6.1 ready for deployment. Build passes. TypeScript verified.
 3. Connect repo to Netlify and deploy
 4. Edge functions automatically handle RSS, sitemap, and API routes
 
-## Future Enhancements
+## Someday Features TBD
 
 - [ ] Related posts suggestions
 - [ ] Newsletter signup

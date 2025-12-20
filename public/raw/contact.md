@@ -1,8 +1,8 @@
+# Contact
+
 ---
-title: "Contact"
-slug: "contact"
-published: true
-order: 3
+Type: page
+Date: 2025-12-20
 ---
 
 You found the contact page. Nice

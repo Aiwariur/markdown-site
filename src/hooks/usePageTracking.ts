@@ -6,8 +6,8 @@ import { api } from "../../convex/_generated/api";
 // Heartbeat interval: 30 seconds
 const HEARTBEAT_INTERVAL_MS = 30 * 1000;
 
-// Minimum time between heartbeats to prevent write conflicts: 5 seconds
-const HEARTBEAT_DEBOUNCE_MS = 5 * 1000;
+// Minimum time between heartbeats to prevent write conflicts: 10 seconds (matches backend dedup window)
+const HEARTBEAT_DEBOUNCE_MS = 10 * 1000;
 
 // Session ID key in localStorage
 const SESSION_ID_KEY = "markdown_blog_session_id";
