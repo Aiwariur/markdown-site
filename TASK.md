@@ -2,10 +2,13 @@
 
 ## To Do
 
+- [ ] add componet fork fix for stats
 - [ ] Add blog page list and config
 - [ ] add github code block
+- [ ] add home to mobile menu
 - [ ] Add markdown write page with copy option
 - [ ] create a ui site config page
+- [ ] create a prompt formator or skill or agent to change everything at once after forking
 - [ ] Add app background image option
 
 ## Current Status

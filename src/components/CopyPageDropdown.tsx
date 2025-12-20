@@ -88,26 +88,58 @@ function formatAsMarkdown(props: CopyPageDropdownProps): string {
   return markdown;
 }
 
-// Format content as an Agent Skill file for AI agents
+// Generate a valid skill name (lowercase, hyphens, max 64 chars)
+function generateSkillName(slug: string): string {
+  return slug
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 64);
+}
+
+// Format content as an Anthropic Agent Skill file (SKILL.md format)
+// Follows: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
 function formatAsSkill(props: CopyPageDropdownProps): string {
-  const { title, content, url, description, tags } = props;
+  const { title, content, slug, description, tags } = props;
   
-  const generatedDate = new Date().toISOString().split("T")[0];
-  const tagList = tags && tags.length > 0 ? tags.join(", ") : "none";
+  // Generate compliant skill name
+  const skillName = generateSkillName(slug);
   
-  let skill = `# ${title}\n\n`;
-  skill += `## Metadata\n`;
-  skill += `- Source: ${url}\n`;
-  skill += `- Tags: ${tagList}\n`;
-  skill += `- Generated: ${generatedDate}\n\n`;
+  // Build description with "when to use" triggers (max 1024 chars)
+  const tagList = tags && tags.length > 0 ? tags.join(", ") : "";
+  let skillDescription = description || `Guide about ${title.toLowerCase()}.`;
   
-  if (description) {
-    skill += `## When to use this skill\n`;
-    skill += `${description}\n\n`;
+  // Add usage triggers to description
+  if (tagList) {
+    skillDescription += ` Use when working with ${tagList.toLowerCase()} or when asked about ${title.toLowerCase()}.`;
+  } else {
+    skillDescription += ` Use when asked about ${title.toLowerCase()}.`;
   }
   
-  skill += `## Instructions\n`;
+  // Truncate description if needed (max 1024 chars)
+  if (skillDescription.length > 1024) {
+    skillDescription = skillDescription.slice(0, 1021) + "...";
+  }
+  
+  // Build YAML frontmatter (required by Agent Skills spec)
+  let skill = `---\n`;
+  skill += `name: ${skillName}\n`;
+  skill += `description: ${skillDescription}\n`;
+  skill += `---\n\n`;
+  
+  // Add title
+  skill += `# ${title}\n\n`;
+  
+  // Add instructions section
+  skill += `## Instructions\n\n`;
   skill += content;
+  
+  // Add examples section placeholder if content doesn't include examples
+  if (!content.toLowerCase().includes("## example")) {
+    skill += `\n\n## Examples\n\n`;
+    skill += `Use this skill when the user asks about topics covered in this guide.\n`;
+  }
   
   return skill;
 }
@@ -300,16 +332,16 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
     }
   };
 
-  // Handle download skill file
+  // Handle download skill file (Anthropic Agent Skills format)
   const handleDownloadSkill = () => {
     const skillContent = formatAsSkill(props);
     const blob = new Blob([skillContent], { type: "text/markdown;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     
-    // Create temporary link and trigger download
+    // Create temporary link and trigger download as SKILL.md
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${props.slug}-skill.md`;
+    link.download = "SKILL.md";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -445,7 +477,7 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
             </div>
           </button>
 
-          {/* Generate Skill option */}
+          {/* Download as SKILL.md option (Anthropic Agent Skills format) */}
           <button
             className="copy-page-item"
             onClick={handleDownloadSkill}
@@ -455,10 +487,10 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
             <Download size={16} className="copy-page-icon" aria-hidden="true" />
             <div className="copy-page-item-content">
               <span className="copy-page-item-title">
-                Generate Skill
+                Download as SKILL.md
               </span>
               <span className="copy-page-item-desc">
-                Download as AI agent skill
+                Anthropic Agent Skills format
               </span>
             </div>
           </button>
