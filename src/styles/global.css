@@ -750,6 +750,27 @@ body {
   color: var(--text-muted);
 }
 
+/* Author display in post header */
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.post-author-image {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+}
+
+.post-author-name {
+  font-size: var(--font-size-post-meta-header);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
 .post-description {
   font-size: var(--font-size-post-description);
   color: var(--text-secondary);
@@ -1462,7 +1483,7 @@ body {
 /* Modern horizontal cards container - 5 equal columns on large screens */
 .stats-cards-modern {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 0;
   margin-bottom: 64px;
   border: 1px solid var(--border-color);
@@ -1471,10 +1492,10 @@ body {
   background: var(--bg-secondary);
 }
 
-/* Ensure 5-column layout on large screens (explicit rule) */
+/* Ensure 6-column layout on large screens (explicit rule) */
 @media (min-width: 1101px) {
   .stats-cards-modern {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
 }
 
@@ -1707,16 +1728,24 @@ body {
     min-height: 160px;
   }
 
-  .stat-card-modern:nth-child(3) {
+  /* Remove right border on last card of each row (3rd, 6th) */
+  .stat-card-modern:nth-child(3),
+  .stat-card-modern:nth-child(6) {
     border-right: none;
   }
 
+  /* Add top border on second row (4th, 5th, 6th) */
   .stat-card-modern:nth-child(4),
-  .stat-card-modern:nth-child(5) {
+  .stat-card-modern:nth-child(5),
+  .stat-card-modern:nth-child(6) {
     border-top: 1px solid var(--border-color);
   }
 
   .stat-card-modern:nth-child(4) {
+    border-right: 1px solid var(--border-color);
+  }
+
+  .stat-card-modern:nth-child(5) {
     border-right: 1px solid var(--border-color);
   }
 }
@@ -1735,19 +1764,23 @@ body {
     min-height: 150px;
   }
 
+  /* Remove right border on even cards (end of each row) */
   .stat-card-modern:nth-child(2n) {
     border-right: none;
   }
 
+  /* Add top border on rows 2 and 3 (cards 3-6) */
   .stat-card-modern:nth-child(3),
   .stat-card-modern:nth-child(4),
-  .stat-card-modern:nth-child(5) {
+  .stat-card-modern:nth-child(5),
+  .stat-card-modern:nth-child(6) {
     border-top: 1px solid var(--border-color);
-    border-right: 1px solid var(--border-color);
   }
 
-  .stat-card-modern:nth-child(4) {
-    border-right: none;
+  /* Odd cards in rows 2+ need right border */
+  .stat-card-modern:nth-child(3),
+  .stat-card-modern:nth-child(5) {
+    border-right: 1px solid var(--border-color);
   }
 
   .stat-card-modern-value {

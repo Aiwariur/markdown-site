@@ -8,6 +8,8 @@ tags: ["features", "search", "convex", "updates"]
 readTime: "4 min read"
 featured: true
 featuredOrder: 5
+authorName: "Markdown"
+authorImage: "/images/authors/markdown.png"
 image: "/images/v16.png"
 excerpt: "Search your site with Command+K. Control featured items from frontmatter. Add a logo gallery."
 ---

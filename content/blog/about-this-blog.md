@@ -9,6 +9,8 @@ readTime: "4 min read"
 featured: false
 featuredOrder: 3
 excerpt: "Learn how this open source framework works with real-time sync and instant updates."
+authorName: "Markdown Framework"
+authorImage: "/images/authors/markdown.png"
 ---
 
 # About This Markdown Framework

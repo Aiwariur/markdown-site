@@ -6,6 +6,8 @@ slug: "markdown-with-code-examples"
 published: true
 tags: ["markdown", "tutorial", "code"]
 readTime: "5 min read"
+authorName: "Markdown"
+authorImage: "/images/authors/markdown.png"
 featured: false
 featuredOrder: 5
 image: "/images/markdown.png"

@@ -16,6 +16,8 @@ export default defineSchema({
     excerpt: v.optional(v.string()), // Short excerpt for card view
     featured: v.optional(v.boolean()), // Show in featured section
     featuredOrder: v.optional(v.number()), // Order in featured section (lower = first)
+    authorName: v.optional(v.string()), // Author display name
+    authorImage: v.optional(v.string()), // Author avatar image URL (round)
     lastSyncedAt: v.number(),
   })
     .index("by_slug", ["slug"])
@@ -42,6 +44,8 @@ export default defineSchema({
     image: v.optional(v.string()), // Thumbnail/OG image URL for featured cards
     featured: v.optional(v.boolean()), // Show in featured section
     featuredOrder: v.optional(v.number()), // Order in featured section (lower = first)
+    authorName: v.optional(v.string()), // Author display name
+    authorImage: v.optional(v.string()), // Author avatar image URL (round)
     lastSyncedAt: v.number(),
   })
     .index("by_slug", ["slug"])

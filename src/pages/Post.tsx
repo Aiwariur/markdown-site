@@ -163,6 +163,23 @@ export default function Post() {
         <article className="post-article">
           <header className="post-header">
             <h1 className="post-title">{page.title}</h1>
+            {/* Author avatar and name for pages (optional) */}
+            {(page.authorImage || page.authorName) && (
+              <div className="post-meta-header">
+                <div className="post-author">
+                  {page.authorImage && (
+                    <img
+                      src={page.authorImage}
+                      alt={page.authorName || "Author"}
+                      className="post-author-image"
+                    />
+                  )}
+                  {page.authorName && (
+                    <span className="post-author-name">{page.authorName}</span>
+                  )}
+                </div>
+              </div>
+            )}
           </header>
 
           <BlogPost content={page.content} />
@@ -228,6 +245,22 @@ export default function Post() {
         <header className="post-header">
           <h1 className="post-title">{post.title}</h1>
           <div className="post-meta-header">
+            {/* Author avatar and name (optional) */}
+            {(post.authorImage || post.authorName) && (
+              <div className="post-author">
+                {post.authorImage && (
+                  <img
+                    src={post.authorImage}
+                    alt={post.authorName || "Author"}
+                    className="post-author-image"
+                  />
+                )}
+                {post.authorName && (
+                  <span className="post-author-name">{post.authorName}</span>
+                )}
+                <span className="post-meta-separator">·</span>
+              </div>
+            )}
             <time className="post-date">
               {format(parseISO(post.date), "MMMM yyyy")}
             </time>

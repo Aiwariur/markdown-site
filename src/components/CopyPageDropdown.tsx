@@ -1,5 +1,14 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Copy, MessageSquare, Sparkles, Search, Check, AlertCircle, FileText, Download } from "lucide-react";
+import {
+  Copy,
+  MessageSquare,
+  Sparkles,
+  Search,
+  Check,
+  AlertCircle,
+  FileText,
+  Download,
+} from "lucide-react";
 
 // Maximum URL length for query parameters (conservative limit)
 const MAX_URL_LENGTH = 6000;
@@ -14,9 +23,11 @@ interface AIService {
   supportsUrlPrefill: boolean;
   // Custom URL builder for services with special formats
   buildUrl?: (prompt: string) => string;
+  // URL-based builder - takes raw markdown file URL for better AI parsing
+  buildUrlFromRawMarkdown?: (rawMarkdownUrl: string) => string;
 }
 
-// All services send the full markdown content directly
+// AI services configuration - uses raw markdown URLs for better AI parsing
 const AI_SERVICES: AIService[] = [
   {
     id: "chatgpt",
@@ -25,17 +36,27 @@ const AI_SERVICES: AIService[] = [
     baseUrl: "https://chatgpt.com/",
     description: "Analyze with ChatGPT",
     supportsUrlPrefill: true,
-    // ChatGPT accepts ?q= with full text content
-    buildUrl: (prompt) => `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`,
+    // Uses raw markdown file URL for direct content access
+    buildUrlFromRawMarkdown: (rawMarkdownUrl) => {
+      const prompt =
+        `Summarize the page and then ask what the user needs help with. Be concise and to the point.\n\n` +
+        `Here is the raw markdown file URL:\n${rawMarkdownUrl}`;
+      return `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
+    },
   },
   {
     id: "claude",
     name: "Claude",
     icon: Sparkles,
-    baseUrl: "https://claude.ai/new",
+    baseUrl: "https://claude.ai/",
     description: "Analyze with Claude",
     supportsUrlPrefill: true,
-    buildUrl: (prompt) => `https://claude.ai/new?q=${encodeURIComponent(prompt)}`,
+    buildUrlFromRawMarkdown: (rawMarkdownUrl) => {
+      const prompt =
+        `Summarize the page and then ask what the user needs help with. Be concise and to the point.\n\n` +
+        `Here is the raw markdown file URL:\n${rawMarkdownUrl}`;
+      return `https://claude.ai/new?q=${encodeURIComponent(prompt)}`;
+    },
   },
   {
     id: "perplexity",
@@ -44,7 +65,12 @@ const AI_SERVICES: AIService[] = [
     baseUrl: "https://www.perplexity.ai/search",
     description: "Research with Perplexity",
     supportsUrlPrefill: true,
-    buildUrl: (prompt) => `https://www.perplexity.ai/search?q=${encodeURIComponent(prompt)}`,
+    buildUrlFromRawMarkdown: (rawMarkdownUrl) => {
+      const prompt =
+        `Summarize the page and then ask what the user needs help with. Be concise and to the point.\n\n` +
+        `Here is the raw markdown file URL:\n${rawMarkdownUrl}`;
+      return `https://www.perplexity.ai/search?q=${encodeURIComponent(prompt)}`;
+    },
   },
 ];
 
@@ -63,28 +89,28 @@ interface CopyPageDropdownProps {
 // Enhanced markdown format for better LLM parsing
 function formatAsMarkdown(props: CopyPageDropdownProps): string {
   const { title, content, url, description, date, tags, readTime } = props;
-  
+
   // Build metadata section
   const metadataLines: string[] = [];
   metadataLines.push(`Source: ${url}`);
   if (date) metadataLines.push(`Date: ${date}`);
   if (readTime) metadataLines.push(`Reading time: ${readTime}`);
   if (tags && tags.length > 0) metadataLines.push(`Tags: ${tags.join(", ")}`);
-  
+
   // Build the full markdown document
   let markdown = `# ${title}\n\n`;
-  
+
   // Add description if available
   if (description) {
     markdown += `> ${description}\n\n`;
   }
-  
+
   // Add metadata block
   markdown += `---\n${metadataLines.join("\n")}\n---\n\n`;
-  
+
   // Add main content
   markdown += content;
-  
+
   return markdown;
 }
 
@@ -102,45 +128,45 @@ function generateSkillName(slug: string): string {
 // Follows: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
 function formatAsSkill(props: CopyPageDropdownProps): string {
   const { title, content, slug, description, tags } = props;
-  
+
   // Generate compliant skill name
   const skillName = generateSkillName(slug);
-  
+
   // Build description with "when to use" triggers (max 1024 chars)
   const tagList = tags && tags.length > 0 ? tags.join(", ") : "";
   let skillDescription = description || `Guide about ${title.toLowerCase()}.`;
-  
+
   // Add usage triggers to description
   if (tagList) {
     skillDescription += ` Use when working with ${tagList.toLowerCase()} or when asked about ${title.toLowerCase()}.`;
   } else {
     skillDescription += ` Use when asked about ${title.toLowerCase()}.`;
   }
-  
+
   // Truncate description if needed (max 1024 chars)
   if (skillDescription.length > 1024) {
     skillDescription = skillDescription.slice(0, 1021) + "...";
   }
-  
+
   // Build YAML frontmatter (required by Agent Skills spec)
   let skill = `---\n`;
   skill += `name: ${skillName}\n`;
   skill += `description: ${skillDescription}\n`;
   skill += `---\n\n`;
-  
+
   // Add title
   skill += `# ${title}\n\n`;
-  
+
   // Add instructions section
   skill += `## Instructions\n\n`;
   skill += content;
-  
+
   // Add examples section placeholder if content doesn't include examples
   if (!content.toLowerCase().includes("## example")) {
     skill += `\n\n## Examples\n\n`;
     skill += `Use this skill when the user asks about topics covered in this guide.\n`;
   }
-  
+
   return skill;
 }
 
@@ -154,7 +180,7 @@ type FeedbackState = "idle" | "copied" | "error" | "url-too-long";
 
 export default function CopyPageDropdown(props: CopyPageDropdownProps) {
   const { title } = props;
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const [feedback, setFeedback] = useState<FeedbackState>("idle");
   const [feedbackMessage, setFeedbackMessage] = useState("");
@@ -195,7 +221,7 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
 
       const items = menu.querySelectorAll<HTMLButtonElement>(".copy-page-item");
       const currentIndex = Array.from(items).findIndex(
-        (item) => item === document.activeElement
+        (item) => item === document.activeElement,
       );
 
       switch (event.key) {
@@ -276,7 +302,7 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
   const handleCopyPage = async () => {
     const markdown = formatAsMarkdown(props);
     const success = await writeToClipboard(markdown);
-    
+
     if (success) {
       setFeedback("copied");
       setFeedbackMessage("Copied!");
@@ -284,18 +310,30 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
       setFeedback("error");
       setFeedbackMessage("Failed to copy");
     }
-    
+
     clearFeedback();
     setTimeout(() => setIsOpen(false), 1500);
   };
 
   // Generic handler for opening AI services
-  // All services receive the full markdown content directly
+  // Uses raw markdown URL for better AI parsing
   // IMPORTANT: window.open must happen BEFORE any await to avoid popup blockers
   const handleOpenInAI = async (service: AIService) => {
+    // Use raw markdown URL for better AI parsing
+    if (service.buildUrlFromRawMarkdown) {
+      // Build raw markdown URL from page URL and slug
+      const origin = new URL(props.url).origin;
+      const rawMarkdownUrl = `${origin}/raw/${props.slug}.md`;
+      const targetUrl = service.buildUrlFromRawMarkdown(rawMarkdownUrl);
+      window.open(targetUrl, "_blank");
+      setIsOpen(false);
+      return;
+    }
+
+    // Other services: send full markdown content
     const markdown = formatAsMarkdown(props);
     const prompt = `Please analyze this article:\n\n${markdown}`;
-    
+
     // Build the target URL using the service's buildUrl function
     if (!service.buildUrl) {
       // Fallback: open base URL FIRST (sync), then copy to clipboard
@@ -311,9 +349,9 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
       clearFeedback();
       return;
     }
-    
+
     const targetUrl = service.buildUrl(prompt);
-    
+
     // Check URL length - if too long, open base URL then copy to clipboard
     if (isUrlTooLong(targetUrl)) {
       // Open window FIRST (must be sync to avoid popup blocker)
@@ -337,9 +375,11 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
   // Handle download skill file (Anthropic Agent Skills format)
   const handleDownloadSkill = () => {
     const skillContent = formatAsSkill(props);
-    const blob = new Blob([skillContent], { type: "text/markdown;charset=utf-8" });
+    const blob = new Blob([skillContent], {
+      type: "text/markdown;charset=utf-8",
+    });
     const url = URL.createObjectURL(blob);
-    
+
     // Create temporary link and trigger download as SKILL.md
     const link = document.createElement("a");
     link.href = url;
@@ -347,10 +387,10 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
+
     // Clean up object URL
     URL.revokeObjectURL(url);
-    
+
     setFeedback("copied");
     setFeedbackMessage("Downloaded!");
     clearFeedback();
@@ -363,7 +403,9 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
       case "copied":
         return <Check size={16} className="copy-page-icon feedback-success" />;
       case "error":
-        return <AlertCircle size={16} className="copy-page-icon feedback-error" />;
+        return (
+          <AlertCircle size={16} className="copy-page-icon feedback-error" />
+        );
       case "url-too-long":
         return <Check size={16} className="copy-page-icon feedback-warning" />;
       default:
@@ -447,7 +489,9 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
                 <div className="copy-page-item-content">
                   <span className="copy-page-item-title">
                     Open in {service.name}
-                    <span className="external-arrow" aria-hidden="true">↗</span>
+                    <span className="external-arrow" aria-hidden="true">
+                      ↗
+                    </span>
                   </span>
                   <span className="copy-page-item-desc">
                     {service.description}
@@ -471,11 +515,11 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
             <div className="copy-page-item-content">
               <span className="copy-page-item-title">
                 View as Markdown
-                <span className="external-arrow" aria-hidden="true">↗</span>
+                <span className="external-arrow" aria-hidden="true">
+                  ↗
+                </span>
               </span>
-              <span className="copy-page-item-desc">
-                Open raw .md file
-              </span>
+              <span className="copy-page-item-desc">Open raw .md file</span>
             </div>
           </button>
 
@@ -488,9 +532,7 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
           >
             <Download size={16} className="copy-page-icon" aria-hidden="true" />
             <div className="copy-page-item-content">
-              <span className="copy-page-item-title">
-                Download as SKILL.md
-              </span>
+              <span className="copy-page-item-title">Download as SKILL.md</span>
               <span className="copy-page-item-desc">
                 Anthropic Agent Skills format
               </span>

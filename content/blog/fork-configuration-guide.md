@@ -8,6 +8,8 @@ tags: ["configuration", "setup", "fork", "tutorial"]
 readTime: "4 min read"
 featured: true
 featuredOrder: 0
+authorName: "Markdown"
+authorImage: "/images/authors/markdown.png"
 image: "/images/forkconfig.png"
 excerpt: "Set up your forked site with npm run configure or follow the manual FORK_CONFIG.md guide."
 ---

@@ -2,14 +2,21 @@
 
 ## To Do
 
-- [ ] create a ui site config page
-
 ## Current Status
 
-v1.18.0 deployed. Added automated fork configuration with `npm run configure` command and comprehensive fork setup guide.
+v1.19.1 deployed. Author display (authorName/authorImage) and GitHub Stars on Stats page.
 
 ## Completed
 
+- [x] Author display for posts and pages with authorName and authorImage frontmatter fields
+- [x] Round avatar image displayed next to date and read time on post/page views
+- [x] Write page updated with new frontmatter field reference
+- [x] Documentation updated: setup-guide.md, docs.md, files.md, README.md, AGENTS.md
+- [x] PRD created: prds/howto-Frontmatter.md with reusable prompt for future updates
+- [x] GitHub Stars card on Stats page with live count from repository
+
+- [x] CopyPageDropdown AI services now use raw markdown URLs for better AI parsing
+- [x] ChatGPT, Claude, and Perplexity receive /raw/{slug}.md URLs instead of page URLs
 - [x] Automated fork configuration with npm run configure
 - [x] FORK_CONFIG.md comprehensive guide with two options (automated + manual)
 - [x] fork-config.json.example template with all configuration options

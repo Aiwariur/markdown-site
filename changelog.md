@@ -4,6 +4,74 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.19.1] - 2025-12-21
+
+### Added
+
+- GitHub Stars card on Stats page
+  - Displays live star count from `waynesutton/markdown-site` repository
+  - Fetches from GitHub public API (no token required)
+  - Uses Phosphor GithubLogo icon
+  - Updates on page load
+
+### Changed
+
+- Stats page now displays 6 cards in a single row (previously 5)
+- Updated CSS grid for 6-column layout on desktop
+- Responsive breakpoints adjusted for 6 cards (3x2 tablet, 2x3 mobile, 1x6 small mobile)
+
+### Technical
+
+- Added `useState` and `useEffect` to `src/pages/Stats.tsx` for GitHub API fetch
+- Added `GithubLogo` import from `@phosphor-icons/react`
+- Updated `.stats-cards-modern` grid to `repeat(6, 1fr)`
+- Updated responsive nth-child selectors for proper borders
+
+## [1.19.0] - 2025-12-21
+
+### Added
+
+- Author display for posts and pages
+  - New optional `authorName` and `authorImage` frontmatter fields
+  - Round avatar image displayed next to date and read time
+  - Works on individual post and page views (not on blog list)
+  - Example: `authorName: "Your Name"` and `authorImage: "/images/authors/photo.png"`
+- Author images directory at `public/images/authors/`
+  - Place author avatar images here
+  - Recommended: square images (they display as circles)
+- Write page updated with new frontmatter field reference
+  - Shows `authorName` and `authorImage` options for both posts and pages
+
+### Technical
+
+- Updated `convex/schema.ts` with authorName and authorImage fields
+- Updated `scripts/sync-posts.ts` interfaces and parsing
+- Updated `convex/posts.ts` and `convex/pages.ts` queries and mutations
+- Updated `src/pages/Post.tsx` to render author info
+- Updated `src/pages/Write.tsx` with new field definitions
+- CSS styles for `.post-author`, `.post-author-image`, `.post-author-name`
+
+### Documentation
+
+- Updated frontmatter tables in setup-guide.md, docs.md, files.md, README.md
+- Added example usage in about-this-blog.md
+
+## [1.18.1] - 2025-12-21
+
+### Changed
+
+- CopyPageDropdown AI services now use raw markdown URLs for better AI parsing
+  - ChatGPT, Claude, and Perplexity receive `/raw/{slug}.md` URLs instead of page URLs
+  - AI services can fetch and parse clean markdown content directly
+  - Includes metadata headers (type, date, reading time, tags) for structured parsing
+  - No HTML parsing required by AI services
+
+### Technical
+
+- Renamed `buildUrlFromPageUrl` to `buildUrlFromRawMarkdown` in AIService interface
+- Handler builds raw markdown URL from page origin and slug
+- Updated prompt text to reference "raw markdown file URL"
+
 ## [1.18.0] - 2025-12-20
 
 ### Added

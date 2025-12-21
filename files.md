@@ -42,7 +42,7 @@ A brief description of each file in the codebase.
 | `Home.tsx`  | Landing page with featured content and optional post list         |
 | `Blog.tsx`  | Dedicated blog page with post list (configurable via siteConfig.blogPage) |
 | `Post.tsx`  | Individual blog post view (update SITE_URL/SITE_NAME when forking) |
-| `Stats.tsx` | Real-time analytics dashboard with visitor stats                  |
+| `Stats.tsx` | Real-time analytics dashboard with visitor stats and GitHub stars |
 | `Write.tsx` | Three-column markdown writing page with Cursor docs-style UI, frontmatter reference with copy buttons, theme toggle, font switcher (serif/sans-serif), and localStorage persistence (not linked in nav) |
 
 ### Components (`src/components/`)
@@ -53,7 +53,7 @@ A brief description of each file in the codebase.
 | `ThemeToggle.tsx`         | Theme switcher (dark/light/tan/cloud)                      |
 | `PostList.tsx`            | Year-grouped blog post list                                |
 | `BlogPost.tsx`            | Markdown renderer with syntax highlighting                 |
-| `CopyPageDropdown.tsx`    | Share dropdown for LLMs (ChatGPT, Claude, Perplexity) with View as Markdown and Generate Skill options |
+| `CopyPageDropdown.tsx`    | Share dropdown for LLMs (ChatGPT, Claude, Perplexity) using raw markdown URLs for better AI parsing, with View as Markdown and Generate Skill options |
 | `SearchModal.tsx`         | Full text search modal with keyboard navigation            |
 | `FeaturedCards.tsx`       | Card grid for featured posts/pages with excerpts           |
 | `LogoMarquee.tsx`         | Scrolling logo gallery with clickable links                |
@@ -127,6 +127,8 @@ Markdown files with frontmatter for blog posts. Each file becomes a blog post.
 | `excerpt`       | Short excerpt for card view (optional)      |
 | `featured`      | Show in featured section (optional)         |
 | `featuredOrder` | Order in featured section (optional)        |
+| `authorName`    | Author display name (optional)              |
+| `authorImage`   | Round author avatar image URL (optional)    |
 
 ## Static Pages (`content/pages/`)
 
@@ -141,6 +143,8 @@ Markdown files for static pages like About, Projects, Contact, Changelog.
 | `excerpt`       | Short excerpt for card view (optional)    |
 | `featured`      | Show in featured section (optional)       |
 | `featuredOrder` | Order in featured section (optional)      |
+| `authorName`    | Author display name (optional)            |
+| `authorImage`   | Round author avatar image URL (optional)  |
 
 ## Scripts (`scripts/`)
 
@@ -149,6 +153,21 @@ Markdown files for static pages like About, Projects, Contact, Changelog.
 | `sync-posts.ts`      | Syncs markdown files to Convex at build time               |
 | `import-url.ts`      | Imports external URLs as markdown posts (Firecrawl)        |
 | `configure-fork.ts`  | Automated fork configuration (reads fork-config.json)      |
+
+### Frontmatter Flow
+
+Frontmatter is the YAML metadata at the top of each markdown file. Here is how it flows through the system:
+
+1. **Content directories** (`content/blog/*.md`, `content/pages/*.md`) contain markdown files with YAML frontmatter
+2. **`scripts/sync-posts.ts`** uses `gray-matter` to parse frontmatter and validate required fields
+3. **Convex mutations** (`api.posts.syncPostsPublic`, `api.pages.syncPagesPublic`) receive parsed data
+4. **`convex/schema.ts`** defines the database structure for storing frontmatter fields
+
+**To add a new frontmatter field**, update:
+
+- `scripts/sync-posts.ts`: Add to `PostFrontmatter` or `PageFrontmatter` interface and parsing logic
+- `convex/schema.ts`: Add field to the posts or pages table schema
+- `convex/posts.ts` or `convex/pages.ts`: Update sync mutation to handle new field
 
 ## Netlify (`netlify/edge-functions/`)
 

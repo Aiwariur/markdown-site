@@ -34,6 +34,8 @@ interface PostFrontmatter {
   excerpt?: string; // Short excerpt for card view
   featured?: boolean; // Show in featured section
   featuredOrder?: number; // Order in featured section (lower = first)
+  authorName?: string; // Author display name
+  authorImage?: string; // Author avatar image URL (round)
 }
 
 interface ParsedPost {
@@ -49,6 +51,8 @@ interface ParsedPost {
   excerpt?: string; // Short excerpt for card view
   featured?: boolean; // Show in featured section
   featuredOrder?: number; // Order in featured section (lower = first)
+  authorName?: string; // Author display name
+  authorImage?: string; // Author avatar image URL (round)
 }
 
 // Page frontmatter (for static pages like About, Projects, Contact)
@@ -61,6 +65,8 @@ interface PageFrontmatter {
   image?: string; // Thumbnail/OG image URL for featured cards
   featured?: boolean; // Show in featured section
   featuredOrder?: number; // Order in featured section (lower = first)
+  authorName?: string; // Author display name
+  authorImage?: string; // Author avatar image URL (round)
 }
 
 interface ParsedPage {
@@ -73,6 +79,8 @@ interface ParsedPage {
   image?: string; // Thumbnail/OG image URL for featured cards
   featured?: boolean; // Show in featured section
   featuredOrder?: number; // Order in featured section (lower = first)
+  authorName?: string; // Author display name
+  authorImage?: string; // Author avatar image URL (round)
 }
 
 // Calculate reading time based on word count
@@ -110,6 +118,8 @@ function parseMarkdownFile(filePath: string): ParsedPost | null {
       excerpt: frontmatter.excerpt, // Short excerpt for card view
       featured: frontmatter.featured, // Show in featured section
       featuredOrder: frontmatter.featuredOrder, // Order in featured section
+      authorName: frontmatter.authorName, // Author display name
+      authorImage: frontmatter.authorImage, // Author avatar image URL
     };
   } catch (error) {
     console.error(`Error parsing ${filePath}:`, error);
@@ -157,6 +167,8 @@ function parsePageFile(filePath: string): ParsedPage | null {
       image: frontmatter.image, // Thumbnail/OG image URL for featured cards
       featured: frontmatter.featured, // Show in featured section
       featuredOrder: frontmatter.featuredOrder, // Order in featured section
+      authorName: frontmatter.authorName, // Author display name
+      authorImage: frontmatter.authorImage, // Author avatar image URL
     };
   } catch (error) {
     console.error(`Error parsing page ${filePath}:`, error);

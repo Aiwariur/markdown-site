@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useQuery } from "convex/react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../convex/_generated/api";
@@ -8,9 +9,8 @@ import {
   FileText,
   BookOpen,
   Activity,
-  TrendingUp,
-  Code,
 } from "lucide-react";
+import { GithubLogo } from "@phosphor-icons/react";
 
 // Site launched Dec 14, 2025 at 1:00 PM (v1.0.0), stats added same day (v1.2.0)
 const SITE_LAUNCH_DATE = "Dec 14, 2025 at 1:00 PM";
@@ -34,6 +34,17 @@ function formatTrackingDate(timestamp: number | null): string {
 export default function Stats() {
   const navigate = useNavigate();
   const stats = useQuery(api.stats.getStats);
+
+  // GitHub stars state
+  const [githubStars, setGithubStars] = useState<number | null>(null);
+
+  // Fetch GitHub stars on mount
+  useEffect(() => {
+    fetch("https://api.github.com/repos/waynesutton/markdown-site")
+      .then((res) => res.json())
+      .then((data) => setGithubStars(data.stargazers_count))
+      .catch(() => setGithubStars(null));
+  }, []);
 
   // Don't render until stats load
   if (stats === undefined) {
@@ -77,6 +88,13 @@ export default function Stats() {
       title: "Pages",
       value: stats.publishedPages,
       description: "Static pages",
+    },
+    {
+      number: "06",
+      icon: GithubLogo,
+      title: "GitHub Stars",
+      value: githubStars ?? "...",
+      description: "waynesutton/markdown-site",
     },
   ];
 

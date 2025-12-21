@@ -7,6 +7,58 @@ Date: 2025-12-21
 
 All notable changes to this project.
 
+## v1.19.1
+
+Released December 21, 2025
+
+**GitHub Stars on Stats page**
+
+- New GitHub Stars card displays live star count from repository
+- Fetches from GitHub public API (no token required)
+- Uses Phosphor GithubLogo icon
+- Stats page now shows 6 cards in a single row
+- Responsive layout: 3x2 on tablet, 2x3 on mobile, stacked on small screens
+
+Updated files: `src/pages/Stats.tsx`, `src/styles/global.css`
+
+## v1.19.0
+
+Released December 21, 2025
+
+**Author display for posts and pages**
+
+- New optional `authorName` and `authorImage` frontmatter fields
+- Round avatar image displayed next to date and read time
+- Works on individual post and page views (not on blog list)
+- Write page updated with new frontmatter field reference
+
+Example frontmatter:
+
+```yaml
+authorName: "Your Name"
+authorImage: "/images/authors/photo.png"
+```
+
+Place author avatar images in `public/images/authors/`. Recommended: square images (they display as circles).
+
+Updated files: `convex/schema.ts`, `scripts/sync-posts.ts`, `convex/posts.ts`, `convex/pages.ts`, `src/pages/Post.tsx`, `src/pages/Write.tsx`, `src/styles/global.css`
+
+Documentation updated: setup-guide.md, docs.md, files.md, README.md, AGENTS.md
+
+New PRD: `prds/howto-Frontmatter.md` with reusable prompt for future frontmatter updates.
+
+## v1.18.1
+
+Released December 21, 2025
+
+**CopyPageDropdown raw markdown URLs**
+
+- AI services (ChatGPT, Claude, Perplexity) now receive raw markdown file URLs instead of page URLs
+- URL format: `/raw/{slug}.md` (e.g., `/raw/setup-guide.md`)
+- AI services can fetch and parse clean markdown content directly
+- Includes metadata headers for structured parsing
+- No HTML parsing required by AI services
+
 ## v1.18.0
 
 Released December 20, 2025
@@ -25,19 +77,19 @@ Two options for fork setup:
 
 The configure script updates all 11 configuration files:
 
-| File                                | What it updates                          |
-| ----------------------------------- | ---------------------------------------- |
-| `src/config/siteConfig.ts`          | Site name, bio, GitHub, features         |
-| `src/pages/Home.tsx`                | Intro paragraph, footer links            |
-| `src/pages/Post.tsx`                | SITE_URL, SITE_NAME constants            |
-| `convex/http.ts`                    | SITE_URL, SITE_NAME constants            |
-| `convex/rss.ts`                     | SITE_URL, SITE_TITLE, SITE_DESCRIPTION   |
-| `index.html`                        | Meta tags, JSON-LD, page title           |
-| `public/llms.txt`                   | Site info, GitHub link                   |
-| `public/robots.txt`                 | Sitemap URL                              |
-| `public/openapi.yaml`               | Server URL, site name                    |
-| `public/.well-known/ai-plugin.json` | Plugin metadata                          |
-| `src/context/ThemeContext.tsx`      | Default theme                            |
+| File                                | What it updates                        |
+| ----------------------------------- | -------------------------------------- |
+| `src/config/siteConfig.ts`          | Site name, bio, GitHub, features       |
+| `src/pages/Home.tsx`                | Intro paragraph, footer links          |
+| `src/pages/Post.tsx`                | SITE_URL, SITE_NAME constants          |
+| `convex/http.ts`                    | SITE_URL, SITE_NAME constants          |
+| `convex/rss.ts`                     | SITE_URL, SITE_TITLE, SITE_DESCRIPTION |
+| `index.html`                        | Meta tags, JSON-LD, page title         |
+| `public/llms.txt`                   | Site info, GitHub link                 |
+| `public/robots.txt`                 | Sitemap URL                            |
+| `public/openapi.yaml`               | Server URL, site name                  |
+| `public/.well-known/ai-plugin.json` | Plugin metadata                        |
+| `src/context/ThemeContext.tsx`      | Default theme                          |
 
 New files: `FORK_CONFIG.md`, `fork-config.json.example`, `scripts/configure-fork.ts`
 

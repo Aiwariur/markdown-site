@@ -72,7 +72,7 @@ export const siteConfig: SiteConfig = {
   // Optional logo/header image (place in public/images/, set to null to hide)
   logo: "/images/logo.svg",
   intro: null, // Set in Home.tsx to allow JSX with links
-  bio: `Write markdown, sync from the terminal. Your content is instantly available to browsers, LLMs, and AI agents.`,
+  bio: `Your content is instantly available to browsers, LLMs, and AI agents.`,
 
   // Featured section configuration
   // viewMode: 'list' shows bullet list, 'cards' shows card grid with excerpts

@@ -9,6 +9,8 @@ readTime: "8 min read"
 featured: true
 featuredOrder: 3
 image: "/images/setupguide.png"
+authorName: "Markdown"
+authorImage: "/images/authors/markdown.png"
 excerpt: "Complete guide to fork, set up, and deploy your own markdown framework in under 10 minutes."
 ---
 
@@ -38,6 +40,7 @@ This guide walks you through forking [this markdown framework](https://github.co
   - [Step 8: Set Up Production Convex](#step-8-set-up-production-convex)
   - [Writing Blog Posts](#writing-blog-posts)
     - [Frontmatter Fields](#frontmatter-fields)
+    - [How Frontmatter Works](#how-frontmatter-works)
     - [Adding Images](#adding-images)
     - [Sync After Adding Posts](#sync-after-adding-posts)
     - [Environment Files](#environment-files)
@@ -144,6 +147,8 @@ export default defineSchema({
     excerpt: v.optional(v.string()),
     featured: v.optional(v.boolean()),
     featuredOrder: v.optional(v.number()),
+    authorName: v.optional(v.string()),
+    authorImage: v.optional(v.string()),
     lastSyncedAt: v.number(),
   })
     .index("by_slug", ["slug"])
@@ -160,6 +165,8 @@ export default defineSchema({
     image: v.optional(v.string()),
     featured: v.optional(v.boolean()),
     featuredOrder: v.optional(v.number()),
+    authorName: v.optional(v.string()),
+    authorImage: v.optional(v.string()),
     lastSyncedAt: v.number(),
   })
     .index("by_slug", ["slug"])
@@ -324,6 +331,33 @@ Your markdown content here...
 | `excerpt`       | No       | Short excerpt for card view               |
 | `featured`      | No       | Set `true` to show in featured section    |
 | `featuredOrder` | No       | Order in featured section (lower = first) |
+| `authorName`    | No       | Author display name shown next to date    |
+| `authorImage`   | No       | Round author avatar image URL             |
+
+### How Frontmatter Works
+
+Frontmatter is the YAML metadata at the top of each markdown file between `---` markers. Here is how it flows through the system:
+
+**Content directories:**
+
+- `content/blog/*.md` contains blog posts with frontmatter
+- `content/pages/*.md` contains static pages with frontmatter
+
+**Processing flow:**
+
+1. Markdown files in `content/blog/` and `content/pages/` contain YAML frontmatter
+2. `scripts/sync-posts.ts` uses `gray-matter` to parse frontmatter and validate required fields
+3. Parsed data is sent to Convex mutations (`api.posts.syncPostsPublic`, `api.pages.syncPagesPublic`)
+4. `convex/schema.ts` defines the database structure for storing the data
+
+**Adding a new frontmatter field:**
+
+To add a custom frontmatter field, update these files:
+
+1. The interface in `scripts/sync-posts.ts` (`PostFrontmatter` or `PageFrontmatter`)
+2. The parsing logic in `parseMarkdownFile()` or `parsePageFile()` functions
+3. The schema in `convex/schema.ts`
+4. The sync mutation in `convex/posts.ts` or `convex/pages.ts`
 
 ### Adding Images
 
@@ -845,12 +879,14 @@ order: 1
 Your page content here...
 ```
 
-| Field       | Required | Description                   |
-| ----------- | -------- | ----------------------------- |
-| `title`     | Yes      | Page title (shown in nav)     |
-| `slug`      | Yes      | URL path (e.g., `/about`)     |
-| `published` | Yes      | Set `true` to show            |
-| `order`     | No       | Display order (lower = first) |
+| Field         | Required | Description                            |
+| ------------- | -------- | -------------------------------------- |
+| `title`       | Yes      | Page title (shown in nav)              |
+| `slug`        | Yes      | URL path (e.g., `/about`)              |
+| `published`   | Yes      | Set `true` to show                     |
+| `order`       | No       | Display order (lower = first)          |
+| `authorName`  | No       | Author display name shown next to date |
+| `authorImage` | No       | Round author avatar image URL          |
 
 3. Run `npm run sync` to sync pages
 

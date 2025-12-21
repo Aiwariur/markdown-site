@@ -8,6 +8,8 @@ tags: ["tutorial", "markdown", "cursor", "publishing"]
 readTime: "3 min read"
 featured: true
 featuredOrder: 3
+authorName: "Markdown"
+authorImage: "/images/authors/markdown.png"
 image: "/images/matthew-smith-Rfflri94rs8-unsplash.jpg"
 excerpt: "Quick guide to writing and publishing markdown posts with npm run sync."
 ---

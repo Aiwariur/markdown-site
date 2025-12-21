@@ -9,6 +9,8 @@ readTime: "8 min read"
 featured: true
 featuredOrder: 2
 image: "/images/v17.png"
+authorName: "Markdown"
+authorImage: "/images/authors/markdown.png"
 excerpt: "12 versions of new features: automated fork config, GitHub graph, write page, mobile menu, stats aggregates, and more."
 ---
 

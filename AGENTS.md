@@ -227,6 +227,8 @@ markdown-blog/
 | featuredOrder | No | Display order (lower first) |
 | excerpt | No | Short text for card view |
 | image | No | OG image path |
+| authorName | No | Author display name |
+| authorImage | No | Round author avatar URL |
 
 ### Static pages (content/pages/)
 
@@ -238,6 +240,8 @@ markdown-blog/
 | order | No | Nav order (lower first) |
 | featured | No | true for featured section |
 | featuredOrder | No | Display order (lower first) |
+| authorName | No | Author display name |
+| authorImage | No | Round author avatar URL |
 
 ## Database schema
 

@@ -93,7 +93,7 @@ See `FORK_CONFIG.md` for detailed configuration examples and the full JSON schem
 - `/rss-full.xml` - Full content RSS for LLM ingestion
 - `/.well-known/ai-plugin.json` - AI plugin manifest
 - `/openapi.yaml` - OpenAPI 3.0 specification
-- Copy Page dropdown for sharing to ChatGPT, Claude, Perplexity
+- Copy Page dropdown for sharing to ChatGPT, Claude, Perplexity (uses raw markdown URLs for better AI parsing)
 
 ### Content Import
 
@@ -234,10 +234,12 @@ Then run `npm run sync` (dev) or `npm run sync:prod` (production). No redeploy n
 
 | Field           | Description                               |
 | --------------- | ----------------------------------------- |
-| `featured`      | Set `true` to show in featured section    |
-| `featuredOrder` | Order in featured section (lower = first) |
-| `excerpt`       | Short description for card view           |
-| `image`         | Thumbnail for card view (displays square) |
+| `featured`      | Set `true` to show in featured section      |
+| `featuredOrder` | Order in featured section (lower = first)   |
+| `excerpt`       | Short description for card view             |
+| `image`         | Thumbnail for card view (displays square)   |
+| `authorName`    | Author display name shown next to date      |
+| `authorImage`   | Round author avatar image URL               |
 
 ### Display Modes
 

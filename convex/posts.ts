@@ -19,6 +19,8 @@ export const getAllPosts = query({
       excerpt: v.optional(v.string()),
       featured: v.optional(v.boolean()),
       featuredOrder: v.optional(v.number()),
+      authorName: v.optional(v.string()),
+      authorImage: v.optional(v.string()),
     }),
   ),
   handler: async (ctx) => {
@@ -47,6 +49,8 @@ export const getAllPosts = query({
       excerpt: post.excerpt,
       featured: post.featured,
       featuredOrder: post.featuredOrder,
+      authorName: post.authorName,
+      authorImage: post.authorImage,
     }));
   },
 });
@@ -113,6 +117,8 @@ export const getPostBySlug = query({
       excerpt: v.optional(v.string()),
       featured: v.optional(v.boolean()),
       featuredOrder: v.optional(v.number()),
+      authorName: v.optional(v.string()),
+      authorImage: v.optional(v.string()),
     }),
     v.null(),
   ),
@@ -141,6 +147,8 @@ export const getPostBySlug = query({
       excerpt: post.excerpt,
       featured: post.featured,
       featuredOrder: post.featuredOrder,
+      authorName: post.authorName,
+      authorImage: post.authorImage,
     };
   },
 });
@@ -162,6 +170,8 @@ export const syncPosts = internalMutation({
         excerpt: v.optional(v.string()),
         featured: v.optional(v.boolean()),
         featuredOrder: v.optional(v.number()),
+        authorName: v.optional(v.string()),
+        authorImage: v.optional(v.string()),
       }),
     ),
   },
@@ -200,6 +210,8 @@ export const syncPosts = internalMutation({
           excerpt: post.excerpt,
           featured: post.featured,
           featuredOrder: post.featuredOrder,
+          authorName: post.authorName,
+          authorImage: post.authorImage,
           lastSyncedAt: now,
         });
         updated++;
@@ -242,6 +254,8 @@ export const syncPostsPublic = mutation({
         excerpt: v.optional(v.string()),
         featured: v.optional(v.boolean()),
         featuredOrder: v.optional(v.number()),
+        authorName: v.optional(v.string()),
+        authorImage: v.optional(v.string()),
       }),
     ),
   },
@@ -280,6 +294,8 @@ export const syncPostsPublic = mutation({
           excerpt: post.excerpt,
           featured: post.featured,
           featuredOrder: post.featuredOrder,
+          authorName: post.authorName,
+          authorImage: post.authorImage,
           lastSyncedAt: now,
         });
         updated++;

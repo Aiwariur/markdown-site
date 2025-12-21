@@ -91,10 +91,12 @@ Content here...
 | `published`     | Yes      | `true` to show                       |
 | `tags`          | Yes      | Array of strings                     |
 | `readTime`      | No       | Display time estimate                |
-| `image`         | No       | OG image and featured card thumbnail |
-| `excerpt`       | No       | Short text for card view             |
-| `featured`      | No       | `true` to show in featured section   |
-| `featuredOrder` | No       | Order in featured (lower = first)    |
+| `image`         | No       | OG image and featured card thumbnail   |
+| `excerpt`       | No       | Short text for card view               |
+| `featured`      | No       | `true` to show in featured section     |
+| `featuredOrder` | No       | Order in featured (lower = first)      |
+| `authorName`    | No       | Author display name shown next to date |
+| `authorImage`   | No       | Round author avatar image URL          |
 
 ### Static pages
 
@@ -116,11 +118,38 @@ Content here...
 | `title`         | Yes      | Nav link text                      |
 | `slug`          | Yes      | URL path                           |
 | `published`     | Yes      | `true` to show                     |
-| `order`         | No       | Nav order (lower = first)          |
-| `excerpt`       | No       | Short text for card view           |
-| `image`         | No       | Thumbnail for featured card view   |
-| `featured`      | No       | `true` to show in featured section |
-| `featuredOrder` | No       | Order in featured (lower = first)  |
+| `order`         | No       | Nav order (lower = first)              |
+| `excerpt`       | No       | Short text for card view               |
+| `image`         | No       | Thumbnail for featured card view       |
+| `featured`      | No       | `true` to show in featured section     |
+| `featuredOrder` | No       | Order in featured (lower = first)      |
+| `authorName`    | No       | Author display name shown next to date |
+| `authorImage`   | No       | Round author avatar image URL          |
+
+### How frontmatter works
+
+Frontmatter is the YAML metadata at the top of each markdown file between `---` markers. Here is how it flows through the system:
+
+**Content directories:**
+
+- `content/blog/*.md` contains blog posts with frontmatter
+- `content/pages/*.md` contains static pages with frontmatter
+
+**Processing flow:**
+
+1. Markdown files in `content/blog/` and `content/pages/` contain YAML frontmatter
+2. `scripts/sync-posts.ts` uses `gray-matter` to parse frontmatter and validate required fields
+3. Parsed data is sent to Convex mutations (`api.posts.syncPostsPublic`, `api.pages.syncPagesPublic`)
+4. `convex/schema.ts` defines the database structure for storing the data
+
+**Adding a new frontmatter field:**
+
+To add a custom frontmatter field, update these files:
+
+1. The interface in `scripts/sync-posts.ts` (`PostFrontmatter` or `PageFrontmatter`)
+2. The parsing logic in `parseMarkdownFile()` or `parsePageFile()` functions
+3. The schema in `convex/schema.ts`
+4. The sync mutation in `convex/posts.ts` or `convex/pages.ts`
 
 ### Syncing content
 
@@ -515,15 +544,15 @@ Each post and page includes a share dropdown with options:
 | Option           | Description                                      |
 | ---------------- | ------------------------------------------------ |
 | Copy page        | Copies formatted markdown to clipboard           |
-| Open in ChatGPT  | Opens ChatGPT with article content               |
-| Open in Claude   | Opens Claude with article content                |
-| Open in Perplexity | Opens Perplexity for research with content     |
+| Open in ChatGPT  | Opens ChatGPT with raw markdown URL              |
+| Open in Claude   | Opens Claude with raw markdown URL               |
+| Open in Perplexity | Opens Perplexity with raw markdown URL         |
 | View as Markdown | Opens raw `.md` file in new tab                  |
 | Generate Skill   | Downloads `{slug}-skill.md` for AI agent training |
 
-**Generate Skill:** Formats the content as an AI agent skill file with metadata, when to use, and instructions sections.
+**Raw markdown URLs:** AI services receive the URL to the raw markdown file (e.g., `/raw/setup-guide.md`) instead of the page URL. This provides direct access to clean markdown content with metadata headers for better AI parsing.
 
-**Long content:** If content exceeds URL limits, it copies to clipboard and opens the AI service in a new tab. Paste to continue.
+**Generate Skill:** Formats the content as an AI agent skill file with metadata, when to use, and instructions sections.
 
 ## Real-time stats
 
@@ -648,6 +677,8 @@ export default defineSchema({
     excerpt: v.optional(v.string()), // For card view
     featured: v.optional(v.boolean()), // Show in featured section
     featuredOrder: v.optional(v.number()), // Order in featured (lower = first)
+    authorName: v.optional(v.string()), // Author display name
+    authorImage: v.optional(v.string()), // Author avatar image URL
     lastSyncedAt: v.number(),
   })
     .index("by_slug", ["slug"])
@@ -664,6 +695,8 @@ export default defineSchema({
     image: v.optional(v.string()), // Thumbnail for featured cards
     featured: v.optional(v.boolean()), // Show in featured section
     featuredOrder: v.optional(v.number()), // Order in featured (lower = first)
+    authorName: v.optional(v.string()), // Author display name
+    authorImage: v.optional(v.string()), // Author avatar image URL
     lastSyncedAt: v.number(),
   })
     .index("by_slug", ["slug"])
