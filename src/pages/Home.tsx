@@ -97,8 +97,16 @@ export default function Home() {
           <strong>
             An open-source publishing framework for AI agents and developers.
           </strong>{" "}
+          Write markdown, sync from the terminal. <br />
           <br />
-          Write markdown, sync from the terminal.
+          <a
+            href="https://github.com/waynesutton/markdown-site"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Fork it
+          </a>
+          , customize it, ship it.
         </p>
 
         <p className="home-bio">{siteConfig.bio}</p>

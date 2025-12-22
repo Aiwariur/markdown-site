@@ -402,6 +402,20 @@ body {
   line-height: 1.7;
 }
 
+/* Links inside home intro and bio sections */
+.home-intro a,
+.home-bio a {
+  color: var(--link-color);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.home-intro a:hover,
+.home-bio a:hover {
+  color: var(--link-hover);
+}
+
 .home-featured {
   margin: 24px 0;
 }

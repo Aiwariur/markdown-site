@@ -1,6 +1,6 @@
 ---
 title: "Writing Markdown with Code Examples"
-description: "A sample post showing how to write markdown with syntax-highlighted code blocks, tables, and more."
+description: "A complete reference for writing markdown with links, code blocks, images, tables, and formatting. Copy examples directly into your posts."
 date: "2025-12-14"
 slug: "markdown-with-code-examples"
 published: true
@@ -152,9 +152,67 @@ Reference files with inline code: `convex/schema.ts`, `src/pages/Home.tsx`.
 
 ## Links
 
-External links open in new tabs: [Convex Docs](https://docs.convex.dev)
+Markdown supports several link formats.
 
-Internal links: [Setup Guide](/setup-guide)
+### Basic links
+
+```markdown
+[Link text](https://example.com)
+```
+
+Result: [Convex Docs](https://docs.convex.dev)
+
+### Internal links
+
+Link to other posts and pages using the slug:
+
+```markdown
+[Setup Guide](/setup-guide)
+[About](/about)
+[Changelog](/changelog)
+```
+
+Result: [Setup Guide](/setup-guide)
+
+### Links with titles
+
+Add a title that appears on hover:
+
+```markdown
+[Convex](https://convex.dev "Real-time backend")
+```
+
+Result: [Convex](https://convex.dev "Real-time backend")
+
+### Reference-style links
+
+For cleaner markdown when using the same link multiple times:
+
+```markdown
+Read the [Convex docs][convex] or check the [API reference][convex].
+
+[convex]: https://docs.convex.dev
+```
+
+### Autolinks
+
+URLs and email addresses in angle brackets become clickable:
+
+```markdown
+<https://markdown.fast>
+<hello@example.com>
+```
+
+### Linking to headings
+
+Link to sections within the same page using the heading ID:
+
+```markdown
+[Jump to Code Blocks](#code-blocks)
+[See the Tips section](#tips)
+```
+
+Result: [Jump to Code Blocks](#code-blocks)
 
 ## Emphasis
 
@@ -166,11 +224,114 @@ Use **bold** for strong emphasis and _italics_ for lighter emphasis.
 
 ## Images
 
-Place images in `public/` and reference them:
+Place images in `public/images/` and reference them with absolute paths.
+
+### Basic image
 
 ```markdown
-![Alt text](/image.png)
+![Screenshot of the setup guide](/images/setupguide.png)
 ```
+
+### Image with title
+
+```markdown
+![Dashboard view](/images/v17.png "Version 17 dashboard")
+```
+
+### Featured images in frontmatter
+
+Add an image to your post frontmatter for card views and social sharing:
+
+```yaml
+---
+image: "/images/my-post-image.png"
+---
+```
+
+The image appears as a thumbnail in card view and as the Open Graph image when shared.
+
+### Image sizing
+
+For best results:
+
+- Blog images: 1200x630px (standard OG size)
+- Author avatars: 200x200px (displays as circle)
+- Card thumbnails: Square images work best (auto-cropped to center)
+
+## Nested lists
+
+Indent with two spaces for nested items:
+
+```markdown
+- Parent item
+  - Child item
+  - Another child
+    - Grandchild item
+- Back to parent level
+```
+
+Result:
+
+- Parent item
+  - Child item
+  - Another child
+    - Grandchild item
+- Back to parent level
+
+## Mixed list types
+
+Combine ordered and unordered lists:
+
+```markdown
+1. First step
+   - Sub-point A
+   - Sub-point B
+2. Second step
+   - Another sub-point
+```
+
+Result:
+
+1. First step
+   - Sub-point A
+   - Sub-point B
+2. Second step
+   - Another sub-point
+
+## Escaping characters
+
+Use backslash to display literal markdown characters:
+
+```markdown
+\*not italic\*
+\`not code\`
+\[not a link\]
+```
+
+Result: \*not italic\* and \`not code\`
+
+## Line breaks
+
+End a line with two spaces for a soft break.  
+Or use a blank line for a new paragraph.
+
+```markdown
+First line with two trailing spaces  
+Second line (soft break)
+
+New paragraph (blank line above)
+```
+
+## Combining emphasis
+
+Stack formatting for combined effects:
+
+```markdown
+**_bold and italic_**
+`code with **no bold** inside`
+```
+
+Result: **_bold and italic_**
 
 ## File Structure Reference
 
@@ -188,3 +349,66 @@ content/blog/
 2. Set `published: false` for drafts
 3. Run `npm run sync` after adding posts (or `npm run sync:prod` for production)
 4. Use descriptive titles for SEO
+
+## Strikethrough
+
+Use double tildes for strikethrough text:
+
+```markdown
+~~deleted text~~
+```
+
+Result: ~~deleted text~~
+
+## Code in headings
+
+You can include inline code in headings:
+
+```markdown
+## Using the `useQuery` hook
+```
+
+## Tables with alignment
+
+Control column alignment with colons:
+
+```markdown
+| Left | Center | Right |
+| :--- | :----: | ----: |
+| L    |   C    |     R |
+```
+
+| Left | Center | Right |
+| :--- | :----: | ----: |
+| L    |   C    |     R |
+
+## Multi-line code in lists
+
+Indent code blocks with 4 spaces inside list items:
+
+````markdown
+1. First step:
+
+   ```bash
+   npm install
+   ```
+
+2. Second step:
+
+   ```bash
+   npm run dev
+   ```
+````
+
+## Quick reference
+
+| Syntax              | Result                |
+| ------------------- | --------------------- |
+| `**bold**`          | **bold**              |
+| `_italic_`          | _italic_              |
+| `~~strike~~`        | ~~strike~~            |
+| `` `code` ``        | `code`                |
+| `[link](url)`       | [link](https://x.com) |
+| `![alt](image.png)` | image                 |
+| `> quote`           | blockquote            |
+| `---`               | horizontal rule       |

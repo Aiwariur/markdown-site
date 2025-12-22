@@ -113,7 +113,7 @@ Run the Convex development command:
 npx convex dev
 ```
 
-This will:
+This will
 
 1. Prompt you to log in to Convex (opens browser)
 2. Ask you to create a new project or select an existing one
