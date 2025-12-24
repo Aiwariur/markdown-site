@@ -1,84 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import {
-  Copy,
-  MessageSquare,
-  Sparkles,
-  Search,
-  Check,
-  AlertCircle,
-  FileText,
-  Download,
-} from "lucide-react";
+import { Copy, Check, AlertCircle, FileText, Download } from "lucide-react";
 
 // Maximum URL length for query parameters (conservative limit)
 const MAX_URL_LENGTH = 6000;
-
-// AI service configurations
-interface AIService {
-  id: string;
-  name: string;
-  icon: typeof Copy;
-  baseUrl: string;
-  description: string;
-  supportsUrlPrefill: boolean;
-  // Custom URL builder for services with special formats
-  buildUrl?: (prompt: string) => string;
-  // URL-based builder - takes raw markdown file URL for better AI parsing
-  buildUrlFromRawMarkdown?: (rawMarkdownUrl: string) => string;
-}
-
-// AI services configuration - uses raw markdown URLs for better AI parsing
-const AI_SERVICES: AIService[] = [
-  {
-    id: "chatgpt",
-    name: "ChatGPT",
-    icon: MessageSquare,
-    baseUrl: "https://chatgpt.com/",
-    description: "Analyze with ChatGPT",
-    supportsUrlPrefill: true,
-    // Uses raw markdown file URL for direct content access
-    buildUrlFromRawMarkdown: (rawMarkdownUrl) => {
-      const prompt =
-        `Attempt to load and read the raw markdown at the URL below.\n` +
-        `If successful provide a concise summary and then ask what the user needs help with.\n` +
-        `If not accessible do not guess the content. State that the page could not be loaded and ask the user how you can help.\n\n` +
-        `${rawMarkdownUrl}`;
-      return `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
-    },
-  },
-  {
-    id: "claude",
-    name: "Claude",
-    icon: Sparkles,
-    baseUrl: "https://claude.ai/",
-    description: "Analyze with Claude",
-    supportsUrlPrefill: true,
-    buildUrlFromRawMarkdown: (rawMarkdownUrl) => {
-      const prompt =
-        `Attempt to load and read the raw markdown at the URL below.\n` +
-        `If successful provide a concise summary and then ask what the user needs help with.\n` +
-        `If not accessible do not guess the content. State that the page could not be loaded and ask the user how you can help.\n\n` +
-        `${rawMarkdownUrl}`;
-      return `https://claude.ai/new?q=${encodeURIComponent(prompt)}`;
-    },
-  },
-  {
-    id: "perplexity",
-    name: "Perplexity",
-    icon: Search,
-    baseUrl: "https://www.perplexity.ai/search",
-    description: "Research with Perplexity",
-    supportsUrlPrefill: true,
-    buildUrlFromRawMarkdown: (rawMarkdownUrl) => {
-      const prompt =
-        `Attempt to load and read the raw markdown at the URL below.\n` +
-        `If successful provide a concise summary and then ask what the user needs help with.\n` +
-        `If not accessible do not guess the content. State that the page could not be loaded and ask the user how you can help.\n\n` +
-        `${rawMarkdownUrl}`;
-      return `https://www.perplexity.ai/search?q=${encodeURIComponent(prompt)}`;
-    },
-  },
-];
 
 // Extended props interface with optional metadata
 interface CopyPageDropdownProps {
@@ -321,67 +245,6 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
     setTimeout(() => setIsOpen(false), 1500);
   };
 
-  // Generic handler for opening AI services
-  // Uses /api/raw/:slug endpoint for AI tools (ChatGPT, Claude, Perplexity)
-  // IMPORTANT: window.open must happen BEFORE any await to avoid popup blockers
-  const handleOpenInAI = async (service: AIService) => {
-    // Use /api/raw/:slug endpoint for AI tools - more reliable than static /raw/*.md files
-    if (service.buildUrlFromRawMarkdown) {
-      // Build absolute API URL using current origin
-      // Uses Netlify Function endpoint that returns text/plain with minimal headers
-      const apiRawUrl = new URL(
-        `/api/raw/${props.slug}`,
-        window.location.origin,
-      ).toString();
-      const targetUrl = service.buildUrlFromRawMarkdown(apiRawUrl);
-
-      window.open(targetUrl, "_blank");
-      setIsOpen(false);
-      return;
-    }
-
-    // Other services: send full markdown content
-    const markdown = formatAsMarkdown(props);
-    const prompt = `Please analyze this article:\n\n${markdown}`;
-
-    // Build the target URL using the service's buildUrl function
-    if (!service.buildUrl) {
-      // Fallback: open base URL FIRST (sync), then copy to clipboard
-      window.open(service.baseUrl, "_blank");
-      const success = await writeToClipboard(markdown);
-      if (success) {
-        setFeedback("url-too-long");
-        setFeedbackMessage("Copied! Paste in " + service.name);
-      } else {
-        setFeedback("error");
-        setFeedbackMessage("Failed to copy content");
-      }
-      clearFeedback();
-      return;
-    }
-
-    const targetUrl = service.buildUrl(prompt);
-
-    // Check URL length - if too long, open base URL then copy to clipboard
-    if (isUrlTooLong(targetUrl)) {
-      // Open window FIRST (must be sync to avoid popup blocker)
-      window.open(service.baseUrl, "_blank");
-      const success = await writeToClipboard(markdown);
-      if (success) {
-        setFeedback("url-too-long");
-        setFeedbackMessage("Copied! Paste in " + service.name);
-      } else {
-        setFeedback("error");
-        setFeedbackMessage("Failed to copy content");
-      }
-      clearFeedback();
-    } else {
-      // URL is within limits, open directly with prefilled content
-      window.open(targetUrl, "_blank");
-      setIsOpen(false);
-    }
-  };
-
   // Handle download skill file (Anthropic Agent Skills format)
   const handleDownloadSkill = () => {
     const skillContent = formatAsSkill(props);
@@ -422,6 +285,10 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
         return <Copy size={16} className="copy-page-icon" />;
     }
   };
+
+  // Suppress unused variable warnings for functions that may be used later
+  void isUrlTooLong;
+  void MAX_URL_LENGTH;
 
   return (
     <div className="copy-page-dropdown" ref={dropdownRef}>
@@ -484,33 +351,6 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
             </div>
           </button>
 
-          {/* AI service options */}
-          {AI_SERVICES.map((service) => {
-            const Icon = service.icon;
-            return (
-              <button
-                key={service.id}
-                className="copy-page-item"
-                onClick={() => handleOpenInAI(service)}
-                role="menuitem"
-                tabIndex={0}
-              >
-                <Icon size={16} className="copy-page-icon" aria-hidden="true" />
-                <div className="copy-page-item-content">
-                  <span className="copy-page-item-title">
-                    Open in {service.name}
-                    <span className="external-arrow" aria-hidden="true">
-                      ↗
-                    </span>
-                  </span>
-                  <span className="copy-page-item-desc">
-                    {service.description}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
-
           {/* View as Markdown option */}
           <button
             className="copy-page-item"
@@ -553,6 +393,14 @@ export default function CopyPageDropdown(props: CopyPageDropdownProps) {
               </span>
             </div>
           </button>
+
+          {/* AI service options temporarily disabled
+           * ChatGPT, Claude, and Perplexity links were removed because
+           * Netlify edge functions block AI crawler fetch requests to /raw/*.md
+           * despite multiple configuration attempts. See blog post:
+           * /netlify-edge-excludedpath-ai-crawlers for details.
+           * Users can still copy markdown and paste into AI tools.
+           */}
         </div>
       )}
     </div>
