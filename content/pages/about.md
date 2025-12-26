@@ -42,7 +42,7 @@ npm run sync:prod   # production
 
 ## The real-time twist
 
-[![](/images/logos/convex-wordmark-black.svg)](https://convex.dev)
+<a href="https://convex.dev"><img src="/images/logos/convex-wordmark-black.svg" alt="Convex" width="120" /></a>
 
 What separates this from a static site generator is the Convex real-time database. Once you sync content:
 

@@ -189,6 +189,10 @@ export const siteConfig: SiteConfig = {
         href: "https://www.netlify.com/",
       },
       {
+        src: "/images/logos/firecrawl.svg",
+        href: "https://firecrawl.dev/?utm_source=markdownfast",
+      },
+      {
         src: "/images/logos/markdown.svg",
         href: "https://markdown.fast/docs",
       },
