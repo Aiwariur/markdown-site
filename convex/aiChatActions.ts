@@ -109,7 +109,7 @@ export const generateResponse = action({
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       const notConfiguredMessage =
-        "**AI chat is not configured.**\n\n" +
+        "**AI chat is not configured on production.**\n\n" +
         "To enable AI responses, add your `ANTHROPIC_API_KEY` to the Convex environment variables.\n\n" +
         "**Setup steps:**\n" +
         "1. Get an API key from [Anthropic Console](https://console.anthropic.com/)\n" +

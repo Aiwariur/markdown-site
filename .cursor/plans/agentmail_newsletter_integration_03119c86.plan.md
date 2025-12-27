@@ -86,21 +86,19 @@ Integrate AgentMail as an optional newsletter system with email subscriptions, a
 flowchart TD
     User[User] -->|Subscribe| NewsletterForm[NewsletterSignup Component]
     NewsletterForm -->|Mutation| ConvexDB[(Convex Database)]
-    
+
     NewPost[New Blog Post Published] -->|Trigger| SendScript[Send Newsletter Script]
     SendScript -->|Query Subscribers| ConvexDB
     SendScript -->|Send Emails| AgentMail[AgentMail API]
     AgentMail -->|Deliver| Subscribers[Subscriber Inboxes]
-    
+
     EmailIn[Email to Inbox] -->|Webhook| AgentMail
     AgentMail -->|Webhook| ConvexWebhook[Convex Webhook Handler]
     ConvexWebhook -->|Create Draft| ConvexDB
-    
+
     ContactForm[Contact Form] -->|Send Email| AgentMail
     AgentMail -->|Notify| Developer[Developer Email]
 ```
-
-
 
 ## Implementation Steps
 
@@ -146,8 +144,6 @@ emailDrafts: defineTable({
   .index("by_createdAt", ["createdAt"]),
 ```
 
-
-
 ### Step 2: Site Configuration
 
 **File:** `src/config/siteConfig.ts`Add newsletter configuration interface and default config:
@@ -166,7 +162,7 @@ export interface NewsletterConfig {
     // Form field configuration
     requireName: boolean; // If true, show name field; if false, email only
     showNameOptional: boolean; // If true, show name as optional field
-    
+
     // Home page signup
     home: {
       enabled: boolean;
@@ -174,7 +170,7 @@ export interface NewsletterConfig {
       title: string;
       description: string;
     };
-    
+
     // Blog post signup (not pages)
     posts: {
       enabled: boolean;
@@ -182,7 +178,7 @@ export interface NewsletterConfig {
       title: string;
       description: string;
     };
-    
+
     // Dedicated newsletter page
     page: {
       enabled: boolean;
@@ -195,7 +191,7 @@ export interface NewsletterConfig {
     // Auto-send new blog posts
     autoSendNewPosts: boolean; // If true, automatically send when post published
     sendOnSync: boolean; // Send during npm run sync if new post detected
-    
+
     // Email template
     fromName: string;
     fromEmail: string; // Uses inboxUsername@inboxDomain
@@ -293,8 +289,6 @@ export const siteConfig: SiteConfig = {
   },
 };
 ```
-
-
 
 ### Step 3: Newsletter Signup Component
 
@@ -416,22 +410,31 @@ export default function NewsletterSignup({
 }
 ```
 
-
-
 ### Step 4: Convex Newsletter Functions
 
 **File:** `convex/newsletter.ts`Create backend functions following Convex best practices:
 
 ```typescript
-import { query, mutation, internalMutation, internalAction, action } from "./_generated/server";
+import {
+  query,
+  mutation,
+  internalMutation,
+  internalAction,
+  action,
+} from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 import crypto from "crypto";
 
 // Generate unsubscribe token
 function generateUnsubscribeToken(email: string): string {
-  const secret = process.env.UNSUBSCRIBE_SECRET || "default-secret-change-in-production";
-  return crypto.createHash("sha256").update(email + secret).digest("hex").substring(0, 32);
+  const secret =
+    process.env.UNSUBSCRIBE_SECRET || "default-secret-change-in-production";
+  return crypto
+    .createHash("sha256")
+    .update(email + secret)
+    .digest("hex")
+    .substring(0, 32);
 }
 
 // Subscribe to newsletter
@@ -508,7 +511,7 @@ export const unsubscribe = mutation({
   }),
   handler: async (ctx, args) => {
     const email = args.email.toLowerCase().trim();
-    
+
     const subscriber = await ctx.db
       .query("newsletterSubscribers")
       .withIndex("by_email", (q) => q.eq("email", email))
@@ -584,7 +587,7 @@ export const getActiveSubscribers = internalQuery({
       .query("newsletterSubscribers")
       .withIndex("by_subscribed", (q) => q.eq("subscribed", true))
       .collect();
-    
+
     return subscribers.map((sub) => ({
       email: sub.email,
       name: sub.name,
@@ -636,9 +639,12 @@ export const sendPostNewsletter = internalAction({
   }),
   handler: async (ctx, args) => {
     // Check if already sent
-    const alreadySent = await ctx.runQuery(internal.newsletter.hasPostBeenSent, {
-      postSlug: args.postSlug,
-    });
+    const alreadySent = await ctx.runQuery(
+      internal.newsletter.hasPostBeenSent,
+      {
+        postSlug: args.postSlug,
+      },
+    );
 
     if (alreadySent) {
       return {
@@ -662,7 +668,9 @@ export const sendPostNewsletter = internalAction({
     }
 
     // Get subscribers
-    const subscribers = await ctx.runQuery(internal.newsletter.getActiveSubscribers);
+    const subscribers = await ctx.runQuery(
+      internal.newsletter.getActiveSubscribers,
+    );
 
     if (subscribers.length === 0) {
       return {
@@ -681,7 +689,7 @@ export const sendPostNewsletter = internalAction({
     // Build email content
     const siteUrl = process.env.SITE_URL || "https://markdown.fast";
     const postUrl = `${siteUrl}/${post.slug}`;
-    
+
     let emailContent = `<h1>${post.title}</h1>`;
     if (post.description) {
       emailContent += `<p>${post.description}</p>`;
@@ -743,9 +751,9 @@ export const getPostBySlugInternal = internalQuery({
       .query("posts")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
       .first();
-    
+
     if (!post) return null;
-    
+
     return {
       slug: post.slug,
       title: post.title,
@@ -769,8 +777,6 @@ export const getPostBySlugInternal = internalQuery({
   },
 });
 ```
-
-
 
 ### Step 5: Newsletter Send Script
 
@@ -816,8 +822,6 @@ const postSlug = args[0];
 sendNewsletterForPost(postSlug);
 ```
 
-
-
 ### Step 6: Auto-Send Integration with Sync Script
 
 **File:** `scripts/sync-posts.ts`Modify sync script to detect new posts and auto-send if enabled:
@@ -834,9 +838,7 @@ async function checkAndSendNewPosts(
   if (!autoSend) return;
 
   // Get all synced post slugs
-  const syncedSlugs = syncedPosts
-    .filter((p) => p.published)
-    .map((p) => p.slug);
+  const syncedSlugs = syncedPosts.filter((p) => p.published).map((p) => p.slug);
 
   // Check which posts haven't been sent yet
   for (const slug of syncedSlugs) {
@@ -861,8 +863,6 @@ async function checkAndSendNewPosts(
 // Call this after syncPostsPublic in main function
 await checkAndSendNewPosts(parsedPosts, client);
 ```
-
-
 
 ### Step 7: Newsletter Page
 
@@ -899,8 +899,6 @@ if (page && page.slug === siteConfig.newsletter.signup.page.slug) {
   );
 }
 ```
-
-
 
 ### Step 8: Unsubscribe Page
 
@@ -973,8 +971,6 @@ export default function Unsubscribe() {
 <Route path="/unsubscribe" element={<Unsubscribe />} />
 ```
 
-
-
 ### Step 9: Integration Points
 
 **File:** `src/pages/Home.tsx`Add newsletter signup above footer:
@@ -1014,8 +1010,6 @@ export default function Unsubscribe() {
 </footer>
 ```
 
-
-
 ### Step 10: Webhook Handler (Future Email-to-Post)
 
 **File:** `convex/webhooks.ts`Create webhook handler for AgentMail events:
@@ -1030,7 +1024,7 @@ export const agentmailWebhook = httpAction(async (ctx, request) => {
   // Add signature verification logic here
 
   const body = await request.json();
-  
+
   // Handle different event types
   if (body.type === "message.received") {
     // Process incoming email for email-to-post workflow
@@ -1068,7 +1062,7 @@ export const handleIncomingEmail = internalMutation({
     const subjectLower = args.subject.toLowerCase();
     const isDraft = subjectLower.includes("[draft]");
     const isPublish = subjectLower.includes("[publish]");
-    
+
     const status = isPublish ? "published" : isDraft ? "draft" : "draft";
 
     // Create draft post
@@ -1097,8 +1091,6 @@ http.route({
 });
 ```
 
-
-
 ### Step 11: Package.json and Environment Variables
 
 **File:** `package.json`Add newsletter scripts:
@@ -1123,8 +1115,6 @@ AGENTMAIL_AUTO_SEND=false
 AGENTMAIL_FROM_EMAIL=newsletter@agentmail.to
 UNSUBSCRIBE_SECRET=change-this-in-production
 ```
-
-
 
 ### Step 12: CSS Styling
 
@@ -1213,8 +1203,6 @@ UNSUBSCRIBE_SECRET=change-this-in-production
 }
 ```
 
-
-
 ### Step 13: Fork Configuration
 
 **File:** `fork-config.json.example`Add newsletter configuration:
@@ -1273,8 +1261,6 @@ The newsletter feature is optional and disabled by default. To enable:
 
 See `prds/agentmailplan-v1.md` for full documentation.
 ```
-
-
 
 ## Future Features (Not in Initial Implementation)
 
