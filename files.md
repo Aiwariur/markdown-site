@@ -13,6 +13,7 @@ A brief description of each file in the codebase.
 | `netlify.toml`             | Netlify deployment and Convex HTTP redirects          |
 | `README.md`                | Project documentation                                 |
 | `AGENTS.md`                | AI coding agent instructions (agents.md spec)         |
+| `CLAUDE.md`                | Claude Code instructions for project workflows        |
 | `files.md`                 | This file - codebase structure                        |
 | `changelog.md`             | Version history and changes                           |
 | `TASK.md`                  | Task tracking and project status                      |
@@ -206,7 +207,7 @@ Markdown files for static pages like About, Projects, Contact, Changelog.
 | File                      | Description                                           |
 | ------------------------- | ----------------------------------------------------- |
 | `sync-posts.ts`           | Syncs markdown files to Convex at build time (markdown sync v2) |
-| `sync-discovery-files.ts` | Updates AGENTS.md and llms.txt with current app data  |
+| `sync-discovery-files.ts` | Updates AGENTS.md, CLAUDE.md, and llms.txt with current app data  |
 | `import-url.ts`           | Imports external URLs as markdown posts (Firecrawl)   |
 | `configure-fork.ts`       | Automated fork configuration (reads fork-config.json) |
 | `send-newsletter.ts`      | CLI tool for sending newsletter posts (npm run newsletter:send <slug>). Calls scheduleSendPostNewsletter mutation directly. |
@@ -301,6 +302,14 @@ Files include a metadata header with type (post/page), date, reading time, and t
 | `sample-logo-3.svg` | Sample logo (replace with your own) |
 | `sample-logo-4.svg` | Sample logo (replace with your own) |
 | `sample-logo-5.svg` | Sample logo (replace with your own) |
+
+## Claude Skills (`.claude/skills/`)
+
+| File           | Description                                          |
+| -------------- | ---------------------------------------------------- |
+| `frontmatter.md` | Frontmatter syntax and all field options for posts and pages |
+| `convex.md`    | Convex patterns specific to this app (indexes, mutations, queries) |
+| `sync.md`      | How sync commands work and content flow from markdown to database |
 
 ## Cursor Rules (`.cursor/rules/`)
 

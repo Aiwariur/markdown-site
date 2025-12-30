@@ -99,7 +99,7 @@ The configuration script updates these files:
 
 | File                                | What changes                                                                                                       |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `src/config/siteConfig.ts`          | Site name, bio, GitHub username, features, footer, social footer, newsletter, contact form, AI chat, right sidebar |
+| `src/config/siteConfig.ts`          | Site name, bio, GitHub username, gitHubRepo config, features (logo gallery, GitHub contributions, visitor map, blog page, posts display, homepage, right sidebar, footer, social footer, AI chat, newsletter, contact form, newsletter admin, stats page, MCP server, dashboard, image lightbox) |
 | `src/pages/Home.tsx`                | Intro paragraph, footer links                                                                                      |
 | `src/pages/Post.tsx`                | SITE_URL, SITE_NAME constants                                                                                      |
 | `convex/http.ts`                    | SITE_URL, SITE_NAME constants                                                                                      |
@@ -117,6 +117,12 @@ The JSON config file supports additional options:
 
 ```json
 {
+  "gitHubRepoConfig": {
+    "owner": "yourusername",
+    "repo": "your-repo-name",
+    "branch": "main",
+    "contentPath": "public/raw"
+  },
   "logoGallery": {
     "enabled": true,
     "title": "Built with",
@@ -137,8 +143,8 @@ The JSON config file supports additional options:
     "enabled": true,
     "showInNav": true,
     "title": "Blog",
-    "description": "Latest posts",
-    "order": 0
+    "description": "All posts from the blog, sorted by date.",
+    "order": 2
   },
   "postsDisplay": {
     "showOnHome": true,
@@ -154,6 +160,11 @@ The JSON config file supports additional options:
   "showViewToggle": true,
   "theme": "tan",
   "fontFamily": "serif",
+  "homepage": {
+    "type": "default",
+    "slug": null,
+    "originalHomeRoute": "/home"
+  },
   "rightSidebar": {
     "enabled": true,
     "minWidth": 1135
@@ -163,7 +174,8 @@ The JSON config file supports additional options:
     "showOnHomepage": true,
     "showOnPosts": true,
     "showOnPages": true,
-    "showOnBlogPage": true
+    "showOnBlogPage": true,
+    "defaultContent": "Built with [Convex](https://convex.dev) for real-time sync and deployed on [Netlify](https://netlify.com)."
   },
   "socialFooter": {
     "enabled": true,
@@ -175,6 +187,14 @@ The JSON config file supports additional options:
       {
         "platform": "github",
         "url": "https://github.com/yourusername/your-repo-name"
+      },
+      {
+        "platform": "twitter",
+        "url": "https://x.com/yourhandle"
+      },
+      {
+        "platform": "linkedin",
+        "url": "https://www.linkedin.com/in/yourprofile/"
       }
     ],
     "copyright": {
@@ -188,19 +208,97 @@ The JSON config file supports additional options:
   },
   "newsletter": {
     "enabled": false,
+    "agentmail": {
+      "inbox": "newsletter@mail.agentmail.to"
+    },
     "signup": {
-      "home": { "enabled": false },
-      "blogPage": { "enabled": false },
-      "posts": { "enabled": false }
+      "home": {
+        "enabled": false,
+        "position": "above-footer",
+        "title": "Stay Updated",
+        "description": "Get new posts delivered to your inbox."
+      },
+      "blogPage": {
+        "enabled": false,
+        "position": "above-footer",
+        "title": "Subscribe",
+        "description": "Get notified when new posts are published."
+      },
+      "posts": {
+        "enabled": false,
+        "position": "below-content",
+        "title": "Enjoyed this post?",
+        "description": "Subscribe for more updates."
+      }
     }
   },
   "contactForm": {
-    "enabled": false
+    "enabled": false,
+    "title": "Get in Touch",
+    "description": "Send us a message and we'll get back to you."
+  },
+  "newsletterAdmin": {
+    "enabled": false,
+    "showInNav": false
+  },
+  "newsletterNotifications": {
+    "enabled": false,
+    "newSubscriberAlert": false,
+    "weeklyStatsSummary": false
+  },
+  "weeklyDigest": {
+    "enabled": false,
+    "dayOfWeek": 0,
+    "subject": "Weekly Digest"
+  },
+  "statsPage": {
+    "enabled": true,
+    "showInNav": true
+  },
+  "mcpServer": {
+    "enabled": true,
+    "endpoint": "/mcp",
+    "publicRateLimit": 50,
+    "authenticatedRateLimit": 1000,
+    "requireAuth": false
+  },
+  "dashboard": {
+    "enabled": true,
+    "requireAuth": false
+  },
+  "imageLightbox": {
+    "enabled": true
   }
 }
 ```
 
 These are optional. If you omit them, the script uses sensible defaults. See `fork-config.json.example` for the complete schema with all available options.
+
+### Configuration details
+
+**GitHub Repo Config**: Used for "Open in AI" links (ChatGPT, Claude, Perplexity). Content must be pushed to GitHub for these links to work.
+
+**Homepage**: Set any page or blog post as your homepage. Options: `"default"` (standard Home component), `"page"` (use a static page), or `"post"` (use a blog post). When using a custom homepage, the original homepage remains accessible at `/home` (or your configured route).
+
+**Newsletter**: Requires `AGENTMAIL_API_KEY` and `AGENTMAIL_INBOX` environment variables in Convex dashboard. Signup forms can appear on homepage, blog page, or individual posts.
+
+**Contact Form**: Requires `AGENTMAIL_API_KEY` and `AGENTMAIL_INBOX` in Convex dashboard. Optionally set `AGENTMAIL_CONTACT_EMAIL` to override recipient. Enable on specific pages/posts via frontmatter `contactForm: true`.
+
+**Newsletter Admin**: Admin UI at `/newsletter-admin` for managing subscribers and sending newsletters. Hidden from navigation by default for security.
+
+**Newsletter Notifications**: Sends developer emails for new subscribers and weekly stats summaries. Uses `AGENTMAIL_CONTACT_EMAIL` or `AGENTMAIL_INBOX` as recipient.
+
+**Weekly Digest**: Automated weekly email with posts from the past 7 days. Runs via cron job every Sunday at 9:00 AM UTC.
+
+**Stats Page**: Real-time analytics at `/stats` showing page views, active visitors, and popular content.
+
+**MCP Server**: HTTP-based Model Context Protocol server at `/mcp` endpoint for AI tool integration. Set `MCP_API_KEY` in Netlify env vars for authenticated access.
+
+**Dashboard**: Admin dashboard at `/dashboard` for content management and site configuration. Optional WorkOS authentication via `requireAuth: true`. When `requireAuth` is `false`, dashboard is open access.
+
+**Image Lightbox**: Click-to-magnify functionality for images in blog posts and pages. Images open in full-screen overlay when clicked.
+
+For detailed configuration instructions, see `FORK_CONFIG.md`.
 
 ## After configuring
 

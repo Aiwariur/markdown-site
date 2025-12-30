@@ -44,6 +44,19 @@ npm run sync:prod   # production
 - **[Configuration Guide](https://www.markdown.fast/fork-configuration-guide)** - Automated or manual fork setup
 - **[Full Documentation](https://www.markdown.fast/docs)** - Docs for all features and configuration
 
+### AI Development Tools
+
+The project includes documentation optimized for AI coding assistants:
+
+- **CLAUDE.md** - Project instructions for Claude Code CLI with workflows, commands, and conventions
+- **AGENTS.md** - General AI agent instructions for understanding the codebase structure
+- **.claude/skills/** - Focused skill documentation:
+  - `frontmatter.md` - Complete frontmatter syntax and all field options
+  - `convex.md` - Convex patterns specific to this app
+  - `sync.md` - How sync commands work and content flow
+
+These files are automatically updated during `npm run sync:discovery` with current site statistics.
+
 ## Fork Configuration
 
 After forking this project, you have two options to configure your site:

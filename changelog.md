@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.1.0] - 2025-12-30
+
+### Added
+
+- CLAUDE.md for Claude Code project instructions
+  - Project context and quick start guide
+  - All available npm commands and workflows
+  - Code conventions and "do not" list
+  - Key file references and project structure
+  - Links to detailed skills documentation
+- Claude skills documentation in `.claude/skills/` directory
+  - `frontmatter.md`: Complete frontmatter syntax with all 25+ field options for posts and pages
+  - `convex.md`: Convex patterns specific to this app (indexes, idempotent mutations, write conflict prevention)
+  - `sync.md`: How sync commands work and content flow from markdown to Convex database
+- Automated CLAUDE.md updates via sync-discovery-files.ts
+  - CLAUDE.md status comment updated during `npm run sync:discovery`
+  - Includes current site name, post count, page count, and last updated timestamp
+
+### Technical
+
+- New file: `CLAUDE.md` in project root
+- New directory: `.claude/skills/` with three markdown files
+- Updated: `scripts/sync-discovery-files.ts` to update CLAUDE.md alongside AGENTS.md and llms.txt
+
 ## [2.0.0] - 2025-12-29
 
 ### Added

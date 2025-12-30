@@ -7,6 +7,7 @@
  *
  * This script updates:
  * - AGENTS.md (project overview and current status sections)
+ * - CLAUDE.md (current status section for Claude Code)
  * - public/llms.txt (site info, API endpoints, GitHub links)
  */
 
@@ -133,6 +134,43 @@ function getGitHubUrl(siteConfig: SiteConfigData): string {
     process.env.GITHUB_REPO_URL ||
     "https://github.com/waynesutton/markdown-site"
   );
+}
+
+// Update CLAUDE.md with current status
+function updateClaudeMd(
+  content: string,
+  siteConfig: SiteConfigData,
+  siteUrl: string,
+  postCount: number,
+  pageCount: number,
+  latestPostDate?: string,
+): string {
+  // Build status comment to insert after "## Project context"
+  const statusComment = `<!-- Auto-updated by sync:discovery -->
+<!-- Site: ${siteConfig.name} | Posts: ${postCount} | Pages: ${pageCount} | Updated: ${new Date().toISOString()} -->`;
+
+  // Check if status comment exists
+  const commentRegex = /<!-- Auto-updated by sync:discovery -->[\s\S]*?<!-- Site:.*?-->/;
+  if (content.match(commentRegex)) {
+    // Replace existing comment
+    content = content.replace(commentRegex, statusComment);
+  } else {
+    // Insert after "## Project context" line
+    const contextIndex = content.indexOf("## Project context");
+    if (contextIndex > -1) {
+      const nextLineIndex = content.indexOf("\n", contextIndex);
+      if (nextLineIndex > -1) {
+        content =
+          content.slice(0, nextLineIndex + 1) +
+          "\n" +
+          statusComment +
+          "\n" +
+          content.slice(nextLineIndex + 1);
+      }
+    }
+  }
+
+  return content;
 }
 
 // Update AGENTS.md with app-specific data
@@ -359,6 +397,23 @@ async function syncDiscoveryFiles() {
   fs.writeFileSync(agentsPath, updatedAgentsContent, "utf-8");
   console.log(`  Updated: ${agentsPath}`);
 
+  // Read and update CLAUDE.md
+  const claudePath = path.join(ROOT_DIR, "CLAUDE.md");
+  if (fs.existsSync(claudePath)) {
+    console.log("Updating CLAUDE.md with current status...");
+    let claudeContent = fs.readFileSync(claudePath, "utf-8");
+    const updatedClaudeContent = updateClaudeMd(
+      claudeContent,
+      siteConfig,
+      siteUrl,
+      postCount,
+      pageCount,
+      latestPostDate,
+    );
+    fs.writeFileSync(claudePath, updatedClaudeContent, "utf-8");
+    console.log(`  Updated: ${claudePath}`);
+  }
+
   // Generate llms.txt
   console.log("\nGenerating llms.txt...");
   const llmsContent = generateLlmsTxt(
@@ -373,6 +428,7 @@ async function syncDiscoveryFiles() {
 
   console.log("\nDiscovery files sync complete!");
   console.log(`  Updated AGENTS.md with app-specific context`);
+  console.log(`  Updated CLAUDE.md with current status`);
   console.log(`  Updated llms.txt with ${postCount} posts`);
 }
 

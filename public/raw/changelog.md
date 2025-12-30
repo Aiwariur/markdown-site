@@ -8,6 +8,34 @@ Date: 2025-12-30
 All notable changes to this project.
 ![](https://img.shields.io/badge/License-MIT-yellow.svg)
 
+## v2.1.0
+
+Released December 30, 2025
+
+**CLAUDE.md and Claude skills documentation**
+
+- CLAUDE.md for Claude Code project instructions
+  - Project context and quick start guide
+  - All available npm commands and workflows
+  - Code conventions and "do not" list
+  - Key file references and project structure
+  - Links to detailed skills documentation
+- Claude skills documentation in `.claude/skills/` directory
+  - `frontmatter.md`: Complete frontmatter syntax with all 25+ field options for posts and pages
+  - `convex.md`: Convex patterns specific to this app (indexes, idempotent mutations, write conflict prevention)
+  - `sync.md`: How sync commands work and content flow from markdown to Convex database
+- Automated CLAUDE.md updates via sync-discovery-files.ts
+  - CLAUDE.md status comment updated during `npm run sync:discovery`
+  - Includes current site name, post count, page count, and last updated timestamp
+
+**Technical details:**
+
+- New file: `CLAUDE.md` in project root
+- New directory: `.claude/skills/` with three markdown files
+- Updated: `scripts/sync-discovery-files.ts` to update CLAUDE.md alongside AGENTS.md and llms.txt
+
+Updated files: `CLAUDE.md`, `.claude/skills/frontmatter.md`, `.claude/skills/convex.md`, `.claude/skills/sync.md`, `scripts/sync-discovery-files.ts`, `files.md`, `changelog.md`, `TASK.md`
+
 ## v2.0.0
 
 Released December 29, 2025

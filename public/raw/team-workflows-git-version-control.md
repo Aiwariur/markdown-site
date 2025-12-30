@@ -1,16 +1,12 @@
+# Team Workflows with Git Version Control
+
+> How teams collaborate on markdown content using git, sync to shared Convex deployments, and automate production syncs with CI/CD.
+
 ---
-title: "Team Workflows with Git Version Control"
-description: "How teams collaborate on markdown content using git, sync to shared Convex deployments, and automate production syncs with CI/CD."
-date: "2025-12-29"
-slug: "team-workflows-git-version-control"
-published: true
-tags: ["git", "convex", "ci-cd", "collaboration", "workflow"]
-readTime: "6 min read"
-image: /images/team-sync.png
-featured: false
-layout: "sidebar"
-newsletter: true
-excerpt: "Learn how teams use git for markdown version control, sync to Convex deployments, and automate production workflows."
+Type: post
+Date: 2025-12-29
+Reading time: 6 min read
+Tags: git, convex, ci-cd, collaboration, workflow
 ---
 
 # Team Workflows with Git Version Control

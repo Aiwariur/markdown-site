@@ -7,9 +7,18 @@
 
 ## Current Status
 
-v1.47.0 ready. Image lightbox feature complete. Images in blog posts and pages automatically open in full-screen lightbox when clicked (if enabled in siteConfig). Lightbox includes backdrop, close button, keyboard support (Escape), and caption display. Configurable via siteConfig.imageLightbox.enabled (default: true). Dashboard config generator includes image lightbox toggle. Documentation updated in docs.md and setup-guide.md.
+v2.1.0 ready. CLAUDE.md and Claude skills documentation complete. Created CLAUDE.md in root for Claude Code instructions, .claude/skills/ directory with three focused skill files (frontmatter.md, convex.md, sync.md), and updated sync-discovery-files.ts to automatically update CLAUDE.md during sync. Documentation updated in files.md, changelog.md, changelog-page.md, and TASK.md.
 
 ## Completed
+
+- [x] CLAUDE.md and Claude skills documentation
+  - [x] Created CLAUDE.md in root with project instructions for Claude Code
+  - [x] Created .claude/skills/ directory with three focused skill files
+  - [x] frontmatter.md: Complete frontmatter syntax and all 25+ field options
+  - [x] convex.md: Convex patterns specific to this app (indexes, idempotent mutations, conflict prevention)
+  - [x] sync.md: How sync commands work and content flow from markdown to database
+  - [x] Updated sync-discovery-files.ts to automatically update CLAUDE.md during sync
+  - [x] Updated files.md, changelog.md, changelog-page.md, TASK.md with feature documentation
 
 - [x] Image lightbox for blog posts and pages
   - [x] Added ImageLightboxConfig interface to siteConfig.ts with enabled option
@@ -48,7 +57,7 @@ v1.47.0 ready. Image lightbox feature complete. Images in blog posts and pages a
 
 - [x] Blog heading styles for home intro content
   - [x] Added generateSlug, getTextContent, HeadingAnchor helper functions to Home.tsx
-  - [x] Updated ReactMarkdown components to include h1-h6 with blog-h* classes
+  - [x] Updated ReactMarkdown components to include h1-h6 with blog-h\* classes
   - [x] Added clickable anchor links (#) that appear on hover for each heading
   - [x] Automatic ID generation from heading text for anchor navigation
   - [x] Added blog styling for lists (blog-ul, blog-ol, blog-li), blockquotes (blog-blockquote), horizontal rules (blog-hr), and links (blog-link)

@@ -64,25 +64,66 @@ It's a hybrid: developer workflow for publishing + real-time delivery like a dyn
 
 ## Features
 
+**Themes and UI:**
+
 - Four theme options (dark, light, tan, cloud)
+- Font switcher (serif, sans, monospace) with localStorage persistence
 - Mobile menu with hamburger navigation on smaller screens
-- Full text search with Command+K shortcut
+- Image lightbox for full-screen image viewing when clicked
+- Scroll-to-top button with configurable threshold
+
+**Content and navigation:**
+
+- Sidebar layout for docs-style pages with table of contents
+- Right sidebar with CopyPageDropdown on wide screens
 - Featured section with list/card view toggle and excerpts
-- Logo gallery with clickable links and marquee scroll
-- GitHub contributions graph with year navigation
-- Dedicated blog page with configurable navigation order
-- Real-time analytics at `/stats`
-- RSS feeds and sitemap for SEO
+- Dedicated blog page with hero cards and featured rows
+- Tag pages at `/tags/{tag}` with related posts in footer
+- Homepage configuration to use any page or post as homepage
+
+**Search and discovery:**
+
+- Full text search with Command+K shortcut
 - Static raw markdown files at `/raw/{slug}.md`
-- API endpoints for AI/LLM access
-- Copy to ChatGPT, Claude, and Perplexity sharing
+- RSS feeds (`/rss.xml` and `/rss-full.xml`) and sitemap for SEO
+- API endpoints for AI/LLM access (`/api/posts`, `/api/export`)
+- HTTP-based MCP server at `/mcp` for AI tool integration (Cursor, Claude Desktop)
+
+**Sharing and AI integration:**
+
+- Copy to ChatGPT, Claude, and Perplexity sharing buttons
 - Generate Skill option for AI agent training
 - View as Markdown option in share dropdown
+
+**Content creation:**
+
 - Markdown writing page at `/write` with frontmatter reference
-- HTTP-based MCP server at `/mcp` for AI tool integration (Cursor, Claude Desktop)
+- AI Agent chat powered by Anthropic Claude (toggle in Write page or right sidebar)
 - Firecrawl content importer (`npm run import <url>`) for external articles
+
+**Dashboard and admin:**
+
+- Dashboard at `/dashboard` for content management and site configuration
+- Posts and pages editor with live preview and frontmatter sidebar
+- Sync commands UI for executing syncs from browser
 - Newsletter management with AgentMail integration and admin UI
+- Real-time analytics at `/stats` with visitor map
+
+**Newsletter and contact:**
+
+- Newsletter signup forms on homepage, blog page, and posts
 - Contact forms on pages/posts via frontmatter with AgentMail delivery
+- Email notifications for new subscribers and weekly stats
+
+**Developer and AI agent support:**
+
+- CLAUDE.md for Claude Code instructions and workflows
+- AGENTS.md for AI coding agent context (agents.md spec)
+- Skills files in `.claude/skills/` (frontmatter, convex, sync)
+- Sync discovery commands to update AGENTS.md, CLAUDE.md, and llms.txt
+- Optional WorkOS authentication for dashboard access
+- GitHub contributions graph with year navigation
+- Logo gallery with clickable links and static grid or marquee scroll
 
 ## Who this is for
 
