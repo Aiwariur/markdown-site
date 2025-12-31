@@ -388,7 +388,7 @@ export const siteConfig: SiteConfig = {
       },
     ],
     position: "above-footer",
-    speed: 30,
+    speed: 20,
     title: "Built with",
     scrolling: false, // Set to false for static grid showing first maxItems logos
     maxItems: 4, // Number of logos to show when scrolling is false

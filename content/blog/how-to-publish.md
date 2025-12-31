@@ -7,6 +7,7 @@ published: true
 tags: ["tutorial", "markdown", "cursor", "IDE", "publishing"]
 readTime: "3 min read"
 featured: false
+layout: "sidebar"
 featuredOrder: 3
 authorName: "Markdown"
 blogFeatured: true

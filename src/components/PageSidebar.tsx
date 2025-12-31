@@ -38,22 +38,54 @@ function buildHeadingTree(headings: Heading[]): HeadingNode[] {
   return tree;
 }
 
+// Get ID of first root-level heading that has children (for default expanded state)
+function getFirstExpandableId(headings: Heading[]): Set<string> {
+  if (headings.length === 0) return new Set();
+
+  // Find minimum level (usually h2)
+  let minLevel = Infinity;
+  for (const h of headings) {
+    if (h.level < minLevel) minLevel = h.level;
+  }
+
+  // Find first root heading that has a child (next heading with higher level)
+  for (let i = 0; i < headings.length; i++) {
+    if (headings[i].level === minLevel) {
+      // Check if this heading has children (next heading has higher level number)
+      if (i + 1 < headings.length && headings[i + 1].level > minLevel) {
+        return new Set([headings[i].id]);
+      }
+    }
+  }
+
+  return new Set();
+}
+
 // Load expanded state from localStorage
 function loadExpandedState(headings: Heading[]): Set<string> {
   const stored = localStorage.getItem("page-sidebar-expanded-state");
   if (stored) {
     try {
-      const storedIds = new Set(JSON.parse(stored));
-      // Only return stored IDs that still exist in headings
-      return new Set(
-        headings.filter((h) => storedIds.has(h.id)).map((h) => h.id),
-      );
+      const parsed = JSON.parse(stored) as string[];
+      // If stored array has items, use it (filter to valid IDs)
+      if (parsed.length > 0) {
+        const storedIds = new Set(parsed);
+        const validIds = new Set(
+          headings.filter((h) => storedIds.has(h.id)).map((h) => h.id),
+        );
+        // If valid IDs exist, use them; otherwise fall through to default
+        if (validIds.size > 0) {
+          return validIds;
+        }
+      }
     } catch {
-      // If parse fails, return empty (collapsed)
+      // If parse fails, use default
     }
+    // Clear stale/empty localStorage
+    localStorage.removeItem("page-sidebar-expanded-state");
   }
-  // Default: all headings collapsed
-  return new Set();
+  // Default: expand only the first expandable heading
+  return getFirstExpandableId(headings);
 }
 
 // Save expanded state to localStorage
@@ -158,6 +190,23 @@ export default function PageSidebar({ headings, activeId }: PageSidebarProps) {
 
   // Build tree structure from headings
   const headingTree = useMemo(() => buildHeadingTree(headings), [headings]);
+
+  // Reset expanded state when headings change (new page) to expand root items
+  useEffect(() => {
+    if (headings.length > 0) {
+      setExpanded((prev) => {
+        const currentIds = new Set(headings.map((h) => h.id));
+        const hasMatchingIds = Array.from(prev).some((id) =>
+          currentIds.has(id),
+        );
+        // If no current expanded IDs match new headings, reset to first expanded
+        if (!hasMatchingIds) {
+          return getFirstExpandableId(headings);
+        }
+        return prev;
+      });
+    }
+  }, [headings]);
 
   // Get all heading IDs for scroll tracking
   const allHeadingIds = useMemo(() => headings.map((h) => h.id), [headings]);
