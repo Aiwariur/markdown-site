@@ -26,7 +26,7 @@ A brief description of each file in the codebase.
 
 | File            | Description                                                                                      |
 | --------------- | ------------------------------------------------------------------------------------------------ |
-| `main.tsx`      | React app entry point with conditional WorkOS providers. When WorkOS is configured (VITE_WORKOS_CLIENT_ID and VITE_WORKOS_REDIRECT_URI set), wraps app with AuthKitProvider and ConvexProviderWithAuthKit. When WorkOS is not configured, uses standard ConvexProvider. Uses lazy loading and Suspense for optional WorkOS integration. |
+| `main.tsx`      | React app entry point with conditional WorkOS providers. When WorkOS is configured (VITE_WORKOS_CLIENT_ID and VITE_WORKOS_REDIRECT_URI set), wraps app with AuthKitProvider and ConvexProviderWithAuthKit. When WorkOS is not configured, uses standard ConvexProvider. Uses lazy loading and Suspense for optional WorkOS integration. Suspense fallback uses invisible div (minHeight: 100vh) to prevent "Loading..." text flash. |
 | `App.tsx`       | Main app component with routing (supports custom homepage configuration via siteConfig.homepage). Handles /callback route for WorkOS OAuth redirect. |
 | `AppWithWorkOS.tsx` | Wrapper component for WorkOS-enabled app. Provides AuthKitProvider and ConvexProviderWithAuthKit. Only loaded when WorkOS is configured. |
 | `vite-env.d.ts` | Vite environment type definitions                                                                |

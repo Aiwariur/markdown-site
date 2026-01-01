@@ -2,11 +2,25 @@
 
 ---
 Type: page
-Date: 2025-12-31
+Date: 2026-01-01
 ---
 
 All notable changes to this project.
 ![](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+## v2.2.2
+
+Released December 31, 2025
+
+**Homepage intro loading flash fix**
+
+- Removed visible loading states from homepage intro content
+  - No more "Loading..." text flash when app loads (fixed Suspense fallback in main.tsx)
+  - No more bio text flash while home intro content loads (fixed conditional in Home.tsx)
+  - Home intro content now appears without any visible loading state or fallback
+  - Matches the loading pattern used by Post.tsx for docs pages (render nothing while loading)
+
+Updated files: `src/main.tsx`, `src/pages/Home.tsx`, `changelog.md`, `content/pages/changelog-page.md`, `TASK.md`, `files.md`
 
 ## v2.2.1
 

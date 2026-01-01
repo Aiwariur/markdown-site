@@ -491,7 +491,7 @@ export const siteConfig: SiteConfig = {
   },
 
   // Footer configuration
-  // Footer content is loaded from content/pages/footer.md (synced via npm run sync)
+// Footer content is loaded from content/pages/footer.md (synced via npm run sync)
   // Use showFooter: false in frontmatter to hide footer on specific posts/pages
   footer: {
     enabled: true, // Global toggle for footer

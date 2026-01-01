@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.2.2] - 2025-12-31
+
+### Fixed
+
+- Homepage intro loading flash
+  - Removed "Loading..." text from Suspense fallback in main.tsx to prevent flash on app load
+  - Updated Home.tsx to render nothing while homeIntro query loads (prevents bio text flash)
+  - Home intro content now appears without any visible loading state or fallback text
+  - Matches the same loading pattern used by Post.tsx for docs pages
+
+### Technical
+
+- Updated: `src/main.tsx` - Changed LoadingFallback to render empty div instead of "Loading..." text
+- Updated: `src/pages/Home.tsx` - Changed conditional from `homeIntro ?` to `homeIntro === undefined ? null : homeIntro ?`
+
 ## [2.2.1] - 2025-12-31
 
 ### Fixed

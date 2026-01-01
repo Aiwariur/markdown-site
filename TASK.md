@@ -7,9 +7,15 @@
 
 ## Current Status
 
-v2.2.1 ready. ES module compatibility fix for configure-fork.ts. Fixed `__dirname is not defined` error when running `npm run configure`. Added `fileURLToPath` import to create ES module equivalent of `__dirname`. Script now works correctly with `"type": "module"` in package.json.
+v2.2.2 ready. Homepage intro loading flash fix. Removed "Loading..." text from Suspense fallback in main.tsx and fixed Home.tsx conditional to render nothing while homeIntro query loads. Home intro content now appears without any visible loading state.
 
 ## Completed
+
+- [x] Homepage intro loading flash fix
+  - [x] Removed "Loading..." text from Suspense fallback in main.tsx
+  - [x] Fixed Home.tsx conditional to render nothing while homeIntro query loads (undefined vs null)
+  - [x] Home intro content now appears without any visible loading state or fallback
+  - [x] Matches loading pattern used by Post.tsx for docs pages
 
 - [x] ES module compatibility fix for configure-fork.ts
   - [x] Fixed `__dirname is not defined` error when running `npm run configure`

@@ -175,7 +175,8 @@ export default function Home() {
         <h1 className="home-name">{siteConfig.name}</h1>
 
         {/* Home intro from Convex page content (synced via npm run sync) */}
-        {homeIntro ? (
+        {/* Show nothing while loading (undefined), show content if found, fallback to bio only if page doesn't exist (null) */}
+        {homeIntro === undefined ? null : homeIntro ? (
           <div
             className="home-intro-content"
             style={{
@@ -280,7 +281,7 @@ export default function Home() {
             </ReactMarkdown>
           </div>
         ) : (
-          // Fallback to siteConfig.bio while loading or if page doesn't exist
+          // Fallback to siteConfig.bio only if page doesn't exist (null)
           <p className="home-bio">{siteConfig.bio}</p>
         )}
 
