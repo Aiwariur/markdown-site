@@ -54,6 +54,9 @@ export default function Post({
       : "skip",
   );
 
+  // Fetch footer content from Convex (synced via markdown)
+  const footerPage = useQuery(api.pages.getPageBySlug, { slug: "footer" });
+
   const [copied, setCopied] = useState(false);
 
   // Scroll to hash anchor after content loads
@@ -264,7 +267,7 @@ export default function Post({
               (page.showFooter !== undefined
                 ? page.showFooter
                 : siteConfig.footer.showOnPages) && (
-                <Footer content={page.footer} />
+                <Footer content={page.footer || footerPage?.content} />
               )}
           </article>
         </DocsLayout>
@@ -398,7 +401,7 @@ export default function Post({
               (page.showFooter !== undefined
                 ? page.showFooter
                 : siteConfig.footer.showOnPages) && (
-                <Footer content={page.footer} />
+                <Footer content={page.footer || footerPage?.content} />
               )}
 
             {/* Social footer - shown inside article at bottom for pages */}
@@ -503,7 +506,7 @@ export default function Post({
             (post.showFooter !== undefined
               ? post.showFooter
               : siteConfig.footer.showOnPosts) && (
-              <Footer content={post.footer} />
+              <Footer content={post.footer || footerPage?.content} />
             )}
         </article>
       </DocsLayout>
@@ -632,11 +635,13 @@ export default function Post({
               <p className="post-description">{post.description}</p>
             )}
           </header>
-
+          {/* Blog post sharing links */}
           <BlogPost content={post.content} slug={post.slug} pageType="post" />
 
           <footer className="post-footer">
             <div className="post-share">
+              <h3 className="post-share-title">Share this post</h3>
+            
               <button
                 onClick={handleCopyLink}
                 className="share-button"
@@ -736,7 +741,7 @@ export default function Post({
             (post.showFooter !== undefined
               ? post.showFooter
               : siteConfig.footer.showOnPosts) && (
-              <Footer content={post.footer} />
+              <Footer content={post.footer || footerPage?.content} />
             )}
 
           {/* Social footer - shown inside article at bottom for posts */}

@@ -12,6 +12,24 @@ docsSectionOrder: 4
 All notable changes to this project.
 ![](https://img.shields.io/badge/License-MIT-yellow.svg)
 
+## v2.8.2
+
+Released January 3, 2026
+
+**Footer fix for docs section pages**
+
+- Fixed footer not displaying on docs section posts/pages even with `showFooter: true` in frontmatter
+  - Post.tsx now fetches footer.md content from Convex (matching Home.tsx and Blog.tsx pattern)
+  - Footer falls back to footer.md content when no per-post `footer:` frontmatter is specified
+  - Priority order: per-post frontmatter `footer:` > synced footer.md content > siteConfig.footer.defaultContent
+
+**Technical details:**
+
+- Added `useQuery(api.pages.getPageBySlug, { slug: "footer" })` to Post.tsx
+- Updated all 4 Footer component calls to use `post.footer || footerPage?.content` pattern
+
+Updated files: `src/pages/Post.tsx`
+
 ## v2.8.1
 
 Released January 3, 2026

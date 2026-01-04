@@ -2,16 +2,18 @@
 
 ## To Do
 
-- [ ] docs pages
-- [ ] fix site confg link
-
-- [ ] npm package
-
 ## Current Status
 
-v2.8.1 ready. Centralized defaultTheme in siteConfig.ts.
+v2.8.2 ready. Fixed footer not displaying on docs section pages.
 
 ## Completed
+
+- [x] Fix footer not displaying on docs section pages with showFooter: true
+  - [x] Added footer.md content query to Post.tsx (matching Home.tsx and Blog.tsx pattern)
+  - [x] Updated all 4 Footer component calls to use `post.footer || footerPage?.content` pattern
+  - [x] Footer now falls back to footer.md content when no per-post footer is specified
+  - [x] Priority order: per-post frontmatter `footer:` > synced footer.md content > siteConfig.footer.defaultContent
+  - [x] Updated docs.md, files.md, changelog.md, changelog-page.md with fix documentation
 
 - [x] Centralize defaultTheme in siteConfig.ts
   - [x] Added `defaultTheme` field to siteConfig.ts (type: `Theme`)
@@ -24,7 +26,6 @@ v2.8.1 ready. Centralized defaultTheme in siteConfig.ts.
   - [x] Updated FORK_CONFIG.md with new theme configuration instructions
   - [x] Updated fork-configuration-guide.md with siteConfig.ts reference
   - [x] Backward compatible: falls back to "tan" if defaultTheme not set
-
 
 - [x] Docs sidebar group icons via frontmatter
   - [x] Added `docsSectionGroupIcon` frontmatter field for posts and pages

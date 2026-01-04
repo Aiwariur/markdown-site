@@ -141,6 +141,7 @@ Content here...
 | `docsSectionOrder`      | No       | Order within docs group. Lower numbers appear first within the group.                                                                                                                                  |
 | `docsSectionGroupOrder` | No       | Order of the group in docs sidebar. Lower numbers make the group appear first. Groups without this field sort alphabetically.                                                                          |
 | `docsSectionGroupIcon`  | No       | Phosphor icon name for docs sidebar group (e.g., "Rocket", "Book", "PuzzlePiece"). Icon appears left of the group title. See [Phosphor Icons](https://phosphoricons.com) for available icons.         |
+| `docsLanding`           | No       | Set `true` to use this post as the docs landing page (shown when navigating to `/docs`).                                                                                                               |
 | `showImageAtTop`        | No       | Set `true` to display the `image` field at the top of the post above the header (default: `false`)                                                                                                     |
 
 ### Static pages
@@ -189,6 +190,7 @@ Content here...
 | `docsSectionOrder`      | No       | Order within docs group. Lower numbers appear first within the group.                                                                                                                                  |
 | `docsSectionGroupOrder` | No       | Order of the group in docs sidebar. Lower numbers make the group appear first. Groups without this field sort alphabetically.                                                                          |
 | `docsSectionGroupIcon`  | No       | Phosphor icon name for docs sidebar group (e.g., "Rocket", "Book", "PuzzlePiece"). Icon appears left of the group title. See [Phosphor Icons](https://phosphoricons.com) for available icons.         |
+| `docsLanding`           | No       | Set `true` to use this page as the docs landing page (shown when navigating to `/docs`).                                                                                                               |
 
 **Hide pages from navigation:** Set `showInNav: false` to keep a page published and accessible via direct URL, but hidden from the navigation menu. Pages with `showInNav: false` remain searchable and available via API endpoints. Useful for pages you want to link directly but not show in the main nav.
 
@@ -259,11 +261,13 @@ Created by [Your Name](https://x.com/yourhandle). Follow on [Twitter/X](https://
 
 2. Run `npm run sync` to sync to Convex
 
-3. Footer content appears on homepage and blog page instantly (no rebuild needed)
+3. Footer content appears on homepage, blog page, and all posts/pages instantly (no rebuild needed)
 
 **Markdown support:** Footer content supports full markdown including links, paragraphs, line breaks, and images. External links automatically open in new tabs.
 
 **Fallback:** If `footer` page is not found, the footer falls back to `siteConfig.footer.defaultContent`.
+
+**Priority order:** Per-post/page frontmatter `footer:` field (custom override) > synced footer.md content > siteConfig.footer.defaultContent.
 
 **Relationship with siteConfig:** The `content/pages/footer.md` page takes priority over `siteConfig.footer.defaultContent` when present. Use the markdown page for dynamic content that changes frequently, or keep using siteConfig for static footer content.
 

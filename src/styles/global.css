@@ -1883,6 +1883,7 @@ body {
 
 .post-share {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 24px;
 }
@@ -1904,6 +1905,18 @@ body {
 .share-button:hover {
   background-color: var(--bg-hover);
   color: var(--text-primary);
+}
+
+/* Mobile: icon-only share buttons */
+@media (max-width: 480px) {
+  .share-button {
+    padding: 10px;
+    gap: 0;
+  }
+
+  .share-button span {
+    display: none;
+  }
 }
 
 .post-tags {
@@ -1946,13 +1959,19 @@ body {
   border-top: 1px solid var(--border-color);
 }
 
+.post-share-title {
+  width: 100%;
+  font-size: var(--font-size-md);
+  font-weight: 300;
+  color: var(--text-muted);
+  margin: 0 0 4px 0;
+}
+
 .related-posts-title {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--font-size-md);
+  font-weight: 300;
   color: var(--text-muted);
   margin-bottom: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .related-posts-list {

@@ -2,7 +2,7 @@
 
 ---
 Type: page
-Date: 2026-01-03
+Date: 2026-01-04
 ---
 
 # Newsletter Demo Page

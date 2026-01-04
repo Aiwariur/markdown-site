@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.8.2] - 2026-01-03
+
+### Fixed
+
+- Footer not displaying on docs section posts/pages even with `showFooter: true` in frontmatter
+  - Post.tsx now fetches footer.md content from Convex (matching Home.tsx and Blog.tsx pattern)
+  - Footer falls back to footer.md content when no per-post `footer:` frontmatter is specified
+  - Priority order: per-post frontmatter `footer:` field > synced footer.md content > siteConfig.footer.defaultContent
+
+### Technical
+
+- Added `useQuery(api.pages.getPageBySlug, { slug: "footer" })` to Post.tsx
+- Updated all 4 Footer component calls to use `post.footer || footerPage?.content` pattern
+
 ## [2.8.1] - 2026-01-03
 
 ### Changed

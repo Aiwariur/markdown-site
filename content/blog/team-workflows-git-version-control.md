@@ -9,6 +9,7 @@ readTime: "6 min read"
 image: /images/team-sync.png
 featured: false
 layout: "sidebar"
+showFooter: true
 newsletter: true
 excerpt: "Learn how teams use git for markdown version control, sync to Convex deployments, and automate production workflows."
 docsSection: true
