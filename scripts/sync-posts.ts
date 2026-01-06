@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../convex/_generated/api";
 import dotenv from "dotenv";
+import { siteConfig } from "../src/config/siteConfig";
 
 // Load environment variables based on SYNC_ENV
 const isProduction = process.env.SYNC_ENV === "production";
@@ -375,22 +376,26 @@ async function syncPosts() {
     }
   }
 
-  // Generate embeddings for semantic search (if OPENAI_API_KEY is configured)
-  console.log("\nGenerating embeddings for semantic search...");
-  try {
-    const embeddingResult = await client.action(
-      api.embeddings.generateMissingEmbeddings,
-      {}
-    );
-    if (embeddingResult.skipped) {
-      console.log("  Skipped: OPENAI_API_KEY not configured");
-    } else {
-      console.log(`  Posts: ${embeddingResult.postsProcessed} embeddings generated`);
-      console.log(`  Pages: ${embeddingResult.pagesProcessed} embeddings generated`);
+  // Generate embeddings for semantic search (if enabled in siteConfig and OPENAI_API_KEY is configured)
+  if (siteConfig.semanticSearch?.enabled === false) {
+    console.log("\nSkipping embedding generation (semantic search disabled in siteConfig)");
+  } else {
+    console.log("\nGenerating embeddings for semantic search...");
+    try {
+      const embeddingResult = await client.action(
+        api.embeddings.generateMissingEmbeddings,
+        {}
+      );
+      if (embeddingResult.skipped) {
+        console.log("  Skipped: OPENAI_API_KEY not configured");
+      } else {
+        console.log(`  Posts: ${embeddingResult.postsProcessed} embeddings generated`);
+        console.log(`  Pages: ${embeddingResult.pagesProcessed} embeddings generated`);
+      }
+    } catch (error) {
+      // Non-fatal - continue even if embedding generation fails
+      console.log("  Warning: Could not generate embeddings:", error);
     }
-  } catch (error) {
-    // Non-fatal - continue even if embedding generation fails
-    console.log("  Warning: Could not generate embeddings:", error);
   }
 
   // Generate static raw markdown files in public/raw/

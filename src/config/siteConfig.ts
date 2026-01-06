@@ -236,6 +236,13 @@ export interface ImageLightboxConfig {
   enabled: boolean; // Global toggle for image lightbox feature
 }
 
+// Semantic search configuration
+// Enables AI-powered search using vector embeddings
+// Requires OPENAI_API_KEY environment variable in Convex dashboard
+export interface SemanticSearchConfig {
+  enabled: boolean; // Global toggle for semantic search feature
+}
+
 // Social link configuration for social footer
 export interface SocialLink {
   platform:
@@ -365,6 +372,9 @@ export interface SiteConfig {
 
   // AI Dashboard configuration (optional)
   aiDashboard?: AIDashboardConfig;
+
+  // Semantic search configuration (optional)
+  semanticSearch?: SemanticSearchConfig;
 }
 
 // Default site configuration
@@ -743,6 +753,13 @@ export const siteConfig: SiteConfig = {
         provider: "google",
       },
     ],
+  },
+
+  // Semantic search configuration
+  // Set enabled: true to enable semantic search (requires OPENAI_API_KEY in Convex)
+  // When disabled, only keyword search is available (no API key needed)
+  semanticSearch: {
+    enabled: false, // Set to true to enable semantic search (requires OPENAI_API_KEY)
   },
 };
 

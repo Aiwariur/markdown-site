@@ -831,6 +831,52 @@ imageLightbox: {
 
 ---
 
+## Semantic Search Configuration
+
+Enable AI-powered semantic search using OpenAI embeddings. When disabled, only keyword search is available.
+
+### In fork-config.json
+
+```json
+{
+  "semanticSearch": {
+    "enabled": false
+  }
+}
+```
+
+### Manual Configuration
+
+In `src/config/siteConfig.ts`:
+
+```typescript
+semanticSearch: {
+  enabled: true, // Enable semantic search (requires OPENAI_API_KEY)
+},
+```
+
+**Requirements:**
+
+When enabled, set the OpenAI API key in Convex:
+
+```bash
+npx convex env set OPENAI_API_KEY sk-your-key-here
+```
+
+**Features:**
+
+- Toggle between Keyword and Semantic modes in search modal (Cmd+K)
+- Keyword search: exact word matching (instant, free)
+- Semantic search: finds content by meaning (~300ms, ~$0.0001/query)
+- Similarity scores displayed as percentages
+- Embeddings generated automatically during `npm run sync`
+
+**Default:** `enabled: false` (keyword search only, no API key required)
+
+See [Semantic Search](/docs-semantic-search) for detailed documentation.
+
+---
+
 ## MCP Server Configuration
 
 HTTP-based Model Context Protocol server for AI tool integration (Cursor, Claude Desktop).

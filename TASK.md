@@ -4,9 +4,17 @@
 
 ## Current Status
 
-v2.10.0 ready. Semantic search with vector embeddings added to complement keyword search.
+v2.10.1 ready. Semantic search now optional via siteConfig.semanticSearch.enabled toggle.
 
 ## Completed
+
+- [x] Optional semantic search configuration
+  - [x] Added `SemanticSearchConfig` interface to `siteConfig.ts`
+  - [x] Added `semanticSearch.enabled` toggle (default: true)
+  - [x] Updated `SearchModal.tsx` to conditionally show mode toggle
+  - [x] Updated `sync-posts.ts` to skip embedding generation when disabled
+  - [x] Updated `docs-semantic-search.md` with enable/disable section
+  - [x] Updated `docs.md` with semantic search configuration note
 
 - [x] Semantic search with vector embeddings
   - [x] Dual search modes: Keyword (exact match) and Semantic (meaning-based)

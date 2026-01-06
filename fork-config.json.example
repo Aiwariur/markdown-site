@@ -179,6 +179,9 @@
   "dashboard": {
     "enabled": true,
     "requireAuth": false
+  },
+  "semanticSearch": {
+    "enabled": false
   }
 }
 

@@ -11,6 +11,29 @@ docsSectionOrder: 4
 
 All notable changes to this project.
 
+## v2.10.1
+
+Released January 5, 2026
+
+**Optional semantic search configuration**
+
+Semantic search can now be disabled via `siteConfig.semanticSearch.enabled`:
+
+```typescript
+semanticSearch: {
+  enabled: false, // Disable semantic search, use keyword only
+},
+```
+
+When disabled:
+- Search modal shows only keyword search (no mode toggle)
+- Embedding generation skipped during sync (saves API costs)
+- Existing embeddings preserved in database (no data loss)
+
+Default is `enabled: false` (keyword search only, no API key required). Set to `true` and configure OPENAI_API_KEY to enable semantic search.
+
+Updated files: `src/config/siteConfig.ts`, `src/components/SearchModal.tsx`, `scripts/sync-posts.ts`, `src/pages/Dashboard.tsx`, `FORK_CONFIG.md`, `fork-config.json.example`, `content/pages/docs-semantic-search.md`, `content/pages/docs.md`
+
 ## v2.10.0
 
 Released January 5, 2026

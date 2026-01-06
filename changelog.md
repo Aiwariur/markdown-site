@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.10.1] - 2026-01-05
+
+### Added
+
+- Optional semantic search configuration via `siteConfig.semanticSearch`
+  - New `enabled` toggle (default: `false` to avoid blocking forks without API key)
+  - When disabled, search modal shows only keyword search (no mode toggle)
+  - Embedding generation skipped during sync when disabled (saves API costs)
+  - Existing embeddings preserved in database when disabled (no data loss)
+  - Tab key shortcut hints hidden when semantic search is disabled
+  - Dashboard config generator includes semantic search toggle
+
+### Technical
+
+- New `SemanticSearchConfig` interface in `src/config/siteConfig.ts`
+- Updated `src/components/SearchModal.tsx` to conditionally render mode toggle
+- Updated `scripts/sync-posts.ts` to check config before embedding generation
+- Updated `src/pages/Dashboard.tsx` with semantic search config option
+- Updated `FORK_CONFIG.md` with semantic search configuration section
+- Updated `fork-config.json.example` with semanticSearch option
+- Updated documentation: `docs-semantic-search.md`, `docs.md`
+
 ## [2.10.0] - 2026-01-05
 
 ### Added

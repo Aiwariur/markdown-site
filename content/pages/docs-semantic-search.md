@@ -87,6 +87,31 @@ If the key is not configured:
 - Keyword search continues to work normally
 - Sync script skips embedding generation
 
+### Enable/Disable Semantic Search
+
+Semantic search is **disabled by default** to avoid requiring API keys for forks. Enable it via `src/config/siteConfig.ts`:
+
+```typescript
+semanticSearch: {
+  enabled: true, // Enable semantic search (requires OPENAI_API_KEY)
+},
+```
+
+When disabled (default):
+- Search modal shows only keyword search (no mode toggle)
+- Embedding generation skipped during sync (saves API costs)
+- No OpenAI API key required
+
+When enabled:
+- Search modal shows both Keyword and Semantic modes
+- Embeddings generated during `npm run sync`
+- Requires OPENAI_API_KEY in Convex
+
+To enable semantic search:
+1. Set `semanticSearch.enabled: true` in siteConfig.ts
+2. Set `OPENAI_API_KEY` in Convex: `npx convex env set OPENAI_API_KEY sk-xxx`
+3. Run `npm run sync` to generate embeddings
+
 ### How embeddings are generated
 
 When you run `npm run sync`:

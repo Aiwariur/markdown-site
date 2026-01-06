@@ -11,6 +11,7 @@ import {
   TextAa,
   Brain,
 } from "@phosphor-icons/react";
+import { siteConfig } from "../config/siteConfig";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -31,6 +32,9 @@ interface SearchResult {
 }
 
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
+  // Check if semantic search is enabled in siteConfig
+  const semanticEnabled = siteConfig.semanticSearch?.enabled !== false;
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [searchMode, setSearchMode] = useState<SearchMode>("keyword");
@@ -100,8 +104,8 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   // Handle keyboard navigation
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      // Tab toggles between search modes
-      if (e.key === "Tab") {
+      // Tab toggles between search modes (only if semantic search is enabled)
+      if (e.key === "Tab" && semanticEnabled) {
         e.preventDefault();
         setSearchMode((prev) => (prev === "keyword" ? "semantic" : "keyword"));
         return;
@@ -142,7 +146,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           break;
       }
     },
-    [results, selectedIndex, navigate, onClose, searchMode, searchQuery]
+    [results, selectedIndex, navigate, onClose, searchMode, searchQuery, semanticEnabled]
   );
 
   // Handle clicking on a result
@@ -168,25 +172,27 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   return (
     <div className="search-modal-backdrop" onClick={handleBackdropClick}>
       <div className="search-modal">
-        {/* Search mode toggle */}
-        <div className="search-mode-toggle">
-          <button
-            className={`search-mode-btn ${searchMode === "keyword" ? "active" : ""}`}
-            onClick={() => setSearchMode("keyword")}
-            title="Keyword search - matches exact words"
-          >
-            <TextAa size={16} weight="bold" />
-            <span>Keyword</span>
-          </button>
-          <button
-            className={`search-mode-btn ${searchMode === "semantic" ? "active" : ""}`}
-            onClick={() => setSearchMode("semantic")}
-            title="Semantic search - finds similar meaning"
-          >
-            <Brain size={16} weight="bold" />
-            <span>Semantic</span>
-          </button>
-        </div>
+        {/* Search mode toggle - only shown when semantic search is enabled */}
+        {semanticEnabled && (
+          <div className="search-mode-toggle">
+            <button
+              className={`search-mode-btn ${searchMode === "keyword" ? "active" : ""}`}
+              onClick={() => setSearchMode("keyword")}
+              title="Keyword search - matches exact words"
+            >
+              <TextAa size={16} weight="bold" />
+              <span>Keyword</span>
+            </button>
+            <button
+              className={`search-mode-btn ${searchMode === "semantic" ? "active" : ""}`}
+              onClick={() => setSearchMode("semantic")}
+              title="Semantic search - finds similar meaning"
+            >
+              <Brain size={16} weight="bold" />
+              <span>Semantic</span>
+            </button>
+          </div>
+        )}
 
         {/* Search input */}
         <div className="search-modal-input-wrapper">
@@ -223,9 +229,11 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   : "Describe what you're looking for"}
               </p>
               <div className="search-modal-shortcuts">
-                <span className="search-shortcut">
-                  <kbd>Tab</kbd> Switch mode
-                </span>
+                {semanticEnabled && (
+                  <span className="search-shortcut">
+                    <kbd>Tab</kbd> Switch mode
+                  </span>
+                )}
                 <span className="search-shortcut">
                   <kbd>↑</kbd>
                   <kbd>↓</kbd> Navigate
@@ -292,9 +300,11 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         {/* Footer with keyboard hints */}
         {results && results.length > 0 && (
           <div className="search-modal-footer">
-            <span className="search-footer-hint">
-              <kbd>Tab</kbd> switch mode
-            </span>
+            {semanticEnabled && (
+              <span className="search-footer-hint">
+                <kbd>Tab</kbd> switch mode
+              </span>
+            )}
             <span className="search-footer-hint">
               <kbd>↵</kbd> select
             </span>

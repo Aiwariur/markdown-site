@@ -4597,6 +4597,8 @@ function ConfigSection({
     mcpServerRequireAuth: siteConfig.mcpServer?.requireAuth || false,
     // Image lightbox
     imageLightboxEnabled: siteConfig.imageLightbox?.enabled !== false,
+    // Semantic search
+    semanticSearchEnabled: siteConfig.semanticSearch?.enabled || false,
   });
 
   const [copied, setCopied] = useState(false);
@@ -4761,6 +4763,12 @@ export const siteConfig: SiteConfig = {
   // Enables click-to-magnify functionality for images in blog posts and pages
   imageLightbox: {
     enabled: ${config.imageLightboxEnabled},
+  },
+
+  // Semantic search configuration
+  // Set enabled: true to enable AI-powered semantic search (requires OPENAI_API_KEY in Convex)
+  semanticSearch: {
+    enabled: ${config.semanticSearchEnabled},
   },
 };
 
@@ -5571,6 +5579,26 @@ export default siteConfig;
               <span>Enable image lightbox (click images to magnify)</span>
             </label>
           </div>
+        </div>
+
+        {/* Semantic Search */}
+        <div className="dashboard-config-card">
+          <h3>Semantic Search</h3>
+          <div className="config-field checkbox">
+            <label>
+              <input
+                type="checkbox"
+                checked={config.semanticSearchEnabled}
+                onChange={(e) =>
+                  handleChange("semanticSearchEnabled", e.target.checked)
+                }
+              />
+              <span>Enable semantic search (requires OPENAI_API_KEY in Convex)</span>
+            </label>
+          </div>
+          <p className="config-hint">
+            When enabled, search modal shows both Keyword and Semantic modes. Requires OpenAI API key for embeddings.
+          </p>
         </div>
 
         {/* Links */}

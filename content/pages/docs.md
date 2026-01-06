@@ -98,8 +98,11 @@ Press `Command+K` (Mac) or `Ctrl+K` (Windows/Linux) to open the search modal. Cl
 - Result snippets with context around matches
 - Distinguishes between posts and pages
 - Works with all four themes
+- Two search modes: [Keyword](/docs-search) (exact match) and [Semantic](/docs-semantic-search) (meaning-based)
 
-Search uses Convex full text search indexes. No configuration needed.
+Search uses Convex full text search indexes. No configuration needed for keyword search.
+
+**Semantic search configuration:** Requires `OPENAI_API_KEY` in Convex. Can be disabled via `siteConfig.semanticSearch.enabled: false`. See [Semantic Search](/docs-semantic-search) for details.
 
 ## Copy Page dropdown
 
