@@ -11,6 +11,74 @@ docsSectionOrder: 4
 
 All notable changes to this project.
 
+## v2.15.2
+
+Released January 8, 2026
+
+**Docs layout CSS conflict fix**
+
+Fixed a CSS conflict where the `.main-content` container was constraining the docs section layout to 800px max-width, preventing the three-column layout (left sidebar, content, right sidebar) from displaying correctly.
+
+**Fixes:**
+
+- Left sidebar now properly flush left at `left: 0`
+- Right sidebar now properly flush right at `right: 0`
+- Docs content area properly positioned between sidebars
+- Responsive margins adjusted for all breakpoints
+
+**Technical:**
+
+- Added `.main-content:has(.docs-layout)` CSS rule to expand to 100% width
+- Updated Layout.tsx to use `main-content-wide` class for docs pages
+- Fixed `.docs-content` margins: 280px (desktop), 240px (small tablet), 0 (mobile)
+- Added responsive margin adjustments at 1200px, 900px, 768px breakpoints
+
+**Files changed:**
+
+- `src/styles/global.css` - Added docs layout override, fixed margin values
+- `src/components/Layout.tsx` - Added isDocsPage check for main-content-wide
+
+---
+
+## v2.15.1
+
+Released January 8, 2026
+
+**Additional Core Web Vitals CLS and INP improvements**
+
+Continued performance improvements targeting Cumulative Layout Shift (CLS), Largest Contentful Paint (LCP), and Interaction to Next Paint (INP).
+
+**CLS Fixes:**
+
+- Added `aspect-ratio: 16/10` to `.blog-image` to reserve space before images load
+- Added `aspect-ratio: 16/9` to `.post-header-image-img` to prevent header image layout shift
+- Added `contain: layout style` to `.main-content` and `.main-content-wide` to isolate layout recalculations
+
+**LCP Improvements:**
+
+- Added `fetchPriority="high"` to logo image in Layout.tsx for faster loading
+- Added `fetchPriority="high"` to header images (showImageAtTop) in Post.tsx
+
+**INP/Animation Improvements:**
+
+- Added `will-change: transform` to continuous spin animations:
+  - `.spinner-icon`
+  - `.animate-spin`
+  - `.ai-chat-spinner`
+  - `.ai-image-spinner`
+  - `.spinning`
+  - `.dashboard-import-btn .spin`
+- Added `will-change: transform` to `.logo-marquee-track` for smoother marquee
+- Added `will-change: opacity` to `.visitor-map-badge-dot` for pulse animation
+
+**Files changed:**
+
+- `src/styles/global.css` - CLS prevention, CSS containment, animation will-change hints
+- `src/components/Layout.tsx` - fetchPriority on logo
+- `src/pages/Post.tsx` - fetchPriority on header images
+
+---
+
 ## v2.15.0
 
 Released January 7, 2026
@@ -37,6 +105,34 @@ Added PDF export option to CopyPageDropdown. Users can now export any blog post 
 **Files changed:**
 
 - `src/components/CopyPageDropdown.tsx` - New PDF export functionality
+
+---
+
+## v2.14.1
+
+Released January 7, 2026
+
+**Additional Core Web Vitals animation fixes**
+
+Continued performance improvements targeting non-composited animations identified by PageSpeed Insights.
+
+**Fixes:**
+
+- Fixed `docs-skeleton-pulse` animation: Converted from `background-position` (non-composited) to pseudo-element with `transform: translateX()` (GPU-composited)
+- Added `will-change` hints to 6 more animated elements for GPU compositing
+
+**Elements with new will-change hints:**
+
+- `.image-lightbox-backdrop` - will-change: opacity
+- `.search-modal` - will-change: transform, opacity
+- `.ai-chat-message` - will-change: transform, opacity
+- `.dashboard-toast` - will-change: transform, opacity
+- `.ask-ai-modal` - will-change: transform, opacity
+- `.docs-article` - will-change: opacity
+
+**Files changed:**
+
+- `src/styles/global.css` - Skeleton animation fix, additional will-change hints
 
 ---
 

@@ -418,6 +418,7 @@ export default function Post({
                   src={page.image}
                   alt={page.title}
                   className="post-header-image-img"
+                  fetchPriority="high"
                 />
               </div>
             )}
@@ -491,6 +492,7 @@ export default function Post({
                   src={page.image}
                   alt={page.title}
                   className="post-header-image-img"
+                  fetchPriority="high"
                 />
               </div>
             )}
@@ -659,6 +661,7 @@ export default function Post({
                 src={post.image}
                 alt={post.title}
                 className="post-header-image-img"
+                  fetchPriority="high"
               />
             </div>
           )}
@@ -736,6 +739,7 @@ export default function Post({
                 src={post.image}
                 alt={post.title}
                 className="post-header-image-img"
+                  fetchPriority="high"
               />
             </div>
           )}

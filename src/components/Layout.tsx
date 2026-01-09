@@ -200,6 +200,7 @@ export default function Layout({ children }: LayoutProps) {
               width={siteConfig.innerPageLogo.size}
               height={siteConfig.innerPageLogo.size}
               style={{ height: siteConfig.innerPageLogo.size, width: "auto" }}
+              fetchPriority="high"
             />
           </Link>
         )}
@@ -315,10 +316,12 @@ export default function Layout({ children }: LayoutProps) {
         </nav>
       </MobileMenu>
 
-      {/* Use wider layout for stats and blog pages, normal layout for other pages */}
+      {/* Use wider layout for stats, blog, and docs pages, normal layout for other pages */}
       <main
         className={
-          location.pathname === "/stats" || location.pathname === "/blog"
+          location.pathname === "/stats" ||
+          location.pathname === "/blog" ||
+          isDocsPage
             ? "main-content-wide"
             : "main-content"
         }

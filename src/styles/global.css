@@ -323,12 +323,20 @@ body {
   width: 100%;
   margin: 0 auto;
   /* Note: padding-top for nav is handled by .layout */
+  /* CLS/INP fix: isolate layout recalculations to this container */
+  contain: layout style;
 }
 
 /* Expand main-content to full width when sidebar layout is used */
 .main-content:has(.post-page-with-sidebar) {
   max-width: 100%;
   padding: 0 0px;
+}
+
+/* Expand main-content to full width when docs layout is used */
+.main-content:has(.docs-layout) {
+  max-width: 100%;
+  padding: 0;
 }
 
 /* Wide content layout for pages that need more space (stats, etc.) */
@@ -338,6 +346,8 @@ body {
   width: 100%;
   margin: 0 auto;
   padding: 0;
+  /* CLS/INP fix: isolate layout recalculations to this container */
+  contain: layout style;
 }
 
 /* Top navigation bar */
@@ -836,6 +846,7 @@ body {
 .spinner-icon {
   animation: spin 1s linear infinite;
   color: var(--text-secondary);
+  will-change: transform;
 }
 
 @keyframes dropdownFadeIn {
@@ -967,6 +978,9 @@ body {
   height: auto;
   display: block;
   object-fit: cover;
+  /* CLS fix: reserve space for header images */
+  aspect-ratio: 16 / 9;
+  background: var(--bg-secondary);
 }
 
 /* Title row container - flex layout for title and CopyPageDropdown */
@@ -1886,6 +1900,10 @@ body {
   height: auto;
   border-radius: 8px;
   display: block;
+  /* CLS fix: reserve space before image loads (default landscape ratio) */
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  background: var(--bg-secondary);
 }
 
 .blog-image-clickable {
@@ -1933,6 +1951,7 @@ body {
   justify-content: center;
   padding: 20px;
   animation: lightboxFadeIn 0.2s ease;
+  will-change: opacity;
 }
 
 @keyframes lightboxFadeIn {
@@ -3523,6 +3542,7 @@ body {
   display: flex;
   flex-direction: column;
   animation: modalSlideIn 0.2s ease;
+  will-change: transform, opacity;
 }
 
 @keyframes modalSlideIn {
@@ -3845,8 +3865,12 @@ body {
 }
 
 @keyframes search-highlight-pulse {
-  0% { background-color: var(--accent); }
-  100% { background-color: var(--search-highlight-active); }
+  0% {
+    background-color: var(--accent);
+  }
+  100% {
+    background-color: var(--search-highlight-active);
+  }
 }
 
 /* Theme-specific search highlight colors */
@@ -3862,7 +3886,7 @@ body {
 
 :root[data-theme="tan"] {
   --search-highlight-bg: rgba(139, 115, 85, 0.15);
-  --search-highlight-active: rgba(139, 115, 85, 0.30);
+  --search-highlight-active: rgba(139, 115, 85, 0.3);
 }
 
 :root[data-theme="cloud"] {
@@ -4524,6 +4548,7 @@ body {
   background: var(--visitor-map-dot);
   border-radius: 50%;
   animation: badge-pulse 2s ease-in-out infinite;
+  will-change: opacity;
 }
 
 @keyframes badge-pulse {
@@ -4610,6 +4635,7 @@ body {
   display: flex;
   animation: marquee-scroll var(--marquee-speed, 30s) linear infinite;
   width: max-content;
+  will-change: transform;
 }
 
 @keyframes marquee-scroll {
@@ -6347,6 +6373,7 @@ body {
   gap: 8px;
   max-width: 85%;
   animation: aiChatFadeIn 0.2s ease;
+  will-change: transform, opacity;
 }
 
 @keyframes aiChatFadeIn {
@@ -6511,6 +6538,7 @@ body {
 
 .ai-chat-spinner {
   animation: aiChatSpin 1s linear infinite;
+  will-change: transform;
 }
 
 @keyframes aiChatSpin {
@@ -9266,6 +9294,7 @@ body {
 
 .animate-spin {
   animation: spin 1s linear infinite;
+  will-change: transform;
 }
 
 .dashboard-editor-container {
@@ -10154,6 +10183,7 @@ body {
 
 .ai-image-spinner {
   animation: spin 1s linear infinite;
+  will-change: transform;
 }
 
 /* AI Image Input Container */
@@ -10297,6 +10327,7 @@ body {
 
 .dashboard-import-btn .spin {
   animation: spin 1s linear infinite;
+  will-change: transform;
 }
 
 .dashboard-import-result {
@@ -10699,6 +10730,7 @@ body {
 
 .spinning {
   animation: spin 1s linear infinite;
+  will-change: transform;
 }
 
 /* Sync Terminal Output */
@@ -11289,7 +11321,8 @@ body {
   flex-shrink: 0;
 }
 
-.dashboard-write-section.focus-mode.frontmatter-collapsed .dashboard-write-sidebar {
+.dashboard-write-section.focus-mode.frontmatter-collapsed
+  .dashboard-write-sidebar {
   width: 56px;
 }
 
@@ -11382,6 +11415,7 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   animation: toastSlideIn 0.3s ease;
+  will-change: transform, opacity;
 }
 
 @keyframes toastSlideIn {
@@ -12917,7 +12951,7 @@ body {
 /* Left sidebar for docs navigation - flush left */
 .docs-sidebar-left {
   position: fixed;
-  top: 80px;
+  top: 20px;
   left: 0;
   width: 280px;
   height: calc(100vh - 80px);
@@ -12950,7 +12984,7 @@ body {
 /* Right sidebar for table of contents - flush right */
 .docs-sidebar-right {
   position: fixed;
-  top: 80px;
+  top: 20px;
   right: 0;
   width: 280px;
   height: calc(100vh - 80px);
@@ -13057,8 +13091,8 @@ body {
 
 /* Main content area - uses margins for fixed sidebars */
 .docs-content {
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 280px;
+  margin-right: 280px;
   padding: 32px 48px;
   overflow-y: auto;
   min-height: calc(100vh - 80px);
@@ -13071,7 +13105,7 @@ body {
   margin-right: auto;
 }
 
-/* No TOC layout - content takes more space */
+/* No TOC layout - content takes more space (no right sidebar) */
 .docs-layout.no-toc .docs-content {
   margin-right: 0;
 }
@@ -13294,6 +13328,7 @@ body {
   max-width: 800px;
   margin: 0 auto;
   animation: docs-content-fade-in 150ms ease-out;
+  will-change: opacity;
 }
 
 @keyframes docs-content-fade-in {
@@ -13311,15 +13346,28 @@ body {
 }
 
 .docs-loading-skeleton {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.docs-loading-skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: linear-gradient(
     90deg,
-    var(--bg-secondary) 25%,
+    transparent 0%,
     var(--bg-hover) 50%,
-    var(--bg-secondary) 75%
+    transparent 100%
   );
-  background-size: 200% 100%;
+  transform: translateX(-100%);
   animation: docs-skeleton-pulse 1.5s ease-in-out infinite;
-  border-radius: 4px;
+  will-change: transform;
 }
 
 .docs-loading-title {
@@ -13342,10 +13390,10 @@ body {
 
 @keyframes docs-skeleton-pulse {
   0% {
-    background-position: 200% 0;
+    transform: translateX(-100%);
   }
   100% {
-    background-position: -200% 0;
+    transform: translateX(100%);
   }
 }
 
@@ -13441,6 +13489,10 @@ body {
   .docs-sidebar-right {
     display: none;
   }
+
+  .docs-content {
+    margin-right: 0;
+  }
 }
 
 /* Docs responsive - small tablet */
@@ -13450,6 +13502,7 @@ body {
   }
 
   .docs-content {
+    margin-left: 240px;
     padding: 24px 32px;
   }
 }
@@ -13522,7 +13575,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s ease, background-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .ask-ai-button:hover {
@@ -13555,6 +13610,7 @@ body {
   flex-direction: column;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
   animation: modalSlideIn 0.2s ease;
+  will-change: transform, opacity;
 }
 
 /* Modal Header */
@@ -13610,7 +13666,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s ease, background-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .ask-ai-action-btn:hover:not(:disabled) {

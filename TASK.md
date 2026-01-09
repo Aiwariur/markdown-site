@@ -4,9 +4,19 @@
 
 ## Current Status
 
-v2.15.0 ready. Export as PDF feature added to CopyPageDropdown.
+v2.15.1 ready. Additional Core Web Vitals CLS and INP improvements.
 
 ## Completed
+
+- [x] Additional Core Web Vitals CLS and INP improvements (v2.15.1)
+  - [x] Added aspect-ratio to blog images and header images to prevent layout shift
+  - [x] Added CSS containment to main content areas
+  - [x] Added fetchPriority="high" to logo and header images for faster LCP
+  - [x] Added will-change to continuous spin animations and marquee
+
+- [x] Additional Core Web Vitals fixes (v2.14.1)
+  - [x] Fixed docs-skeleton-pulse animation (background-position to transform: translateX())
+  - [x] Added will-change to 6 more animated elements (lightbox, modals, chat, toast)
 
 - [x] Export as PDF option in CopyPageDropdown
   - [x] Added browser print dialog for saving pages as PDF

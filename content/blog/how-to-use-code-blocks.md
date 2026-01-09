@@ -9,6 +9,7 @@ readTime: "4 min read"
 featured: false
 authorName: "Markdown"
 authorImage: "/images/authors/markdown.png"
+image: /images/codeblocks.png
 excerpt: "Learn how to add syntax-highlighted code blocks and enhanced diff views to your posts."
 docsSection: true
 docsSectionGroup: "Publishing"

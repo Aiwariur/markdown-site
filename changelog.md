@@ -4,6 +4,47 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.15.2] - 2026-01-08
+
+### Fixed
+
+- Docs section layout CSS conflict with main-content container
+  - Fixed `.main-content` max-width: 800px constraint preventing docs layout from being full width
+  - Added `.main-content:has(.docs-layout)` rule to expand to 100% width when docs layout is used
+  - Updated Layout.tsx to use `main-content-wide` class for docs pages
+  - Fixed left sidebar not flush left and right sidebar not flush right
+  - Fixed responsive margins for docs layout (280px desktop, 240px tablet, 0 mobile)
+
+### Technical
+
+- Updated `src/styles/global.css`:
+  - Added `.main-content:has(.docs-layout) { max-width: 100%; padding: 0; }`
+  - Fixed `.docs-content` margins: 280px left/right for fixed sidebars
+  - Added responsive margin adjustments at 1200px, 900px, 768px breakpoints
+- Updated `src/components/Layout.tsx`:
+  - Added `isDocsPage` check to className logic for main element
+  - Docs pages now use `main-content-wide` class for full width layout
+
+## [2.15.1] - 2026-01-08
+
+### Fixed
+
+- Additional Core Web Vitals improvements for CLS and INP
+  - Added `aspect-ratio: 16/10` to `.blog-image` to reserve space before images load
+  - Added `aspect-ratio: 16/9` to `.post-header-image-img` to prevent layout shift
+  - Added `contain: layout style` to `.main-content` and `.main-content-wide` to isolate layout recalculations
+  - Added `fetchPriority="high"` to logo image for faster LCP
+  - Added `fetchPriority="high"` to header images (`showImageAtTop`) for faster LCP
+  - Added `will-change: transform` to continuous spin animations (`.spinner-icon`, `.animate-spin`, `.ai-chat-spinner`, `.ai-image-spinner`, `.spinning`, `.dashboard-import-btn .spin`)
+  - Added `will-change: transform` to `.logo-marquee-track` for smoother marquee animation
+  - Added `will-change: opacity` to `.visitor-map-badge-dot` for smoother pulse animation
+
+### Technical
+
+- Updated `src/styles/global.css` with CLS prevention and animation optimization
+- Updated `src/components/Layout.tsx` with fetchPriority on logo
+- Updated `src/pages/Post.tsx` with fetchPriority on header images
+
 ## [2.15.0] - 2026-01-07
 
 ### Added
@@ -22,6 +63,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added `formatForPrint` function to strip markdown syntax from content
 - Added `handleExportPDF` handler with styled print window
 - Imports `FilePdf` from `@phosphor-icons/react` (already installed)
+
+## [2.14.1] - 2026-01-07
+
+### Fixed
+
+- Additional Core Web Vitals animation fixes
+  - Fixed `docs-skeleton-pulse` animation (converted from `background-position` to `transform: translateX()` via pseudo-element)
+  - Added `will-change` hints to 6 more animated elements for GPU compositing
+
+### Technical
+
+- Updated `src/styles/global.css`:
+  - Converted docs-loading-skeleton from background animation to pseudo-element with translateX
+  - Added `will-change` to `.image-lightbox-backdrop`, `.search-modal`, `.ai-chat-message`, `.dashboard-toast`, `.ask-ai-modal`, `.docs-article`
 
 ## [2.14.0] - 2026-01-07
 
