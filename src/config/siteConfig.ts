@@ -1,4 +1,9 @@
 import { ReactNode } from "react";
+
+// IMPORTANT: Keep this file in sync with Dashboard Config (src/pages/Dashboard.tsx ConfigSection)
+// When adding/modifying options here, update the Dashboard Config UI to match.
+// See CLAUDE.md "Configuration alignment" section for details.
+
 // Re-export types from LogoMarquee for convenience
 export type { LogoItem, LogoGalleryConfig } from "../components/LogoMarquee";
 import type { LogoGalleryConfig } from "../components/LogoMarquee";

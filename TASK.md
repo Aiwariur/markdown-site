@@ -4,9 +4,19 @@
 
 ## Current Status
 
-v2.16.2 ready. Ask AI configuration documentation alignment.
+v2.16.3 ready. Social icons in hamburger menu and Dashboard Config alignment.
 
 ## Completed
+
+- [x] Social icons in hamburger menu and Dashboard Config (v2.16.3)
+  - [x] Added social icons to MobileMenu below navigation links
+  - [x] Removed social icons from mobile header (now only in hamburger menu)
+  - [x] Added `socialFooter.showInHeader` toggle to Dashboard Config
+  - [x] Added `askAI.enabled` toggle to Dashboard Config (new Ask AI card)
+  - [x] Added "Configuration alignment" section to CLAUDE.md
+  - [x] Added sync comments to siteConfig.ts and Dashboard.tsx ConfigSection
+  - [x] Added mobile-menu-social CSS styles
+  - [x] Updated files.md, changelog.md, task.md, changelog-page.md
 
 - [x] Ask AI documentation alignment (v2.16.2)
   - [x] Added `askAI` config to `fork-config.json.example`

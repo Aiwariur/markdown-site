@@ -7,6 +7,34 @@ Date: 2026-01-10
 
 All notable changes to this project.
 
+## v2.16.3
+
+Released January 10, 2026
+
+**Social icons in hamburger menu and Dashboard Config alignment**
+
+Moved social icons from mobile header to hamburger menu for cleaner mobile UI. Added Dashboard Config options for `socialFooter.showInHeader` and `askAI.enabled`. Added configuration alignment documentation for AI/LLMs.
+
+**Changes:**
+
+- Social icons now appear in hamburger menu below navigation links (mobile only)
+- Removed social icons from mobile header (cleaner mobile UI)
+- Added `socialFooter.showInHeader` toggle to Dashboard Config Social Footer card
+- Added new Ask AI config card with `askAI.enabled` toggle in Dashboard Config
+- Added "Configuration alignment" section to CLAUDE.md for AI/LLM guidance
+- Added sync comments to siteConfig.ts and Dashboard.tsx ConfigSection
+
+**Files changed:**
+
+- `src/components/MobileMenu.tsx` - Added social icons section
+- `src/components/Layout.tsx` - Removed social icons from mobile-nav-controls
+- `src/pages/Dashboard.tsx` - Added socialFooterShowInHeader and askAIEnabled config
+- `src/styles/global.css` - Added mobile-menu-social CSS styles
+- `src/config/siteConfig.ts` - Added alignment comment
+- `CLAUDE.md` - Added Configuration alignment section
+
+---
+
 ## v2.16.2
 
 Released January 10, 2026

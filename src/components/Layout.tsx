@@ -206,9 +206,21 @@ export default function Layout({ children }: LayoutProps) {
         )}
 
         {/* Mobile left controls: hamburger, search, theme (visible on mobile/tablet only) */}
+        {/* Note: Social icons are in the hamburger menu (MobileMenu.tsx), not in the mobile header */}
         <div className="mobile-nav-controls">
           {/* Hamburger button for mobile menu */}
           <HamburgerButton onClick={openMobileMenu} isOpen={isMobileMenuOpen} />
+          {/* Ask AI button (only if enabled) */}
+          {siteConfig.askAI?.enabled && siteConfig.semanticSearch?.enabled && (
+            <button
+              onClick={openAskAI}
+              className="ask-ai-button"
+              aria-label="Ask AI (⌘J)"
+              title="Ask AI (⌘J)"
+            >
+              <Sparkle size={18} weight="bold" />
+            </button>
+          )}
           {/* Search button with icon */}
           <button
             onClick={openSearch}

@@ -4,6 +4,42 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.16.3] - 2026-01-10
+
+### Added
+
+- Social icons in hamburger menu (MobileMenu)
+  - Social icons now appear below navigation links in mobile menu
+  - Only shows when `socialFooter.enabled` and `socialFooter.showInHeader` are true
+  - Imported `platformIcons` from SocialFooter for consistent icon rendering
+
+- Dashboard Config options for social and AI features
+  - Added `socialFooter.showInHeader` toggle to Social Footer config card
+  - Added new Ask AI config card with `askAI.enabled` toggle
+  - Generated siteConfig.ts includes both new options
+
+- Configuration alignment documentation for AI/LLMs
+  - Added "Configuration alignment" section to CLAUDE.md
+  - Added sync comment to top of `src/config/siteConfig.ts`
+  - Added JSDoc comment to ConfigSection in Dashboard.tsx
+  - Explains relationship between siteConfig.ts and Dashboard Config
+
+### Changed
+
+- Removed social icons from mobile header
+  - Social icons no longer display in `mobile-nav-controls` (header on mobile)
+  - Social icons now exclusively in hamburger menu for cleaner mobile header
+  - Added comment in Layout.tsx noting social icons are in MobileMenu
+
+### Technical
+
+- `src/components/MobileMenu.tsx` - Added social icons section with platformIcons import
+- `src/components/Layout.tsx` - Removed social icons from mobile-nav-controls
+- `src/pages/Dashboard.tsx` - Added socialFooterShowInHeader and askAIEnabled to ConfigSection
+- `src/styles/global.css` - Added mobile-menu-social CSS styles
+- `src/config/siteConfig.ts` - Added alignment comment header
+- `CLAUDE.md` - Added Configuration alignment section and Dashboard.tsx to key files
+
 ## [2.16.2] - 2026-01-10
 
 ### Added

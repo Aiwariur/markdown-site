@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { Heading } from "../utils/extractHeadings";
 import DocsSidebar from "./DocsSidebar";
 import siteConfig from "../config/siteConfig";
+import { platformIcons } from "./SocialFooter";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -142,6 +143,28 @@ export default function MobileMenu({
         {/* Menu content */}
         <div className="mobile-menu-content">
           {children}
+
+          {/* Social icons (if enabled and showInHeader is true) */}
+          {siteConfig.socialFooter?.enabled &&
+            siteConfig.socialFooter?.showInHeader && (
+              <div className="mobile-menu-social">
+                {siteConfig.socialFooter.socialLinks.map((link) => {
+                  const IconComponent = platformIcons[link.platform];
+                  return (
+                    <a
+                      key={link.platform}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mobile-menu-social-link"
+                      aria-label={`Follow on ${link.platform}`}
+                    >
+                      <IconComponent size={20} weight="regular" />
+                    </a>
+                  );
+                })}
+              </div>
+            )}
 
           {/* Docs sidebar navigation (when on a docs page) */}
           {showDocsSection && (

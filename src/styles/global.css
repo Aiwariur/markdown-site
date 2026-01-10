@@ -5154,6 +5154,27 @@ body {
   font-size: var(--font-size-mobile-toc-link);
 }
 
+/* Mobile menu social links */
+.mobile-menu-social {
+  display: flex;
+  gap: 16px;
+  padding: 16px 12px;
+  margin-top: 8px;
+  border-top: 1px solid var(--border-color);
+}
+
+.mobile-menu-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.mobile-menu-social-link:hover {
+  color: var(--text-primary);
+}
+
 /* Mobile menu table of contents */
 .mobile-menu-toc {
   margin-top: 16px;

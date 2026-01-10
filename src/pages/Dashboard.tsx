@@ -4509,6 +4509,17 @@ function IndexHtmlSection({
   );
 }
 
+/**
+ * ConfigSection - Dashboard UI for generating siteConfig.ts
+ *
+ * IMPORTANT: Keep this section in sync with src/config/siteConfig.ts
+ * When adding/modifying config options in siteConfig.ts, update:
+ * 1. Initial state (useState) with the new option
+ * 2. generateConfigCode() to include the option in output
+ * 3. UI section with appropriate input controls
+ *
+ * See CLAUDE.md "Configuration alignment" section for details.
+ */
 function ConfigSection({
   addToast,
   onNavigateToIndexHtml,
@@ -4594,6 +4605,7 @@ function ConfigSection({
     contactFormDescription: siteConfig.contactForm?.description || "",
     // Social footer
     socialFooterEnabled: siteConfig.socialFooter?.enabled || false,
+    socialFooterShowInHeader: siteConfig.socialFooter?.showInHeader || false,
     socialFooterShowOnHomepage:
       siteConfig.socialFooter?.showOnHomepage || false,
     socialFooterShowOnPosts: siteConfig.socialFooter?.showOnPosts || false,
@@ -4623,6 +4635,8 @@ function ConfigSection({
     imageLightboxEnabled: siteConfig.imageLightbox?.enabled !== false,
     // Semantic search
     semanticSearchEnabled: siteConfig.semanticSearch?.enabled || false,
+    // Ask AI
+    askAIEnabled: siteConfig.askAI?.enabled || false,
   });
 
   const [copied, setCopied] = useState(false);
@@ -4764,6 +4778,7 @@ export const siteConfig: SiteConfig = {
   
   socialFooter: {
     enabled: ${config.socialFooterEnabled},
+    showInHeader: ${config.socialFooterShowInHeader},
     showOnHomepage: ${config.socialFooterShowOnHomepage},
     showOnPosts: ${config.socialFooterShowOnPosts},
     showOnPages: ${config.socialFooterShowOnPages},
@@ -4793,6 +4808,11 @@ export const siteConfig: SiteConfig = {
   // Set enabled: true to enable AI-powered semantic search (requires OPENAI_API_KEY in Convex)
   semanticSearch: {
     enabled: ${config.semanticSearchEnabled},
+  },
+
+  // Ask AI header button (requires semanticSearch.enabled and API keys)
+  askAI: {
+    enabled: ${config.askAIEnabled},
   },
 };
 
@@ -5380,6 +5400,18 @@ export default siteConfig;
             <label>
               <input
                 type="checkbox"
+                checked={config.socialFooterShowInHeader}
+                onChange={(e) =>
+                  handleChange("socialFooterShowInHeader", e.target.checked)
+                }
+              />
+              <span>Show in header</span>
+            </label>
+          </div>
+          <div className="config-field checkbox">
+            <label>
+              <input
+                type="checkbox"
                 checked={config.socialFooterShowOnHomepage}
                 onChange={(e) =>
                   handleChange("socialFooterShowOnHomepage", e.target.checked)
@@ -5622,6 +5654,26 @@ export default siteConfig;
           </div>
           <p className="config-hint">
             When enabled, search modal shows both Keyword and Semantic modes. Requires OpenAI API key for embeddings.
+          </p>
+        </div>
+
+        {/* Ask AI */}
+        <div className="dashboard-config-card">
+          <h3>Ask AI</h3>
+          <div className="config-field checkbox">
+            <label>
+              <input
+                type="checkbox"
+                checked={config.askAIEnabled}
+                onChange={(e) =>
+                  handleChange("askAIEnabled", e.target.checked)
+                }
+              />
+              <span>Enable Ask AI header button</span>
+            </label>
+          </div>
+          <p className="config-hint">
+            Shows a sparkle icon in header. Requires semantic search enabled and API keys (ANTHROPIC_API_KEY or OPENAI_API_KEY in Convex).
           </p>
         </div>
 
