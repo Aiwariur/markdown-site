@@ -4,9 +4,16 @@
 
 ## Current Status
 
-v2.16.1 ready. Docs layout scrollbar hiding for cleaner UI.
+v2.16.2 ready. Ask AI configuration documentation alignment.
 
 ## Completed
+
+- [x] Ask AI documentation alignment (v2.16.2)
+  - [x] Added `askAI` config to `fork-config.json.example`
+  - [x] Added Ask AI Configuration section to `FORK_CONFIG.md`
+  - [x] Added Ask AI (header chat) section to `docs-dashboard.md`
+  - [x] Added Ask AI (header chat) section to `how-to-use-the-markdown-sync-dashboard.md`
+  - [x] Updated changelog.md, task.md, changelog-page.md
 
 - [x] Docs layout scrollbar hiding (v2.16.1)
   - [x] Hidden scrollbars on left sidebar, right sidebar, and main docs content

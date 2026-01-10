@@ -434,3 +434,39 @@ The `npm run sync` command only syncs markdown text content. Images are deployed
 
 - **Homepage logo:** Configured via `logo` in `siteConfig.ts`. Set to `null` to hide.
 - **Inner page logo:** Configured via `innerPageLogo` in `siteConfig.ts`. Shows on blog page, posts, and static pages. Desktop: top left corner. Mobile: top right corner (smaller). Set `enabled: false` to hide on inner pages while keeping homepage logo.
+
+### AI features
+
+Configure AI-powered features in `src/config/siteConfig.ts`:
+
+**Semantic Search:**
+
+```typescript
+semanticSearch: {
+  enabled: true, // Requires OPENAI_API_KEY in Convex
+},
+```
+
+When enabled, users can toggle between keyword and semantic search in the search modal (Cmd+K). Semantic search finds content by meaning using OpenAI embeddings.
+
+**Ask AI (header chat):**
+
+```typescript
+askAI: {
+  enabled: true,
+  defaultModel: "claude-sonnet-4-20250514",
+  models: [
+    { id: "claude-sonnet-4-20250514", name: "Claude Sonnet 4", provider: "anthropic" },
+    { id: "gpt-4o", name: "GPT-4o", provider: "openai" },
+  ],
+},
+```
+
+Adds a chat button to the header for RAG-based Q&A about your content. Requirements:
+- `semanticSearch.enabled: true`
+- `OPENAI_API_KEY` in Convex (for embeddings)
+- `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` (for the LLM)
+
+**AI Dashboard:**
+
+The Dashboard includes a multi-model AI Agent with chat and image generation. See [Dashboard](/docs-dashboard) for configuration details.

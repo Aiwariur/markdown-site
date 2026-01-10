@@ -7,6 +7,30 @@ Date: 2026-01-10
 
 All notable changes to this project.
 
+## v2.16.2
+
+Released January 10, 2026
+
+**Ask AI documentation alignment**
+
+Aligned Ask AI configuration across all config and documentation files. The Ask AI feature (header chat with RAG) is now properly documented alongside AI Agent and AI Dashboard features.
+
+**Changes:**
+
+- Added `askAI` config to `fork-config.json.example`
+- Added Ask AI Configuration section to `FORK_CONFIG.md`
+- Added Ask AI (header chat) section to `docs-dashboard.md`
+- Added Ask AI (header chat) section to `how-to-use-the-markdown-sync-dashboard.md`
+
+**Files changed:**
+
+- `fork-config.json.example` - Added askAI config block
+- `FORK_CONFIG.md` - Added Ask AI Configuration section
+- `content/pages/docs-dashboard.md` - Added Ask AI documentation
+- `content/blog/how-to-use-the-markdown-sync-dashboard.md` - Added Ask AI setup guide
+
+---
+
 ## v2.16.1
 
 Released January 10, 2026

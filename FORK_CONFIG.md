@@ -1232,6 +1232,56 @@ Requires `rightSidebar: true` and `siteConfig.aiChat.enabledOnContent: true`.
 
 ---
 
+## Ask AI Configuration
+
+Enable an Ask AI header chat button that opens a modal for asking questions about site content. Uses RAG (Retrieval Augmented Generation) with streaming responses.
+
+### In fork-config.json
+
+```json
+{
+  "askAI": {
+    "enabled": true,
+    "defaultModel": "claude-sonnet-4-20250514",
+    "models": [
+      { "id": "claude-sonnet-4-20250514", "name": "Claude Sonnet 4", "provider": "anthropic" },
+      { "id": "gpt-4o", "name": "GPT-4o", "provider": "openai" }
+    ]
+  }
+}
+```
+
+### Manual Configuration
+
+In `src/config/siteConfig.ts`:
+
+```typescript
+askAI: {
+  enabled: true, // Enable Ask AI header button
+  defaultModel: "claude-sonnet-4-20250514",
+  models: [
+    { id: "claude-sonnet-4-20250514", name: "Claude Sonnet 4", provider: "anthropic" },
+    { id: "gpt-4o", name: "GPT-4o", provider: "openai" },
+  ],
+},
+```
+
+**Requirements:**
+
+- `semanticSearch.enabled: true` for content retrieval
+- `OPENAI_API_KEY` in Convex for embeddings
+- `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` for the LLM (depending on selected model)
+
+**Features:**
+
+- Header button opens a chat modal
+- Retrieves relevant content using semantic search
+- Streaming responses with markdown rendering
+- Multi-model selector (Claude Sonnet 4, GPT-4o)
+- Conversation history within session
+
+---
+
 ## Posts Display Configuration
 
 Control where posts appear and limit homepage display.

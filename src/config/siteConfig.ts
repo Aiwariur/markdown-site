@@ -250,7 +250,7 @@ export interface TwitterConfig {
   creator?: string; // @username for default content creator
 }
 
-// Ask AI configuration (Kapa-style header chat)
+// Ask AI configuration (header chat for RAG-based Q&A)
 // Enables a header button that opens a chat modal for asking questions about site content
 // Uses RAG (Retrieval Augmented Generation) with streaming responses
 export interface AskAIConfig {
@@ -792,7 +792,7 @@ export const siteConfig: SiteConfig = {
     enabled: true, // Set to true to enable semantic search (requires OPENAI_API_KEY)
   },
 
-  // Ask AI configuration (Kapa-style header chat)
+  // Ask AI configuration (header chat for RAG-based Q&A)
   // Requires semanticSearch.enabled: true for content retrieval
   // Requires OPENAI_API_KEY (for embeddings) and ANTHROPIC_API_KEY or OPENAI_API_KEY (for LLM)
   askAI: {

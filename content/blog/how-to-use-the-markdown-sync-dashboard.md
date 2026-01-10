@@ -97,6 +97,39 @@ The dashboard includes a dedicated AI chat section separate from the Write page.
 
 The AI Agent uses Anthropic Claude API and requires `ANTHROPIC_API_KEY` in your Convex environment variables. Chat history is stored per-session in Convex.
 
+## Ask AI (header chat)
+
+The Ask AI feature adds a chat button to your site header that lets visitors ask questions about your content. It uses RAG (Retrieval Augmented Generation) to find relevant content and provide AI-powered answers.
+
+**To enable Ask AI:**
+
+1. Enable semantic search in `siteConfig.ts`:
+
+```typescript
+semanticSearch: {
+  enabled: true,
+},
+```
+
+2. Configure Ask AI:
+
+```typescript
+askAI: {
+  enabled: true,
+  defaultModel: "claude-sonnet-4-20250514",
+  models: [
+    { id: "claude-sonnet-4-20250514", name: "Claude Sonnet 4", provider: "anthropic" },
+    { id: "gpt-4o", name: "GPT-4o", provider: "openai" },
+  ],
+},
+```
+
+3. Set required environment variables in Convex:
+   - `OPENAI_API_KEY` for embeddings
+   - `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` for the LLM
+
+When enabled, a chat button appears in the header. Clicking it opens a modal where visitors can ask questions. The AI retrieves relevant content from your posts and pages, then generates answers with source citations.
+
 ## Newsletter management
 
 ![Newsletter management](/images/dashboard5.png)

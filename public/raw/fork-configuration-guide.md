@@ -266,6 +266,17 @@ The JSON config file supports additional options:
   },
   "imageLightbox": {
     "enabled": true
+  },
+  "semanticSearch": {
+    "enabled": false
+  },
+  "askAI": {
+    "enabled": false,
+    "defaultModel": "claude-sonnet-4-20250514",
+    "models": [
+      { "id": "claude-sonnet-4-20250514", "name": "Claude Sonnet 4", "provider": "anthropic" },
+      { "id": "gpt-4o", "name": "GPT-4o", "provider": "openai" }
+    ]
   }
 }
 ```
@@ -295,6 +306,10 @@ These are optional. If you omit them, the script uses sensible defaults. See `fo
 **Dashboard**: Admin dashboard at `/dashboard` for content management and site configuration. Optional WorkOS authentication via `requireAuth: true`. When `requireAuth` is `false`, dashboard is open access.
 
 **Image Lightbox**: Click-to-magnify functionality for images in blog posts and pages. Images open in full-screen overlay when clicked.
+
+**Semantic Search**: AI-powered search using OpenAI embeddings. Requires `OPENAI_API_KEY` in Convex. When disabled, only keyword search is available.
+
+**Ask AI**: Header chat button for RAG-based Q&A about your site content. Requires `semanticSearch.enabled: true` and `OPENAI_API_KEY` for embeddings, plus `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` for the LLM.
 
 For detailed configuration instructions, see `FORK_CONFIG.md`.
 

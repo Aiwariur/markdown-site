@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.16.2] - 2026-01-10
+
+### Added
+
+- Ask AI configuration documentation alignment
+  - Added `askAI` config to `fork-config.json.example` with enabled, defaultModel, and models fields
+  - Added Ask AI Configuration section to `FORK_CONFIG.md` with fork-config.json and manual configuration examples
+  - Added Ask AI (header chat) section to `docs-dashboard.md` with configuration and requirements
+  - Added Ask AI (header chat) section to `how-to-use-the-markdown-sync-dashboard.md` with step-by-step setup
+
+### Technical
+
+- `fork-config.json.example` now includes askAI config matching siteConfig.ts structure
+- All dashboard documentation now includes Ask AI feature alongside AI Agent and AI Dashboard sections
+
 ## [2.16.1] - 2026-01-10
 
 ### Fixed

@@ -165,6 +165,40 @@ The Dashboard includes a dedicated AI Agent section with tab-based UI for Chat a
 
 **Note:** Only configure the API keys for models you want to use. If a key is not set, users see a helpful setup message when they try to use that model.
 
+### Ask AI (header chat)
+
+The Ask AI feature adds a chat button to the site header. Visitors can ask questions about your content and get AI-powered answers with source citations.
+
+**Configuration:**
+
+In `src/config/siteConfig.ts`:
+
+```typescript
+askAI: {
+  enabled: true, // Enable Ask AI header button
+  defaultModel: "claude-sonnet-4-20250514",
+  models: [
+    { id: "claude-sonnet-4-20250514", name: "Claude Sonnet 4", provider: "anthropic" },
+    { id: "gpt-4o", name: "GPT-4o", provider: "openai" },
+  ],
+},
+```
+
+**Requirements:**
+
+- `semanticSearch.enabled: true` for content retrieval
+- `OPENAI_API_KEY` in Convex for embeddings
+- `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` for the LLM
+
+**Features:**
+
+- Header button opens a chat modal
+- Uses RAG (Retrieval Augmented Generation) to find relevant content
+- Streaming responses with markdown rendering
+- Multi-model selector
+- Source citations linking to relevant posts/pages
+- Conversation history within session
+
 ### Newsletter management
 
 All Newsletter Admin features integrated into the Dashboard:
