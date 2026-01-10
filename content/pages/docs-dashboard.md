@@ -348,30 +348,32 @@ This creates a file in `content/blog/` that requires syncing.
 
 ### Sync commands reference
 
+Sync command scripts are located in `scripts/` (sync-posts.ts, sync-discovery-files.ts).
+
 **Development:**
 
-- `npm run sync` - Sync markdown content to development Convex
-- `npm run sync:discovery` - Update discovery files (AGENTS.md, llms.txt) with development data
-- `npm run sync:all` - Run both content sync and discovery sync (development)
+- <span class="copy-command">npm run sync</span> - Sync markdown content to development Convex
+- <span class="copy-command">npm run sync:discovery</span> - Update discovery files (AGENTS.md, llms.txt) with development data
+- <span class="copy-command">npm run sync:all</span> - Run both content sync and discovery sync (development)
 
 **Production:**
 
-- `npm run sync:prod` - Sync markdown content to production Convex
-- `npm run sync:discovery:prod` - Update discovery files with production data
-- `npm run sync:all:prod` - Run both content sync and discovery sync (production)
+- <span class="copy-command">npm run sync:prod</span> - Sync markdown content to production Convex
+- <span class="copy-command">npm run sync:discovery:prod</span> - Update discovery files with production data
+- <span class="copy-command">npm run sync:all:prod</span> - Run both content sync and discovery sync (production)
 
 **Sync Server:**
 
-- `npm run sync-server` - Start local HTTP server for executing sync commands from dashboard UI
+- <span class="copy-command">npm run sync-server</span> - Start local HTTP server for executing sync commands from dashboard UI
 
 **Content Import:**
 
-- `npm run import <url>` - Import external URL as markdown post (requires FIRECRAWL_API_KEY in .env.local)
+- <span class="copy-command">npm run import &lt;url&gt;</span> - Import external URL as markdown post (requires FIRECRAWL_API_KEY in .env.local)
 
 **Database Export:**
 
-- `npm run export:db` - Export dashboard posts/pages to content folders (development)
-- `npm run export:db:prod` - Export dashboard posts/pages (production)
+- <span class="copy-command">npm run export:db</span> - Export dashboard posts/pages to content folders (development)
+- <span class="copy-command">npm run export:db:prod</span> - Export dashboard posts/pages (production)
 
 **Note:** The dashboard provides a UI for these commands. When the sync server is running (`npm run sync-server`), you can execute commands directly from the dashboard with real-time output. Otherwise, the dashboard shows commands in a modal for copying to your terminal.
 

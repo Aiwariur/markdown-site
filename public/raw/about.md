@@ -17,6 +17,8 @@ An open-source publishing framework built for AI agents and developers to ship w
 
 **Sync commands:**
 
+Sync command scripts are located in `scripts/` (sync-posts.ts, sync-discovery-files.ts).
+
 **Development:**
 
 - <span class="copy-command">npm run sync</span> - Sync markdown content

@@ -13,6 +13,8 @@ Reference documentation for setting up, customizing, and deploying this markdown
 
 **Sync commands:**
 
+Sync command scripts are located in `scripts/` (sync-posts.ts, sync-discovery-files.ts).
+
 **Development:**
 
 - <span class="copy-command">npm run sync</span> - Sync markdown content

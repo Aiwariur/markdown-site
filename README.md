@@ -14,6 +14,8 @@ Write markdown locally, run `npm run sync` (dev) or `npm run sync:prod` (product
 
 **Sync commands:**
 
+Sync command scripts are located in `scripts/` (sync-posts.ts, sync-discovery-files.ts).
+
 **Development:**
 
 - `npm run sync` - Sync markdown content
@@ -25,6 +27,11 @@ Write markdown locally, run `npm run sync` (dev) or `npm run sync:prod` (product
 - `npm run sync:prod` - Sync markdown content
 - `npm run sync:discovery:prod` - Update discovery files
 - `npm run sync:all:prod` - Sync content + discovery files together
+
+**Export dashboard content:**
+
+- `npm run export:db` - Export dashboard posts/pages to content folders (development)
+- `npm run export:db:prod` - Export dashboard posts/pages (production)
 
 **How versioning works:** Markdown files live in `content/blog/` and `content/pages/`. These are regular files in your git repo. Commit changes, review diffs, roll back like any codebase. The sync command pushes content to Convex.
 
@@ -319,6 +326,8 @@ Both files are gitignored. Each developer creates their own.
 
 ### Sync Commands
 
+Sync command scripts are located in `scripts/` (sync-posts.ts, sync-discovery-files.ts).
+
 **Development:**
 
 - `npm run sync` - Sync markdown content to development Convex
@@ -330,6 +339,11 @@ Both files are gitignored. Each developer creates their own.
 - `npm run sync:prod` - Sync markdown content to production Convex
 - `npm run sync:discovery:prod` - Update discovery files with production data
 - `npm run sync:all:prod` - Sync content + discovery files together
+
+**Export dashboard content:**
+
+- `npm run export:db` - Export dashboard posts/pages to content folders (development)
+- `npm run export:db:prod` - Export dashboard posts/pages (production)
 
 **Development sync:**
 
