@@ -4,9 +4,51 @@
 
 ## Current Status
 
-v2.16.3 ready. Social icons in hamburger menu and Dashboard Config alignment.
+v2.18.1 ready. README cleanup with docs links.
 
 ## Completed
+
+- [x] README.md streamlined with docs links (v2.18.1)
+  - [x] Reduced from 609 lines to 155 lines
+  - [x] Added Documentation section with links to markdown.fast/docs
+  - [x] Added Guides subsection with links to specific doc pages
+  - [x] Simplified Features section with link to About page
+  - [x] Simplified Fork Configuration with doc link
+  - [x] Removed detailed sections covered by live docs
+
+- [x] OpenCode AI development tool integration (v2.18.0)
+  - [x] Created `.opencode/` directory structure
+  - [x] Created `opencode.json` root configuration
+  - [x] Created 3 agents: orchestrator, content-writer, sync-manager
+  - [x] Created 6 commands: sync, sync-prod, create-post, create-page, import, deploy
+  - [x] Adapted 4 skills from .claude/skills/: frontmatter, sync, convex, content
+  - [x] Created sync-helper plugin for content change reminders
+  - [x] Created docs-opencode.md documentation page
+  - [x] Updated files.md with OpenCode Configuration section
+  - [x] Works alongside Claude Code and Cursor without conflicts
+
+
+- [x] ConvexFS Media Library with Bunny CDN (v2.17.0)
+  - [x] Installed convex-fs package and configured Convex component
+  - [x] Created convex/fs.ts with Bunny CDN configuration
+  - [x] Created convex/files.ts with file mutations and queries
+  - [x] Added ConvexFS routes to convex/http.ts
+  - [x] Created MediaLibrary component with upload, copy, delete
+  - [x] Added bulk select and delete functionality
+  - [x] Enhanced ImageUploadModal with Media Library tab
+  - [x] Added size presets (Original, Large, Medium, Small, Thumbnail, Custom)
+  - [x] Added image dimensions display with aspect ratio
+  - [x] Added file expiration support via setFileExpiration action
+  - [x] Created docs-media-setup.md with ConvexFS documentation links
+  - [x] Added ~400 lines of CSS for media library and modal styles
+
+- [x] AI image generation download and copy options (v2.16.4)
+  - [x] Added Download button to save generated image to computer
+  - [x] Added MD button to copy Markdown code to clipboard
+  - [x] Added HTML button to copy HTML code to clipboard
+  - [x] Added code preview section showing Markdown and HTML snippets
+  - [x] Filename generated from prompt (sanitized and truncated)
+  - [x] Added CSS styles for action buttons and code preview
 
 - [x] Social icons in hamburger menu and Dashboard Config (v2.16.3)
   - [x] Added social icons to MobileMenu below navigation links

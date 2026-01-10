@@ -7,6 +7,91 @@ Date: 2026-01-10
 
 All notable changes to this project.
 
+## v2.18.0
+
+Released January 10, 2026
+
+**OpenCode AI development tool integration**
+
+Added full OpenCode support to make the framework compatible with the OpenCode AI-first development tool. This works alongside existing Claude Code and Cursor integrations without conflicts.
+
+**Changes:**
+
+- Created `.opencode/` directory structure with config, agents, commands, skills, and plugins
+- 3 specialized agents: orchestrator (main router), content-writer, sync-manager
+- 6 commands: /sync, /sync-prod, /create-post, /create-page, /import, /deploy
+- 4 skills adapted from .claude/skills/: frontmatter, sync, convex, content
+- sync-helper plugin logs reminders when content files change
+- Documentation page at /docs-opencode
+
+**Files changed:**
+
+- `opencode.json` - Root OpenCode project configuration
+- `.opencode/config.json` - OpenCode app configuration
+- `.opencode/agent/*.md` - Agent definitions (3 files)
+- `.opencode/command/*.md` - Command definitions (6 files)
+- `.opencode/skill/*.md` - Skill documentation (4 files)
+- `.opencode/plugin/sync-helper.ts` - Reminder plugin
+- `content/pages/docs-opencode.md` - Documentation page
+- `files.md` - Added OpenCode Configuration section
+
+---
+
+## v2.17.0
+
+Released January 10, 2026
+
+**ConvexFS Media Library with Bunny CDN integration**
+
+Added a full-featured media library for uploading and managing images in the dashboard. Images are stored on Bunny.net Edge Storage and served via their global CDN. The Image Insert modal now supports selecting from existing media and choosing image sizes.
+
+**Changes:**
+
+- Upload images via drag-and-drop or click to upload
+- Copy images as Markdown, HTML, or direct URL
+- Bulk select and delete multiple images at once
+- Media Library tab in Image Insert modal for selecting existing images
+- Size presets: Original, Large (1200px), Medium (800px), Small (400px), Thumbnail (200px), Custom
+- Image dimensions displayed before insert with aspect ratio preserved
+- File expiration support for automatic cleanup
+- Configuration warning when Bunny CDN not set up
+
+**Files changed:**
+
+- `convex/convex.config.ts` - Added ConvexFS component
+- `convex/fs.ts` - ConvexFS instance with Bunny CDN config
+- `convex/files.ts` - File mutations and queries
+- `convex/http.ts` - ConvexFS routes for upload/download
+- `src/components/MediaLibrary.tsx` - Media library gallery
+- `src/components/ImageUploadModal.tsx` - Enhanced modal with library and sizes
+- `src/styles/global.css` - Media library and modal styles
+- `content/pages/docs-media-setup.md` - Setup documentation
+
+---
+
+## v2.16.4
+
+Released January 10, 2026
+
+**AI image generation download and copy options**
+
+Added download and copy functionality to the Dashboard AI Agent image generation section. After generating an image with Nano Banana, users can now download the image or copy Markdown/HTML code for embedding.
+
+**Changes:**
+
+- Download button saves generated image to computer with filename from prompt
+- MD button copies Markdown code (`![prompt](url)`) to clipboard
+- HTML button copies HTML code (`<img src="url" alt="prompt" />`) to clipboard
+- Code preview section displays both Markdown and HTML snippets
+- Visual feedback when code is copied (button changes to "Copied")
+
+**Files changed:**
+
+- `src/pages/Dashboard.tsx` - Added download/copy handlers and updated UI
+- `src/styles/global.css` - Added CSS for action buttons and code preview
+
+---
+
 ## v2.16.3
 
 Released January 10, 2026

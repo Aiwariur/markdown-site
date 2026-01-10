@@ -66,6 +66,8 @@ import {
 import siteConfig from "../config/siteConfig";
 import AIChatView from "../components/AIChatView";
 import VersionHistoryModal from "../components/VersionHistoryModal";
+import { MediaLibrary } from "../components/MediaLibrary";
+import { ImageUploadModal } from "../components/ImageUploadModal";
 import { isWorkOSConfigured } from "../utils/workos";
 // Always import auth components - they're only used when WorkOS is configured
 import {
@@ -391,7 +393,8 @@ type DashboardSection =
   | "config"
   | "index-html"
   | "stats"
-  | "sync";
+  | "sync"
+  | "media";
 
 // Post/Page type for editing
 interface ContentItem {
@@ -1029,6 +1032,10 @@ function DashboardContent() {
   }, [editingItem, editingType, generateMarkdown, addToast]);
 
   // Navigation items for left sidebar
+  // Filter items based on feature configuration
+  const mediaEnabled = siteConfig.media?.enabled ?? false;
+  const newsletterEnabled = siteConfig.newsletter?.enabled ?? false;
+
   const navSections = [
     {
       label: "Content",
@@ -1044,34 +1051,47 @@ function DashboardContent() {
         { id: "write-page" as const, label: "Write Page", icon: File },
         { id: "ai-agent" as const, label: "AI Agent", icon: Robot },
         { id: "import" as const, label: "Import URL", icon: CloudArrowDown },
+        // Only show Media if media feature is enabled
+        ...(mediaEnabled
+          ? [{ id: "media" as const, label: "Media", icon: Image }]
+          : []),
       ],
     },
-    {
-      label: "Newsletter",
-      items: [
-        { id: "newsletter" as const, label: "Subscribers", icon: Envelope },
-        {
-          id: "newsletter-send" as const,
-          label: "Send Newsletter",
-          icon: Envelope,
-        },
-        {
-          id: "newsletter-write-email" as const,
-          label: "Write Email",
-          icon: PencilSimple,
-        },
-        {
-          id: "newsletter-recent-sends" as const,
-          label: "Recent Sends",
-          icon: ClockCounterClockwise,
-        },
-        {
-          id: "newsletter-stats" as const,
-          label: "Email Stats",
-          icon: ChartLine,
-        },
-      ],
-    },
+    // Only show Newsletter section if newsletter is enabled
+    ...(newsletterEnabled
+      ? [
+          {
+            label: "Newsletter",
+            items: [
+              {
+                id: "newsletter" as const,
+                label: "Subscribers",
+                icon: Envelope,
+              },
+              {
+                id: "newsletter-send" as const,
+                label: "Send Newsletter",
+                icon: Envelope,
+              },
+              {
+                id: "newsletter-write-email" as const,
+                label: "Write Email",
+                icon: PencilSimple,
+              },
+              {
+                id: "newsletter-recent-sends" as const,
+                label: "Recent Sends",
+                icon: ClockCounterClockwise,
+              },
+              {
+                id: "newsletter-stats" as const,
+                label: "Email Stats",
+                icon: ChartLine,
+              },
+            ],
+          },
+        ]
+      : []),
     {
       label: "Settings",
       items: [
@@ -1246,6 +1266,7 @@ function DashboardContent() {
               {activeSection === "index-html" && "Index HTML"}
               {activeSection === "stats" && "Analytics"}
               {activeSection === "sync" && "Sync Content"}
+              {activeSection === "media" && "Media"}
             </h1>
           </div>
 
@@ -1463,6 +1484,9 @@ function DashboardContent() {
               setSyncOutput={setSyncOutput}
             />
           )}
+
+          {/* Media */}
+          {activeSection === "media" && <MediaLibrary />}
         </div>
       </main>
     </div>
@@ -2540,6 +2564,9 @@ function WriteSection({
   });
   // Store previous sidebar state before entering focus mode
   const [prevSidebarState, setPrevSidebarState] = useState<boolean | null>(null);
+  // Image upload modal state
+  const [showImageUpload, setShowImageUpload] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Toggle focus mode
   const toggleFocusMode = useCallback(() => {
@@ -2692,6 +2719,33 @@ function WriteSection({
       setTimeout(() => setCopied(false), 2000);
     }
   }, [content]);
+
+  // Insert image markdown at cursor position
+  const handleInsertImage = useCallback((markdown: string) => {
+    if (editorMode === "markdown" && textareaRef.current) {
+      const textarea = textareaRef.current;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const newContent = content.substring(0, start) + markdown + "\n" + content.substring(end);
+      setContent(newContent);
+      // Set cursor position after inserted text
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start + markdown.length + 1, start + markdown.length + 1);
+      }, 0);
+    } else if (editorMode === "richtext") {
+      // For rich text mode, convert markdown to HTML and append
+      const imgMatch = markdown.match(/!\[(.*?)\]\((.*?)\)/);
+      if (imgMatch) {
+        const alt = imgMatch[1];
+        const src = imgMatch[2];
+        setRichTextHtml(prev => prev + `<p><img src="${src}" alt="${alt}" /></p>`);
+      }
+    } else {
+      // Preview mode - just append to content
+      setContent(prev => prev + "\n" + markdown);
+    }
+  }, [content, editorMode]);
 
   // Copy a single frontmatter field
   const handleCopyField = useCallback(
@@ -2950,6 +3004,16 @@ published: false
             )}
             <span>{copied ? "Copied" : "Copy All"}</span>
           </button>
+          {siteConfig.media?.enabled && (
+            <button
+              onClick={() => setShowImageUpload(true)}
+              className="dashboard-action-btn"
+              title="Insert Image"
+            >
+              <Image size={16} />
+              <span>Image</span>
+            </button>
+          )}
           <button
             onClick={handleDownloadMarkdown}
             className="dashboard-action-btn primary"
@@ -2990,6 +3054,7 @@ published: false
         <div className="dashboard-write-main">
           {editorMode === "markdown" && (
             <textarea
+              ref={textareaRef}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               className="dashboard-write-textarea"
@@ -3101,6 +3166,15 @@ published: false
           avoid losing work.
         </span>
       </div>
+
+      {/* Image Upload Modal - only when media is enabled */}
+      {siteConfig.media?.enabled && (
+        <ImageUploadModal
+          isOpen={showImageUpload}
+          onClose={() => setShowImageUpload(false)}
+          onInsert={handleInsertImage}
+        />
+      )}
     </div>
   );
 }
@@ -3120,6 +3194,7 @@ function AIAgentSection() {
   const [imageError, setImageError] = useState<string | null>(null);
   const [showImageModelDropdown, setShowImageModelDropdown] = useState(false);
   const [showTextModelDropdown, setShowTextModelDropdown] = useState(false);
+  const [copiedFormat, setCopiedFormat] = useState<"md" | "html" | null>(null);
 
   const generateImage = useAction(api.aiImageGeneration.generateImage);
 
@@ -3162,6 +3237,48 @@ function AIAgentSection() {
 
   const selectedTextModelName = textModels.find(m => m.id === selectedTextModel)?.name || "Claude Sonnet 4";
   const selectedImageModelName = imageModels.find(m => m.id === selectedImageModel)?.name || "Nano Banana";
+
+  // Generate markdown code for the image
+  const getMarkdownCode = (url: string, prompt: string) => `![${prompt}](${url})`;
+
+  // Generate HTML code for the image
+  const getHtmlCode = (url: string, prompt: string) => `<img src="${url}" alt="${prompt}" />`;
+
+  // Copy code to clipboard
+  const handleCopyCode = async (format: "md" | "html") => {
+    if (!generatedImage) return;
+    const code = format === "md"
+      ? getMarkdownCode(generatedImage.url, generatedImage.prompt)
+      : getHtmlCode(generatedImage.url, generatedImage.prompt);
+    await navigator.clipboard.writeText(code);
+    setCopiedFormat(format);
+    setTimeout(() => setCopiedFormat(null), 2000);
+  };
+
+  // Download image to computer
+  const handleDownloadImage = async () => {
+    if (!generatedImage) return;
+    try {
+      const response = await fetch(generatedImage.url);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      // Generate filename from prompt (sanitize and truncate)
+      const filename = generatedImage.prompt
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .slice(0, 50)
+        .replace(/-+$/, "");
+      a.download = `${filename || "generated-image"}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to download image:", error);
+    }
+  };
 
   return (
     <div className="dashboard-ai-section">
@@ -3277,6 +3394,46 @@ function AIAgentSection() {
             <div className="ai-generated-image">
               <img src={generatedImage.url} alt={generatedImage.prompt} />
               <p className="ai-generated-image-prompt">{generatedImage.prompt}</p>
+
+              {/* Image Actions */}
+              <div className="ai-image-actions">
+                <button
+                  className="ai-image-action-btn download"
+                  onClick={handleDownloadImage}
+                  title="Download image"
+                >
+                  <Download size={16} />
+                  <span>Download</span>
+                </button>
+                <button
+                  className={`ai-image-action-btn ${copiedFormat === "md" ? "copied" : ""}`}
+                  onClick={() => handleCopyCode("md")}
+                  title="Copy as Markdown"
+                >
+                  {copiedFormat === "md" ? <Check size={16} /> : <CopySimple size={16} />}
+                  <span>{copiedFormat === "md" ? "Copied" : "MD"}</span>
+                </button>
+                <button
+                  className={`ai-image-action-btn ${copiedFormat === "html" ? "copied" : ""}`}
+                  onClick={() => handleCopyCode("html")}
+                  title="Copy as HTML"
+                >
+                  {copiedFormat === "html" ? <Check size={16} /> : <CopySimple size={16} />}
+                  <span>{copiedFormat === "html" ? "Copied" : "HTML"}</span>
+                </button>
+              </div>
+
+              {/* Code Preview */}
+              <div className="ai-image-code-preview">
+                <div className="ai-image-code-block">
+                  <span className="ai-image-code-label">Markdown:</span>
+                  <code>{getMarkdownCode(generatedImage.url, generatedImage.prompt)}</code>
+                </div>
+                <div className="ai-image-code-block">
+                  <span className="ai-image-code-label">HTML:</span>
+                  <code>{getHtmlCode(generatedImage.url, generatedImage.prompt)}</code>
+                </div>
+              </div>
             </div>
           )}
 
@@ -4478,11 +4635,6 @@ function IndexHtmlSection({
               Path to favicon (e.g., /favicon.svg)
             </span>
           </div>
-        </div>
-
-        {/* Theme and Appearance */}
-        <div className="dashboard-config-card">
-          <h3>Theme and Appearance</h3>
           <div className="config-field">
             <label>Theme Color</label>
             <input
@@ -4491,7 +4643,7 @@ function IndexHtmlSection({
               onChange={(e) => handleChange("themeColor", e.target.value)}
             />
             <span className="config-field-note">
-              Used in theme-color meta tag for mobile browsers
+              Mobile browser chrome color (theme-color meta tag)
             </span>
           </div>
         </div>
@@ -4637,6 +4789,9 @@ function ConfigSection({
     semanticSearchEnabled: siteConfig.semanticSearch?.enabled || false,
     // Ask AI
     askAIEnabled: siteConfig.askAI?.enabled || false,
+    // Media library
+    mediaEnabled: siteConfig.media?.enabled || false,
+    mediaMaxFileSize: siteConfig.media?.maxFileSize || 10,
   });
 
   const [copied, setCopied] = useState(false);
@@ -4813,6 +4968,15 @@ export const siteConfig: SiteConfig = {
   // Ask AI header button (requires semanticSearch.enabled and API keys)
   askAI: {
     enabled: ${config.askAIEnabled},
+  },
+
+  // Media library configuration
+  // Upload and manage images via ConvexFS and Bunny.net CDN
+  // Requires BUNNY_API_KEY, BUNNY_STORAGE_ZONE, BUNNY_CDN_HOSTNAME in Convex dashboard
+  media: {
+    enabled: ${config.mediaEnabled},
+    maxFileSize: ${config.mediaMaxFileSize},
+    allowedTypes: ["image/png", "image/jpeg", "image/gif", "image/webp"],
   },
 };
 
@@ -5674,6 +5838,36 @@ export default siteConfig;
           </div>
           <p className="config-hint">
             Shows a sparkle icon in header. Requires semantic search enabled and API keys (ANTHROPIC_API_KEY or OPENAI_API_KEY in Convex).
+          </p>
+        </div>
+
+        {/* Media Library */}
+        <div className="dashboard-config-card">
+          <h3>Media Library</h3>
+          <div className="config-field checkbox">
+            <label>
+              <input
+                type="checkbox"
+                checked={config.mediaEnabled}
+                onChange={(e) =>
+                  handleChange("mediaEnabled", e.target.checked)
+                }
+              />
+              <span>Enable media library</span>
+            </label>
+          </div>
+          <div className="config-field">
+            <label>Max File Size (MB)</label>
+            <input
+              type="number"
+              value={config.mediaMaxFileSize}
+              onChange={(e) => handleChange("mediaMaxFileSize", parseInt(e.target.value) || 10)}
+              min={1}
+              max={50}
+            />
+          </div>
+          <p className="config-hint">
+            Upload and manage images via ConvexFS and Bunny.net CDN. Requires BUNNY_API_KEY, BUNNY_STORAGE_ZONE, and BUNNY_CDN_HOSTNAME in Convex dashboard.
           </p>
         </div>
 

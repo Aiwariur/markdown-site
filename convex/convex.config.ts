@@ -1,6 +1,7 @@
 import { defineApp } from "convex/server";
 import aggregate from "@convex-dev/aggregate/convex.config.js";
 import persistentTextStreaming from "@convex-dev/persistent-text-streaming/convex.config";
+import fs from "convex-fs/convex.config.js";
 
 const app = defineApp();
 
@@ -15,6 +16,9 @@ app.use(aggregate, { name: "uniqueVisitors" });
 
 // Persistent text streaming for real-time AI responses in Ask AI feature
 app.use(persistentTextStreaming);
+
+// ConvexFS for file storage with Bunny CDN
+app.use(fs);
 
 export default app;
 

@@ -11,7 +11,7 @@ A brief description of each file in the codebase.
 | `vite.config.ts`           | Vite bundler configuration                            |
 | `index.html`               | Main HTML entry with SEO meta tags, JSON-LD, critical CSS inline, and resource hints |
 | `netlify.toml`             | Netlify deployment and Convex HTTP redirects          |
-| `README.md`                | Project documentation                                 |
+| `README.md`                | Project documentation (streamlined with links to docs)|
 | `AGENTS.md`                | AI coding agent instructions (agents.md spec)         |
 | `CLAUDE.md`                | Claude Code instructions for project workflows        |
 | `files.md`                 | This file - codebase structure                        |
@@ -49,7 +49,7 @@ A brief description of each file in the codebase.
 | `TagPage.tsx` | Tag archive page displaying posts filtered by a specific tag. Includes view mode toggle (list/cards) with localStorage persistence                                                                                                                                                                                                                                |
 | `AuthorPage.tsx` | Author archive page displaying posts by a specific author. Includes view mode toggle (list/cards) with localStorage persistence. Author name clickable in posts links to this page. |
 | `Write.tsx`   | Three-column markdown writing page with Cursor docs-style UI, frontmatter reference with copy buttons, theme toggle, font switcher (serif/sans/monospace), localStorage persistence, and optional AI Agent mode (toggleable via siteConfig.aiChat.enabledOnWritePage). When enabled, Agent replaces the textarea with AIChatView component. Includes scroll prevention when switching to Agent mode to prevent page jump. Title changes to "Agent" when in AI chat mode. |
-| `Dashboard.tsx` | Centralized dashboard at `/dashboard` for content management and site configuration. **Cloud CMS Features:** Direct database save ("Save to DB" button), source tracking (Dashboard vs Synced badges), delete confirmation modal with warning, CRUD operations for dashboard-created content. **Content Management:** Posts and Pages list views with filtering, search, pagination, items per page selector, source badges, delete buttons (dashboard content only); Post/Page editor with markdown editor, live preview, "Save Changes" button, draggable/resizable frontmatter sidebar (200px-600px), independent scrolling, download markdown, export to markdown; Write Post/Page sections with three editor modes (Markdown, Rich Text via Quill, Preview), full-screen writing interface. **Rich Text Editor:** Quill-based WYSIWYG editor with toolbar (headers, bold, italic, lists, links, code, blockquote), automatic HTML-to-Markdown conversion on mode switch, theme-aware styling. **AI Agent:** Tab-based UI for Chat and Image Generation, multi-model selector (Claude Sonnet 4, GPT-4o, Gemini 2.0 Flash), image generation with Nano Banana models and aspect ratio selection. **Other Features:** Newsletter management (all Newsletter Admin features integrated); Content import (direct database import via Firecrawl, no file sync needed); Site configuration (Config Generator UI with Version Control toggle); Index HTML editor; Analytics (real-time stats dashboard); Sync commands UI with sync server integration; Header sync buttons; Dashboard search; Toast notifications; Command modal; Version history modal for viewing diffs and restoring previous versions; Mobile responsive design. Uses Convex queries for real-time data, localStorage for preferences, ReactMarkdown for preview. Optional WorkOS authentication via siteConfig.dashboard.requireAuth. |
+| `Dashboard.tsx` | Centralized dashboard at `/dashboard` for content management and site configuration. **Cloud CMS Features:** Direct database save ("Save to DB" button), source tracking (Dashboard vs Synced badges), delete confirmation modal with warning, CRUD operations for dashboard-created content. **Content Management:** Posts and Pages list views with filtering, search, pagination, items per page selector, source badges, delete buttons (dashboard content only); Post/Page editor with markdown editor, live preview, "Save Changes" button, draggable/resizable frontmatter sidebar (200px-600px), independent scrolling, download markdown, export to markdown; Write Post/Page sections with three editor modes (Markdown, Rich Text via Quill, Preview), full-screen writing interface. **Rich Text Editor:** Quill-based WYSIWYG editor with toolbar (headers, bold, italic, lists, links, code, blockquote), automatic HTML-to-Markdown conversion on mode switch, theme-aware styling. **AI Agent:** Tab-based UI for Chat and Image Generation, multi-model selector (Claude Sonnet 4, GPT-4o, Gemini 2.0 Flash), image generation with Nano Banana models, aspect ratio selection, download button, and MD/HTML copy options with code preview. **Other Features:** Newsletter management (all Newsletter Admin features integrated); Content import (direct database import via Firecrawl, no file sync needed); Site configuration (Config Generator UI with Version Control toggle); Index HTML editor; Analytics (real-time stats dashboard); Sync commands UI with sync server integration; Header sync buttons; Dashboard search; Toast notifications; Command modal; Version history modal for viewing diffs and restoring previous versions; Mobile responsive design. Uses Convex queries for real-time data, localStorage for preferences, ReactMarkdown for preview. Optional WorkOS authentication via siteConfig.dashboard.requireAuth. |
 | `Callback.tsx` | OAuth callback handler for WorkOS authentication. Handles redirect from WorkOS after user login, exchanges authorization code for user information, then redirects to dashboard. Only used when WorkOS is configured. |
 | `NewsletterAdmin.tsx` | Three-column newsletter admin page for managing subscribers and sending newsletters. Left sidebar with navigation and stats, main area with searchable subscriber list, right sidebar with send newsletter panel and recent sends. Access at /newsletter-admin, configurable via siteConfig.newsletterAdmin. |
 
@@ -80,6 +80,8 @@ A brief description of each file in the codebase.
 | `SocialFooter.tsx`        | Social footer component with social icons on left (GitHub, Twitter/X, LinkedIn, Instagram, YouTube, TikTok, Discord, Website) and copyright on right. Configurable via siteConfig.socialFooter. Shows below main footer on homepage, blog posts, and pages. Supports frontmatter override via showSocialFooter: true/false. Auto-updates copyright year. Exports `platformIcons` for reuse in header. |
 | `AskAIModal.tsx`          | Ask AI chat modal for RAG-based Q&A about site content. Opens via header button (Cmd+J) when enabled. Uses Convex Persistent Text Streaming for real-time responses. Supports model selection (Claude, GPT-4o). Features streaming messages with markdown rendering, internal link handling via React Router, and source citations. Requires siteConfig.askAI.enabled and siteConfig.semanticSearch.enabled. |
 | `VersionHistoryModal.tsx` | Version history modal for viewing and restoring previous content versions. Shows version list with dates and source badges, diff view using DiffCodeBlock component, preview mode, and one-click restore. Used in Dashboard editor when version control is enabled. |
+| `MediaLibrary.tsx`        | Media library component for uploading and managing images. Features drag-and-drop upload, copy as Markdown/HTML/URL, bulk select and delete, file size display, and pagination. Shows configuration warning when Bunny CDN not configured. Uses ConvexFS for storage with Bunny.net Edge Storage and CDN delivery. |
+| `ImageUploadModal.tsx`    | Image insert modal for Write Post/Page sections. Two tabs: "Upload New" for uploading images and "Media Library" for selecting existing images. Shows image dimensions with aspect ratio, size presets (Original, Large 1200px, Medium 800px, Small 400px, Thumbnail 200px, Custom), alt text field, and calculated dimensions before insert. Uses HTML img tag with explicit width/height for non-original sizes. |
 
 ### Context (`src/context/`)
 
@@ -137,7 +139,9 @@ A brief description of each file in the codebase.
 | `versions.ts`      | Version control system: isEnabled, setEnabled, createVersion, getVersionHistory, getVersion, restoreVersion, cleanupOldVersions, getStats. Captures content snapshots before updates, provides 3-day history with diff view and restore functionality. |
 | `askAI.ts`         | Ask AI session management: createSession mutation (creates streaming session with question/model in DB), getStreamBody query (for database fallback), getSessionByStreamId internal query (retrieves question/model for HTTP action). Uses Persistent Text Streaming component. |
 | `askAI.node.ts`    | Ask AI HTTP action for streaming responses (Node.js runtime). Retrieves question from database, performs vector search using existing semantic search embeddings, generates AI response via Anthropic Claude or OpenAI GPT-4o, streams via appendChunk. Includes CORS headers and source citations. |
-| `convex.config.ts` | Convex app configuration with aggregate component registrations (pageViewsByPath, totalPageViews, uniqueVisitors) and persistentTextStreaming component  |
+| `fs.ts`            | ConvexFS instance configuration with Bunny.net Edge Storage integration. Conditionally creates ConvexFS instance only when BUNNY_API_KEY, BUNNY_STORAGE_ZONE, and BUNNY_CDN_HOSTNAME environment variables are set. Exports `isBunnyConfigured` boolean and `fs` instance (or null if not configured). |
+| `files.ts`         | File management mutations and queries for media library: commitFile (upload with validation), listFiles (paginated), deleteFile, deleteFiles (bulk), setFileExpiration, getFileInfo, getDownloadUrl, getFileCount, isConfigured. Validates file types (PNG, JPG, GIF, WebP) and size (10MB max). |
+| `convex.config.ts` | Convex app configuration with aggregate component registrations (pageViewsByPath, totalPageViews, uniqueVisitors), persistentTextStreaming component, and ConvexFS component for media storage. |
 | `tsconfig.json`    | Convex TypeScript configuration                                                                                    |
 
 ### HTTP Endpoints (defined in `http.ts`)
@@ -360,3 +364,48 @@ Files include a metadata header with type (post/page), date, reading time, and t
 | `sec-check.mdc`              | Security guidelines and audit checklist       |
 | `task.mdc`                   | Task list management guidelines               |
 | `write.mdc`                  | Writing style guide (activate with @write)    |
+
+## OpenCode Configuration (`.opencode/`)
+
+OpenCode AI-first development tool integration. Works alongside Claude Code and Cursor.
+
+### Root Config
+
+| File | Description |
+| ---- | ----------- |
+| `opencode.json` | Root OpenCode project configuration |
+| `.opencode/config.json` | OpenCode app configuration |
+
+### Agents (`.opencode/agent/`)
+
+| File | Description |
+| ---- | ----------- |
+| `orchestrator.md` | Main orchestrator agent - routes tasks to specialists |
+| `content-writer.md` | Content creation specialist for posts and pages |
+| `sync-manager.md` | Sync and deployment specialist |
+
+### Commands (`.opencode/command/`)
+
+| File | Description |
+| ---- | ----------- |
+| `sync.md` | `/sync` - Sync content to development |
+| `sync-prod.md` | `/sync-prod` - Sync content to production |
+| `create-post.md` | `/create-post` - Create new blog post |
+| `create-page.md` | `/create-page` - Create new page |
+| `import.md` | `/import` - Import content from URL |
+| `deploy.md` | `/deploy` - Deploy to production |
+
+### Skills (`.opencode/skill/`)
+
+| File | Description |
+| ---- | ----------- |
+| `frontmatter.md` | Frontmatter syntax for posts and pages |
+| `sync.md` | How the sync system works |
+| `convex.md` | Convex patterns and conventions |
+| `content.md` | Content management guide |
+
+### Plugins (`.opencode/plugin/`)
+
+| File | Description |
+| ---- | ----------- |
+| `sync-helper.ts` | Logs reminders when content files change |

@@ -4,6 +4,108 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.18.1] - 2026-01-10
+
+### Changed
+
+- README.md streamlined from 609 lines to 155 lines
+  - Removed detailed feature documentation (now links to live docs)
+  - Kept sync commands, setup, and Netlify deployment sections
+  - Added Documentation section with links to markdown.fast/docs
+  - Added Guides subsection with links to specific doc pages
+  - Simplified Features section with link to About page
+  - Simplified Fork Configuration to quick commands with doc link
+
+## [2.18.0] - 2026-01-10
+
+### Added
+
+- OpenCode AI development tool integration
+  - Full `.opencode/` directory structure for OpenCode CLI compatibility
+  - 3 specialized agents: orchestrator, content-writer, sync-manager
+  - 6 commands: /sync, /sync-prod, /create-post, /create-page, /import, /deploy
+  - 4 skills: frontmatter, sync, convex, content
+  - sync-helper plugin for content change reminders
+  - Works alongside Claude Code and Cursor without conflicts
+
+- OpenCode documentation page at /docs-opencode
+  - How OpenCode integration works
+  - Directory structure reference
+  - Command and agent descriptions
+  - Getting started guide
+
+### Technical
+
+- `opencode.json` - Root OpenCode project configuration
+- `.opencode/config.json` - OpenCode app configuration
+- `.opencode/agent/orchestrator.md` - Main routing agent
+- `.opencode/agent/content-writer.md` - Content creation specialist
+- `.opencode/agent/sync-manager.md` - Sync and deployment specialist
+- `.opencode/command/sync.md` - /sync command definition
+- `.opencode/command/sync-prod.md` - /sync-prod command
+- `.opencode/command/create-post.md` - /create-post command
+- `.opencode/command/create-page.md` - /create-page command
+- `.opencode/command/import.md` - /import command
+- `.opencode/command/deploy.md` - /deploy command
+- `.opencode/skill/frontmatter.md` - Frontmatter reference (adapted from .claude/skills/)
+- `.opencode/skill/sync.md` - Sync system reference
+- `.opencode/skill/convex.md` - Convex patterns reference
+- `.opencode/skill/content.md` - Content management guide
+- `.opencode/plugin/sync-helper.ts` - Minimal reminder plugin
+- `content/pages/docs-opencode.md` - Documentation page
+- `files.md` - Added OpenCode Configuration section
+
+## [2.17.0] - 2026-01-10
+
+### Added
+
+- ConvexFS Media Library with Bunny CDN integration
+  - Upload images via drag-and-drop or click to upload
+  - Copy as Markdown, HTML, or direct URL
+  - Bulk select and delete multiple images
+  - File size display and pagination
+  - Configuration warning when Bunny CDN not configured
+
+- Enhanced Image Insert Modal in Write Post/Page
+  - Two tabs: "Upload New" and "Media Library" for selecting existing images
+  - Image dimensions display (original size with aspect ratio)
+  - Size presets: Original, Large (1200px), Medium (800px), Small (400px), Thumbnail (200px), Custom
+  - Custom dimensions input with automatic aspect ratio preservation
+  - Alt text field for accessibility
+  - Calculated dimensions shown before insert
+
+- File expiration support via ConvexFS
+  - `setFileExpiration` action to set time-based auto-deletion
+  - Pass `expiresInMs` for automatic cleanup after specified time
+  - Pass `null` to remove expiration and make file permanent
+
+### Technical
+
+- `convex/convex.config.ts` - Added ConvexFS component registration
+- `convex/fs.ts` - ConvexFS instance with Bunny CDN configuration, conditional instantiation
+- `convex/files.ts` - File mutations/queries: commitFile, listFiles, deleteFile, deleteFiles, setFileExpiration, isConfigured
+- `convex/http.ts` - ConvexFS routes for /fs/upload and /fs/blobs/{blobId}
+- `src/components/MediaLibrary.tsx` - Media library gallery with bulk select/delete
+- `src/components/ImageUploadModal.tsx` - Enhanced modal with library selection and size presets
+- `src/styles/global.css` - Added ~400 lines for media library and image modal styles
+- `content/pages/docs-media-setup.md` - Setup documentation with ConvexFS links
+
+## [2.16.4] - 2026-01-10
+
+### Added
+
+- AI image generation download and copy options
+  - Download button to save generated image to computer
+  - MD button to copy Markdown code (`![prompt](url)`) to clipboard
+  - HTML button to copy HTML code (`<img src="url" alt="prompt" />`) to clipboard
+  - Code preview section showing both Markdown and HTML snippets
+  - Filename generated from prompt (sanitized and truncated)
+
+### Technical
+
+- `src/pages/Dashboard.tsx` - Added copiedFormat state, getMarkdownCode/getHtmlCode helpers, handleCopyCode, handleDownloadImage functions, updated generated image display JSX
+- `src/styles/global.css` - Added CSS for .ai-image-actions, .ai-image-action-btn, .ai-image-code-preview, .ai-image-code-block
+
 ## [2.16.3] - 2026-01-10
 
 ### Added

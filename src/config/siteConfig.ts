@@ -235,6 +235,14 @@ export interface DashboardConfig {
   requireAuth: boolean; // Require WorkOS authentication (only works if WorkOS is configured)
 }
 
+// Media library configuration
+// Controls image upload and CDN storage via ConvexFS and Bunny.net
+export interface MediaConfig {
+  enabled: boolean; // Global toggle for media library feature
+  maxFileSize: number; // Max file size in MB (default: 10)
+  allowedTypes: string[]; // Allowed MIME types
+}
+
 // Image lightbox configuration
 // Enables click-to-magnify functionality for images in blog posts and pages
 export interface ImageLightboxConfig {
@@ -387,6 +395,9 @@ export interface SiteConfig {
 
   // Dashboard configuration (optional)
   dashboard?: DashboardConfig;
+
+  // Media library configuration (optional)
+  media?: MediaConfig;
 
   // Image lightbox configuration (optional)
   imageLightbox?: ImageLightboxConfig;
@@ -733,6 +744,15 @@ export const siteConfig: SiteConfig = {
   dashboard: {
     enabled: true,
     requireAuth: true,
+  },
+
+  // Media library configuration
+  // Upload and manage images via ConvexFS and Bunny.net CDN
+  // Requires BUNNY_API_KEY, BUNNY_STORAGE_ZONE, BUNNY_CDN_HOSTNAME in Convex dashboard
+  media: {
+    enabled: true,
+    maxFileSize: 10, // Max file size in MB
+    allowedTypes: ["image/png", "image/jpeg", "image/gif", "image/webp"],
   },
 
   // Image lightbox configuration

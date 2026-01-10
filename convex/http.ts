@@ -1,8 +1,10 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
-import { api } from "./_generated/api";
+import { api, components } from "./_generated/api";
 import { rssFeed, rssFullFeed } from "./rss";
 import { streamResponse, streamResponseOptions } from "./askAI.node";
+import { registerRoutes } from "convex-fs";
+import { fs } from "./fs";
 
 const http = httpRouter();
 
@@ -413,5 +415,25 @@ http.route({
   method: "OPTIONS",
   handler: streamResponseOptions,
 });
+
+// ConvexFS routes for file uploads/downloads
+// Only register routes when Bunny CDN is configured
+// - POST /fs/upload - Upload files to Bunny.net storage
+// - GET /fs/blobs/{blobId} - Returns 302 redirect to signed CDN URL
+if (fs) {
+  registerRoutes(http, components.fs, fs, {
+    pathPrefix: "/fs",
+    uploadAuth: async () => {
+      // TODO: Add authentication check for production
+      // const identity = await ctx.auth.getUserIdentity();
+      // return identity !== null;
+      return true;
+    },
+    downloadAuth: async () => {
+      // Public downloads - images should be accessible to all
+      return true;
+    },
+  });
+}
 
 export default http;

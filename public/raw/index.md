@@ -30,8 +30,10 @@ agents. -->
 
 ---
 
-## Blog Posts (19)
+## Blog Posts (20)
 
+- **[OpenCode Integration](/raw/docs-opencode.md)**
+  - Date: 2026-01-10 | Reading time: 4 min read | Tags: opencode, plugins, terminal
 - **[How to Use Code Blocks](/raw/how-to-use-code-blocks.md)** - A guide to syntax highlighting, diff rendering, and code formatting in your markdown posts.
   - Date: 2026-01-07 | Reading time: 4 min read | Tags: tutorial, markdown, code, syntax-highlighting
 - **[How I added WorkOS to my Convex app with Cursor](/raw/workos-with-convex-cursor.md)** - A timeline of adding WorkOS AuthKit authentication to my markdown blog dashboard using Cursor, prompt engineering, and vibe coding. From PRD import to published feature.
@@ -71,7 +73,7 @@ agents. -->
 - **[Using Images in Blog Posts](/raw/using-images-in-posts.md)** - Learn how to add header images, inline images, and Open Graph images to your markdown posts.
   - Date: 2025-12-14 | Reading time: 4 min read | Tags: images, tutorial, markdown, open-graph
 
-## Pages (16)
+## Pages (17)
 
 - **[Footer](/raw/footer.md)**
 - **[Home Intro](/raw/home-intro.md)**
@@ -89,10 +91,11 @@ agents. -->
 - **[Changelog](/raw/changelog.md)**
 - **[Deployment](/raw/docs-deployment.md)**
 - **[Newsletter](/raw/newsletter.md)**
+- **[Media Upload Setup](/raw/docs-media-setup.md)**
 
 ---
 
-**Total Content:** 19 posts, 16 pages
+**Total Content:** 20 posts, 17 pages
 
 All content is available as raw markdown files at `/raw/{slug}.md`
 
