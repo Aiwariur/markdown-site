@@ -2,10 +2,89 @@
 
 ---
 Type: page
-Date: 2026-01-09
+Date: 2026-01-10
 ---
 
 All notable changes to this project.
+
+## v2.16.0
+
+Released January 9, 2026
+
+**Version control system**
+
+Added a Sync version control system for tracking changes to posts, pages, home content, and footer.
+
+**Features:**
+
+- 3-day version history for all content
+- Dashboard toggle to enable/disable version control
+- Version history modal with unified diff visualization
+- Preview mode to view previous version content
+- One-click restore with automatic backup of current state
+- Automatic cleanup of versions older than 3 days (daily cron at 3 AM UTC)
+- Version stats display in Config section
+
+**How to use:**
+
+1. Navigate to Dashboard > Config
+2. Find the "Version Control" card
+3. Toggle "Enable version control" on
+4. Edit posts/pages or run sync commands to capture versions
+5. Click the History button in the editor to view version history
+6. Select a version to view diff or preview, then click "Restore This Version"
+
+**Technical:**
+
+- New `convex/versions.ts` with 7 functions (isEnabled, setEnabled, createVersion, getVersionHistory, getVersion, restoreVersion, cleanupOldVersions, getStats)
+- New `contentVersions` table with indexes for efficient queries
+- New `versionControlSettings` table for toggle state
+- New `VersionHistoryModal.tsx` component using existing DiffCodeBlock
+- Version capture integrated into cms.ts, posts.ts, and pages.ts
+- Cleanup cron job in crons.ts
+
+**Files changed:**
+
+- `convex/schema.ts` - Added contentVersions and versionControlSettings tables
+- `convex/versions.ts` - New file with all version control logic
+- `convex/cms.ts` - Added version capture before dashboard edits
+- `convex/posts.ts` - Added version capture before sync updates
+- `convex/pages.ts` - Added version capture before sync updates
+- `convex/crons.ts` - Added daily cleanup job
+- `src/components/VersionHistoryModal.tsx` - New version history modal
+- `src/pages/Dashboard.tsx` - Added Version Control config card and History button
+- `src/styles/global.css` - Added ~370 lines of version modal CSS
+
+---
+
+## v2.15.3
+
+Released January 9, 2026
+
+**Footer not displaying on /docs landing page fix**
+
+Fixed an issue where the footer was not displaying on the `/docs` landing page even when `showFooter: true` was set in the frontmatter. The `DocsPage.tsx` component (which handles the `/docs` route with `docsLanding: true`) was missing the Footer component entirely.
+
+**Fixes:**
+
+- Added Footer component to DocsPage.tsx
+- Footer now respects `showFooter` frontmatter field on docs landing pages
+- Added AI chat support to docs landing page via `aiChatEnabled` and `pageContent` props
+
+**Technical:**
+
+- Added `Footer` import and `footerPage` query to fetch footer content
+- Added footer rendering logic after BlogPost component (same pattern as Post.tsx)
+- Updated `getDocsLandingPage` query in `convex/pages.ts` to return `showFooter`, `footer`, `excerpt`, and `aiChat` fields
+- Updated `getDocsLandingPost` query in `convex/posts.ts` to return `showFooter`, `footer`, and `aiChat` fields
+
+**Files changed:**
+
+- `src/pages/DocsPage.tsx` - Added Footer component and rendering logic
+- `convex/pages.ts` - Updated getDocsLandingPage query return fields
+- `convex/posts.ts` - Updated getDocsLandingPost query return fields
+
+---
 
 ## v2.15.2
 
@@ -175,7 +254,7 @@ Diff and patch code blocks now render with enhanced visualization powered by @pi
 - View toggle button to switch between modes
 - Theme-aware colors matching dark/light/tan/cloud themes
 - Copy button for copying raw diff content
-- Automatic routing: Use ```diff or ```patch in markdown
+- Automatic routing: Use `diff or `patch in markdown
 
 **New documentation:**
 
@@ -318,6 +397,7 @@ semanticSearch: {
 ```
 
 When disabled:
+
 - Search modal shows only keyword search (no mode toggle)
 - Embedding generation skipped during sync (saves API costs)
 - Existing embeddings preserved in database (no data loss)
@@ -346,12 +426,12 @@ Search now supports two modes accessible via Cmd+K:
 
 **When to use each mode:**
 
-| Use Case | Mode |
-|----------|------|
-| Specific code, commands, exact phrases | Keyword |
+| Use Case                                  | Mode     |
+| ----------------------------------------- | -------- |
+| Specific code, commands, exact phrases    | Keyword  |
 | Conceptual questions ("how do I deploy?") | Semantic |
-| Need to highlight matches on page | Keyword |
-| Not sure of exact terminology | Semantic |
+| Need to highlight matches on page         | Keyword  |
+| Not sure of exact terminology             | Semantic |
 
 **Configuration:**
 

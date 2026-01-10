@@ -82,21 +82,21 @@ Edit each file individually following the guide below.
 
 ### Files to Update
 
-| File                                | What to Update                                               |
-| ----------------------------------- | ------------------------------------------------------------ |
+| File                                | What to Update                                                              |
+| ----------------------------------- | --------------------------------------------------------------------------- |
 | `src/config/siteConfig.ts`          | Site name, bio, GitHub username, gitHubRepo config, default theme, features |
-| `src/pages/Home.tsx`                | Intro paragraph, footer links                                |
-| `src/pages/Post.tsx`                | `SITE_URL`, `SITE_NAME` constants                            |
-| `src/pages/DocsPage.tsx`            | `SITE_URL` constant                                          |
-| `convex/http.ts`                    | `SITE_URL`, `SITE_NAME` constants                            |
-| `convex/rss.ts`                     | `SITE_URL`, `SITE_TITLE`, `SITE_DESCRIPTION`                 |
-| `netlify/edge-functions/mcp.ts`     | `SITE_URL`, `SITE_NAME`, `MCP_SERVER_NAME` constants         |
-| `scripts/send-newsletter.ts`        | Default `SITE_URL` constant                                  |
-| `index.html`                        | Meta tags, JSON-LD, page title                               |
-| `public/llms.txt`                   | Site info, GitHub link                                       |
-| `public/robots.txt`                 | Sitemap URL                                                  |
-| `public/openapi.yaml`               | Server URL, site name, example URLs                          |
-| `public/.well-known/ai-plugin.json` | Plugin metadata                                              |
+| `src/pages/Home.tsx`                | Intro paragraph, footer links                                               |
+| `src/pages/Post.tsx`                | `SITE_URL`, `SITE_NAME` constants                                           |
+| `src/pages/DocsPage.tsx`            | `SITE_URL` constant                                                         |
+| `convex/http.ts`                    | `SITE_URL`, `SITE_NAME` constants                                           |
+| `convex/rss.ts`                     | `SITE_URL`, `SITE_TITLE`, `SITE_DESCRIPTION`                                |
+| `netlify/edge-functions/mcp.ts`     | `SITE_URL`, `SITE_NAME`, `MCP_SERVER_NAME` constants                        |
+| `scripts/send-newsletter.ts`        | Default `SITE_URL` constant                                                 |
+| `index.html`                        | Meta tags, JSON-LD, page title                                              |
+| `public/llms.txt`                   | Site info, GitHub link                                                      |
+| `public/robots.txt`                 | Sitemap URL                                                                 |
+| `public/openapi.yaml`               | Server URL, site name, example URLs                                         |
+| `public/.well-known/ai-plugin.json` | Plugin metadata                                                             |
 
 ---
 
@@ -750,6 +750,7 @@ The dashboard includes a sync server feature that allows executing sync commands
 **Setup:**
 
 1. Start the sync server locally:
+
 ```bash
 npm run sync-server
 ```
@@ -1141,13 +1142,29 @@ Configure the AI writing assistant. The Dashboard AI Agent supports multiple pro
     "enableImageGeneration": true,
     "defaultTextModel": "claude-sonnet-4-20250514",
     "textModels": [
-      { "id": "claude-sonnet-4-20250514", "name": "Claude Sonnet 4", "provider": "anthropic" },
+      {
+        "id": "claude-sonnet-4-20250514",
+        "name": "Claude Sonnet 4",
+        "provider": "anthropic"
+      },
       { "id": "gpt-4o", "name": "GPT-4o", "provider": "openai" },
-      { "id": "gemini-2.0-flash", "name": "Gemini 2.0 Flash", "provider": "google" }
+      {
+        "id": "gemini-2.0-flash",
+        "name": "Gemini 2.0 Flash",
+        "provider": "google"
+      }
     ],
     "imageModels": [
-      { "id": "gemini-2.0-flash-exp-image-generation", "name": "Nano Banana", "provider": "google" },
-      { "id": "imagen-3.0-generate-002", "name": "Nano Banana Pro", "provider": "google" }
+      {
+        "id": "gemini-2.0-flash-exp-image-generation",
+        "name": "Nano Banana",
+        "provider": "google"
+      },
+      {
+        "id": "imagen-3.0-generate-002",
+        "name": "Nano Banana Pro",
+        "provider": "google"
+      }
     ]
   }
 }
@@ -1179,11 +1196,11 @@ aiDashboard: {
 
 **Environment Variables (Convex):**
 
-| Variable | Provider | Features |
-| --- | --- | --- |
-| `ANTHROPIC_API_KEY` | Anthropic | Claude Sonnet 4 chat |
-| `OPENAI_API_KEY` | OpenAI | GPT-4o chat |
-| `GOOGLE_AI_API_KEY` | Google | Gemini 2.0 Flash chat + image generation |
+| Variable            | Provider  | Features                                 |
+| ------------------- | --------- | ---------------------------------------- |
+| `ANTHROPIC_API_KEY` | Anthropic | Claude Sonnet 4 chat                     |
+| `OPENAI_API_KEY`    | OpenAI    | GPT-4o chat                              |
+| `GOOGLE_AI_API_KEY` | Google    | Gemini 2.0 Flash chat + image generation |
 
 **Optional system prompt variables:**
 
@@ -1347,15 +1364,15 @@ The script reads from `siteConfig.ts` and queries Convex for live content statis
 
 Replace example content in:
 
-| File                           | Purpose                    |
-| ------------------------------ | -------------------------- |
-| `content/blog/*.md`            | Blog posts                 |
-| `content/pages/*.md`           | Static pages (About, etc.) |
-| `content/pages/home.md`        | Homepage intro content (slug: `home-intro`, uses blog heading styles) |
+| File                           | Purpose                                                                                      |
+| ------------------------------ | -------------------------------------------------------------------------------------------- |
+| `content/blog/*.md`            | Blog posts                                                                                   |
+| `content/pages/*.md`           | Static pages (About, etc.)                                                                   |
+| `content/pages/home.md`        | Homepage intro content (slug: `home-intro`, uses blog heading styles)                        |
 | `content/pages/footer.md`      | Footer content (slug: `footer`, syncs via markdown, falls back to siteConfig.defaultContent) |
-| `public/images/logo.svg`       | Site logo                  |
-| `public/images/og-default.svg` | Default social share image |
-| `public/images/logos/*.svg`    | Logo gallery images        |
+| `public/images/logo.svg`       | Site logo                                                                                    |
+| `public/images/og-default.svg` | Default social share image                                                                   |
+| `public/images/logos/*.svg`    | Logo gallery images                                                                          |
 
 ---
 
@@ -1367,12 +1384,12 @@ The site serves pre-rendered HTML with correct canonical URLs and meta tags to s
 
 The edge function detects different types of bots and serves appropriate responses:
 
-| Bot Type            | Response                              | Examples                             |
-| ------------------- | ------------------------------------- | ------------------------------------ |
-| Social preview bots | Pre-rendered HTML with OG tags        | Twitter, Facebook, LinkedIn, Discord |
-| Search engine bots  | Pre-rendered HTML with correct canonical | Google, Bing, DuckDuckGo          |
-| AI crawlers         | Normal SPA (can render JavaScript)    | GPTBot, ClaudeBot, PerplexityBot     |
-| Regular browsers    | Normal SPA                            | Chrome, Firefox, Safari              |
+| Bot Type            | Response                                 | Examples                             |
+| ------------------- | ---------------------------------------- | ------------------------------------ |
+| Social preview bots | Pre-rendered HTML with OG tags           | Twitter, Facebook, LinkedIn, Discord |
+| Search engine bots  | Pre-rendered HTML with correct canonical | Google, Bing, DuckDuckGo             |
+| AI crawlers         | Normal SPA (can render JavaScript)       | GPTBot, ClaudeBot, PerplexityBot     |
+| Regular browsers    | Normal SPA                               | Chrome, Firefox, Safari              |
 
 ### Customizing Bot Lists
 
@@ -1417,3 +1434,54 @@ curl https://yoursite.com/your-post | grep canonical
 ### Why This Matters
 
 Single-page apps (SPAs) update meta tags via JavaScript after the page loads. Search engines that check raw HTML before rendering may see incorrect canonical URLs. By serving pre-rendered HTML to search engine bots, we ensure they see the correct canonical URL for each page.
+
+---
+
+## Version Control Configuration
+
+The dashboard includes a built-in Sync version control system. Unlike most features, version control is configured via the Dashboard UI, not `siteConfig.ts` or `fork-config.json`.
+
+### How to enable
+
+1. Navigate to `/dashboard`
+2. Go to the **Config** section
+3. Find the **Version Control** card
+4. Toggle **Enable version control** on
+
+### Features
+
+- **3-day version history** for all posts, pages, home content, and footer
+- **Diff visualization** using unified diff format
+- **One-click restore** with automatic backup of current content
+- **Automatic cleanup** of versions older than 3 days (runs daily at 3 AM UTC)
+
+### When versions are captured
+
+| Source    | When created                                  |
+| --------- | --------------------------------------------- |
+| sync      | Before markdown sync updates (`npm run sync`) |
+| dashboard | Before saving edits in Dashboard              |
+| restore   | Before restoring a previous version           |
+
+### Viewing version history
+
+1. Open any post or page in the Dashboard editor
+2. Click the **History** button (clock icon) in the editor toolbar
+3. Select a version from the list
+4. View diff or preview
+5. Click **Restore This Version** to revert
+
+### Technical details
+
+- Versions stored in `contentVersions` table in Convex
+- Settings stored in `versionControlSettings` table
+- Cleanup via cron job in `convex/crons.ts`
+- Version capture is async (non-blocking via `ctx.scheduler.runAfter`)
+
+### Why database-based?
+
+Version control settings are stored in the Convex database rather than config files because:
+
+1. **Toggle requires real-time state** - UI needs to reflect current setting immediately
+2. **Shared across environments** - Same setting for all users of the dashboard
+3. **No redeploy needed** - Toggle works instantly without rebuilding

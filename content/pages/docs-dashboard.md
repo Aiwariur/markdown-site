@@ -2,7 +2,7 @@
 title: "Dashboard"
 slug: "docs-dashboard"
 published: true
-order: 5
+order: 1
 showInNav: false
 layout: "sidebar"
 rightSidebar: true
@@ -375,6 +375,63 @@ This creates a file in `content/blog/` that requires syncing.
 
 **Note:** The dashboard provides a UI for these commands. When the sync server is running (`npm run sync-server`), you can execute commands directly from the dashboard with real-time output. Otherwise, the dashboard shows commands in a modal for copying to your terminal.
 
+### Version control
+
+The dashboard includes a Sync version control system that tracks changes to posts, pages, home content, and footer content.
+
+**Features:**
+
+- 3-day version history for all content
+- Toggle to enable/disable version control
+- View version history with unified diff visualization
+- Preview previous versions
+- One-click restore with automatic backup
+- Automatic cleanup of versions older than 3 days
+
+**Enabling version control:**
+
+1. Navigate to Dashboard > Config
+2. Find the "Version Control" card
+3. Toggle "Enable version control" on
+
+When enabled, versions are captured:
+
+- Before sync updates (from markdown files)
+- Before dashboard edits (Save Changes button)
+- Before restoring a previous version
+
+**Viewing version history:**
+
+1. Open any post or page in the Dashboard editor
+2. Click the clock (History) button in the editor toolbar
+3. Select a version from the list to view details
+4. Toggle between "Diff" and "Preview" modes
+5. Click "Restore This Version" to revert
+
+**How it works:**
+
+- Versions are stored in the `contentVersions` table
+- Settings stored in `versionControlSettings` table (database, not config file)
+- Cleanup runs daily at 3:00 AM UTC via cron job
+- Restore creates a backup of current content before reverting
+- Uses existing DiffCodeBlock component for diff visualization
+
+**Version sources:**
+
+| Source    | When created                 |
+| --------- | ---------------------------- |
+| sync      | Before markdown sync updates |
+| dashboard | Before dashboard edits       |
+| restore   | Before restoring a version   |
+
+**Stats display:**
+
+The Version Control card in Config shows:
+
+- Total version count
+- Post versions count
+- Page versions count
+
 ### Environment variables
 
 **Convex Environment Variables:**
@@ -394,7 +451,7 @@ npx convex env set VARIABLE_NAME value
 
 **Local Environment Variables (.env.local):**
 
-| Variable            | Description                                |
-| ------------------- | ------------------------------------------ |
-| `VITE_CONVEX_URL`   | Your Convex deployment URL (auto-created)  |
-| `FIRECRAWL_API_KEY` | For CLI import command only                |
+| Variable            | Description                               |
+| ------------------- | ----------------------------------------- |
+| `VITE_CONVEX_URL`   | Your Convex deployment URL (auto-created) |
+| `FIRECRAWL_API_KEY` | For CLI import command only               |

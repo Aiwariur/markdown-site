@@ -5,7 +5,7 @@ date: "2025-12-28"
 slug: "how-to-use-mcp-server"
 image: /images/mcp-blog.png
 published: true
-blogFeatured: true
+blogFeatured: false
 layout: "sidebar"
 tags: ["mcp", "cursor", "ai", "tutorial", "netlify"]
 docsSection: true

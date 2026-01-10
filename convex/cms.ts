@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 // Shared validator for post data
 const postDataValidator = v.object({
@@ -150,6 +151,17 @@ export const updatePost = mutation({
       }
     }
 
+    // Capture version before update (async, non-blocking)
+    await ctx.scheduler.runAfter(0, internal.versions.createVersion, {
+      contentType: "post",
+      contentId: args.id,
+      slug: existing.slug,
+      title: existing.title,
+      content: existing.content,
+      description: existing.description,
+      source: "dashboard",
+    });
+
     await ctx.db.patch(args.id, {
       ...args.post,
       lastSyncedAt: Date.now(),
@@ -252,6 +264,16 @@ export const updatePage = mutation({
         throw new Error(`Page with slug "${newSlug}" already exists`);
       }
     }
+
+    // Capture version before update (async, non-blocking)
+    await ctx.scheduler.runAfter(0, internal.versions.createVersion, {
+      contentType: "page",
+      contentId: args.id,
+      slug: existing.slug,
+      title: existing.title,
+      content: existing.content,
+      source: "dashboard",
+    });
 
     await ctx.db.patch(args.id, {
       ...args.page,

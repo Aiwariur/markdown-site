@@ -76,6 +76,7 @@ agents. -->
 - **[Footer](/raw/footer.md)**
 - **[Home Intro](/raw/home-intro.md)**
 - **[Documentation](/raw/documentation.md)**
+- **[Dashboard](/raw/docs-dashboard.md)**
 - **[About](/raw/about.md)** - An open-source publishing framework built for AI agents and developers to ship websites, docs, or blogs.
 - **[Ask AI](/raw/docs-ask-ai.md)**
 - **[Content](/raw/docs-content.md)**
@@ -86,7 +87,6 @@ agents. -->
 - **[Contact](/raw/contact.md)**
 - **[Configuration](/raw/docs-configuration.md)**
 - **[Changelog](/raw/changelog.md)**
-- **[Dashboard](/raw/docs-dashboard.md)**
 - **[Deployment](/raw/docs-deployment.md)**
 - **[Newsletter](/raw/newsletter.md)**
 

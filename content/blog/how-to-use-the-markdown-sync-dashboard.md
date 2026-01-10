@@ -9,6 +9,7 @@ readTime: "8 min read"
 featured: true
 layout: "sidebar"
 featuredOrder: 2
+blogFeatured: true
 image: /images/dashboard.png
 excerpt: "A complete guide to using the dashboard for managing your markdown blog without leaving your browser."
 docsSection: true

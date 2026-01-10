@@ -4,9 +4,22 @@
 
 ## Current Status
 
-v2.15.3 ready. Fixed footer not displaying on docs landing page.
+v2.16.0 ready. Added version control system for posts and pages.
 
 ## Completed
+
+- [x] Version control system (v2.16.0)
+  - [x] Added contentVersions and versionControlSettings tables to schema
+  - [x] Created convex/versions.ts with 7 functions (isEnabled, setEnabled, createVersion, getVersionHistory, getVersion, restoreVersion, cleanupOldVersions, getStats)
+  - [x] Modified cms.ts to capture versions before dashboard edits
+  - [x] Modified posts.ts to capture versions before sync updates
+  - [x] Modified pages.ts to capture versions before sync updates
+  - [x] Added cleanup cron job (daily at 3 AM UTC) for 3-day retention
+  - [x] Created VersionHistoryModal component with diff view and restore functionality
+  - [x] Added Version Control card in Dashboard Config section with toggle and stats
+  - [x] Added History button in Dashboard editor for viewing version history
+  - [x] Added ~370 lines of CSS for version modal UI
+  - [x] Updated documentation: docs-dashboard.md, FORK_CONFIG.md, files.md, changelog.md, task.md, changelog-page.md
 
 - [x] Footer not displaying on /docs landing page fix (v2.15.3)
   - [x] DocsPage.tsx was missing Footer component entirely

@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.16.0] - 2026-01-09
+
+### Added
+
+- Sync version control system
+  - 3-day version history for posts, pages, home content, and footer
+  - Dashboard toggle to enable/disable version control
+  - Version history modal with unified diff visualization using DiffCodeBlock component
+  - Preview mode to view previous version content
+  - One-click restore with automatic backup of current state
+  - Automatic cleanup of versions older than 3 days (daily cron at 3 AM UTC)
+  - Version stats display in Config section (total, posts, pages)
+
+### Technical
+
+- New `convex/versions.ts` with 7 functions:
+  - `isEnabled` / `setEnabled` - Toggle version control
+  - `createVersion` - Capture content snapshot (internal mutation)
+  - `getVersionHistory` / `getVersion` - Query version data
+  - `restoreVersion` - Restore with backup creation
+  - `cleanupOldVersions` - Batch delete old versions
+  - `getStats` - Version count statistics
+- New `contentVersions` table in schema with indexes:
+  - `by_content` - Query by content type and ID
+  - `by_slug` - Query by content type and slug
+  - `by_createdAt` - For cleanup queries
+  - `by_content_createdAt` - Compound index for history
+- New `versionControlSettings` table for toggle state
+- New `src/components/VersionHistoryModal.tsx` component
+- Updated `convex/cms.ts` to capture versions before dashboard edits
+- Updated `convex/posts.ts` to capture versions before sync updates
+- Updated `convex/pages.ts` to capture versions before sync updates
+- Updated `convex/crons.ts` with daily cleanup job
+- Added ~370 lines of CSS for version modal UI
+
 ## [2.15.3] - 2026-01-09
 
 ### Fixed
@@ -133,7 +168,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Unified and split (side-by-side) view modes with toggle button
   - Theme-aware colors (dark/light/tan/cloud support)
   - Copy button for diff content
-  - Automatic routing: ```diff and ```patch blocks use enhanced renderer
+  - Automatic routing: `diff and `patch blocks use enhanced renderer
 - New blog post: "How to Use Code Blocks" with syntax highlighting and diff examples
 - DiffCodeBlock component (`src/components/DiffCodeBlock.tsx`)
 
@@ -624,7 +659,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Technical
 
-- Updated: `scripts/configure-fork.ts` - Added ES module compatible __dirname using fileURLToPath
+- Updated: `scripts/configure-fork.ts` - Added ES module compatible \_\_dirname using fileURLToPath
 
 ## [2.2.0] - 2025-12-30
 

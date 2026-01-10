@@ -244,4 +244,32 @@ export default defineSchema({
       )
     ), // Optional sources cited in the response
   }).index("by_stream", ["streamId"]),
+
+  // Content version history for posts and pages
+  // Stores snapshots before each update for 3-day retention
+  contentVersions: defineTable({
+    contentType: v.union(v.literal("post"), v.literal("page")), // Type of content
+    contentId: v.string(), // ID of the post or page (stored as string for flexibility)
+    slug: v.string(), // Slug for display and querying
+    title: v.string(), // Title at time of snapshot
+    content: v.string(), // Full markdown content at time of snapshot
+    description: v.optional(v.string()), // Description (posts only)
+    createdAt: v.number(), // Timestamp when version was created
+    source: v.union(
+      v.literal("sync"),
+      v.literal("dashboard"),
+      v.literal("restore")
+    ), // What triggered the version capture
+  })
+    .index("by_content", ["contentType", "contentId"])
+    .index("by_slug", ["contentType", "slug"])
+    .index("by_createdAt", ["createdAt"])
+    .index("by_content_createdAt", ["contentType", "contentId", "createdAt"]),
+
+  // Version control settings
+  // Stores toggle state for version control feature
+  versionControlSettings: defineTable({
+    key: v.string(), // Setting key: "enabled"
+    value: v.boolean(), // Setting value
+  }).index("by_key", ["key"]),
 });

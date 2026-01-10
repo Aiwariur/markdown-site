@@ -65,6 +65,7 @@ import {
 } from "@phosphor-icons/react";
 import siteConfig from "../config/siteConfig";
 import AIChatView from "../components/AIChatView";
+import VersionHistoryModal from "../components/VersionHistoryModal";
 import { isWorkOSConfigured } from "../utils/workos";
 // Always import auth components - they're only used when WorkOS is configured
 import {
@@ -1880,6 +1881,8 @@ function EditorView({
 }) {
   const [copied, setCopied] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const versionControlEnabled = useQuery(api.versions.isEnabled);
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     const saved = localStorage.getItem("dashboard-sidebar-width");
     return saved ? Number(saved) : 280;
@@ -1976,6 +1979,16 @@ function EditorView({
             {copied ? <Check size={16} /> : <Copy size={16} />}
             <span>{copied ? "Copied" : "Copy"}</span>
           </button>
+          {versionControlEnabled && (
+            <button
+              className="dashboard-action-btn"
+              onClick={() => setShowVersionHistory(true)}
+              title="View Version History"
+            >
+              <ClockCounterClockwise size={16} />
+              <span>History</span>
+            </button>
+          )}
           <button
             className="dashboard-action-btn primary"
             onClick={onDownload}
@@ -2040,6 +2053,17 @@ function EditorView({
           <FrontmatterSidebar item={item} type={type} setItem={setItem} />
         </div>
       </div>
+
+      {showVersionHistory && (
+        <VersionHistoryModal
+          isOpen={showVersionHistory}
+          onClose={() => setShowVersionHistory(false)}
+          contentType={type}
+          contentId={item._id}
+          currentContent={item.content}
+          currentTitle={item.title}
+        />
+      )}
     </div>
   );
 }
@@ -5601,6 +5625,9 @@ export default siteConfig;
           </p>
         </div>
 
+        {/* Version Control */}
+        <VersionControlCard addToast={addToast} />
+
         {/* Links */}
         <div className="dashboard-config-card">
           <h3>External Links</h3>
@@ -5641,6 +5668,81 @@ export default siteConfig;
           definitions and add your logo gallery images manually.
         </p>
       </div>
+    </div>
+  );
+}
+
+// Version Control Card Component
+function VersionControlCard({
+  addToast,
+}: {
+  addToast: (message: string, type: ToastType) => void;
+}) {
+  const versionControlEnabled = useQuery(api.versions.isEnabled);
+  const versionStats = useQuery(api.versions.getStats);
+  const setVersionControlEnabled = useMutation(api.versions.setEnabled);
+  const [isToggling, setIsToggling] = useState(false);
+
+  const handleToggle = async () => {
+    setIsToggling(true);
+    try {
+      await setVersionControlEnabled({ enabled: !versionControlEnabled });
+      addToast(
+        `Version control ${!versionControlEnabled ? "enabled" : "disabled"}`,
+        "success"
+      );
+    } catch {
+      addToast("Failed to update version control setting", "error");
+    } finally {
+      setIsToggling(false);
+    }
+  };
+
+  const formatDate = (timestamp: number | null) => {
+    if (!timestamp) return "N/A";
+    return new Date(timestamp).toLocaleString();
+  };
+
+  return (
+    <div className="dashboard-config-card">
+      <h3>Version Control</h3>
+      <div className="config-field checkbox">
+        <label>
+          <input
+            type="checkbox"
+            checked={versionControlEnabled ?? false}
+            onChange={handleToggle}
+            disabled={isToggling}
+          />
+          <span>
+            {isToggling ? "Updating..." : "Enable version history (3-day retention)"}
+          </span>
+        </label>
+      </div>
+      <p className="config-hint">
+        When enabled, saves a snapshot before each edit. View and restore previous versions
+        from the editor toolbar.
+      </p>
+      {versionStats && versionStats.totalVersions > 0 && (
+        <div className="version-stats">
+          <div className="version-stat">
+            <span className="version-stat-label">Total versions:</span>
+            <span className="version-stat-value">{versionStats.totalVersions}</span>
+          </div>
+          <div className="version-stat">
+            <span className="version-stat-label">Oldest:</span>
+            <span className="version-stat-value">
+              {formatDate(versionStats.oldestVersion)}
+            </span>
+          </div>
+          <div className="version-stat">
+            <span className="version-stat-label">Newest:</span>
+            <span className="version-stat-value">
+              {formatDate(versionStats.newestVersion)}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

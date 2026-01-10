@@ -1,5 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 // Get all pages (published and unpublished) for dashboard admin view
 export const listAll = query({
@@ -392,6 +393,15 @@ export const syncPagesPublic = mutation({
           skipped++;
           continue;
         }
+        // Capture version before update (async, non-blocking)
+        await ctx.scheduler.runAfter(0, internal.versions.createVersion, {
+          contentType: "page",
+          contentId: existing._id,
+          slug: existing.slug,
+          title: existing.title,
+          content: existing.content,
+          source: "sync",
+        });
         // Update existing sync page
         await ctx.db.patch(existing._id, {
           title: page.title,

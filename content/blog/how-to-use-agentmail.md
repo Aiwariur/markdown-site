@@ -7,7 +7,7 @@ published: true
 featured: true
 featuredOrder: 5
 layout: "sidebar"
-blogFeatured: true
+blogFeatured: false
 image: /images/agentmail-blog.png
 tags: ["agentmail", "newsletter", "email", "setup"]
 docsSection: true

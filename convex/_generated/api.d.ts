@@ -29,6 +29,7 @@ import type * as search from "../search.js";
 import type * as semanticSearch from "../semanticSearch.js";
 import type * as semanticSearchQueries from "../semanticSearchQueries.js";
 import type * as stats from "../stats.js";
+import type * as versions from "../versions.js";
 
 import type {
   ApiFromModules,
@@ -58,6 +59,7 @@ declare const fullApi: ApiFromModules<{
   semanticSearch: typeof semanticSearch;
   semanticSearchQueries: typeof semanticSearchQueries;
   stats: typeof stats;
+  versions: typeof versions;
 }>;
 
 /**
