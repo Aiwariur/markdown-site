@@ -14142,6 +14142,12 @@ body:has(.docs-layout) {
 
 /* Docs responsive - mobile */
 @media (max-width: 768px) {
+  /* Restore body scrolling on mobile - sidebars are hidden, no fixed layout */
+  body:has(.docs-layout) {
+    overflow: visible;
+    overflow: unset;
+  }
+
   .docs-layout,
   .docs-layout.no-toc {
     display: block;
