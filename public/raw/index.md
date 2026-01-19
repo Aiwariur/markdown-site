@@ -30,7 +30,7 @@ agents. -->
 
 ---
 
-## Blog Posts (21)
+## Blog Posts (23)
 
 - **[Markdown Sync RC1 Release](/raw/version-rc1.md)** - RC1 brings semantic search, ConvexFS Media Library, OpenCode integration, RAG-based AI Q&A, and a new CLI to get started in seconds.
   - Date: 2026-01-11 | Reading time: 3 min read | Tags: release, rc1, features, convex, ai
@@ -74,6 +74,10 @@ agents. -->
   - Date: 2025-12-14 | Reading time: 8 min read | Tags: convex, netlify, tutorial, deployment
 - **[Using Images in Blog Posts](/raw/using-images-in-posts.md)** - Learn how to add header images, inline images, and Open Graph images to your markdown posts.
   - Date: 2025-12-14 | Reading time: 4 min read | Tags: images, tutorial, markdown, open-graph
+- **[Полное руководство по markdown-site](/raw/markdown-site-guide.md)** - Подробное руководство по использованию markdown-site фреймворка для создания блогов
+  - Date: 2025-01-19 | Reading time: 8 мин чтения | Tags: руководство, markdown, блог, convex, netlify
+- **[Тестовый пост на русском языке](/raw/test-post-ru.md)** - Проверяем работу markdown-site фреймворка с русским контентом
+  - Date: 2025-01-19 | Reading time: 2 мин чтения | Tags: тест, русский, markdown
 
 ## Pages (17)
 
@@ -97,7 +101,7 @@ agents. -->
 
 ---
 
-**Total Content:** 21 posts, 17 pages
+**Total Content:** 23 posts, 17 pages
 
 All content is available as raw markdown files at `/raw/{slug}.md`
 
